@@ -12,7 +12,7 @@ add_subdirectory(libdvi)
 
 add_executable(artdvi
         main.here/main.c
-        dvi_640x480.c
+        dvi_driver.c
         tmds_encode_custom.S
         )
 
