@@ -27,8 +27,10 @@ add_executable(dvi
 target_link_libraries(dvi PUBLIC
 	pico_stdlib
 	pico_multicore
+    pico_util
 	hardware_dma
 	pico_sync
+    libdvi
 )
 
 pico_add_extra_outputs(dvi)
