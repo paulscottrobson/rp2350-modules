@@ -9,6 +9,7 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
+#include "common_module.h"
 #include "dvi_module.h"
 
 int main() {
@@ -17,8 +18,14 @@ int main() {
     DVISetMode(MODE_320_240_8);
     DVISetMode(MODE_320_256_8);
     DVISetMode(MODE_320_240_64);
-    DVISetMode(MODE_640_480_8);
+    //DVISetMode(MODE_640_480_8);
 
     while (1) {    
     }
+}
+
+//
+//      Dummy COMInitialise so we can have a complete file to copy to the DVI Module.
+//
+void COMInitialise(void) {    
 }

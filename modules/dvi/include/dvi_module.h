@@ -45,6 +45,6 @@ typedef enum _DVIMode {
 } DVIMODE;
 
 void DVIInitialise(void);
-    bool DVISetMode(DVIMODE mode);
+bool DVISetMode(DVIMODE mode);
 DVIMODEINFO *DVIGetModeInformation(void);
-uint32_t  DVIGetScreenExtent(uint32_t *pWidth,uint32_t *pHeight);
+

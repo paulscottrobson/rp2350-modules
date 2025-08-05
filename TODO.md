@@ -1,6 +1,6 @@
 # TODO list
 
-- Import USB, make any desired changes.
-- Convert Arturo drivers to a module
-- Check it works :)
-- Document both modules, convert documents.
+- Export ROOTDIR and/or DVIDIR
+- Builder changes to : target_compile_definitions add_subdirectory target_link_libraries
+- Test app using USB and DVI.
+- Convert modules.md document

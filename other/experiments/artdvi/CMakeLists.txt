@@ -7,7 +7,7 @@ project(artdvi)
 pico_sdk_init()
 
 include_directories(include)
-
+include_directories(include.here)
 add_subdirectory(../../../picodvi/software/libdvi lib)
 
 add_executable(artdvi

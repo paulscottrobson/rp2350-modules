@@ -24,6 +24,13 @@ add_executable(dvi
 	${COMMON_MODULE_SOURCES}
 )
 
+target_compile_definitions(dvi PRIVATE
+    DVI_USE_SIO_TMDS_ENCODER=0
+    DVI_VERTICAL_REPEAT=1
+    DVI_N_TMDS_BUFFERS=3
+    DVI_1BPP_BIT_REVERSE=1
+)
+
 target_link_libraries(dvi PUBLIC
 	pico_stdlib
 	pico_multicore

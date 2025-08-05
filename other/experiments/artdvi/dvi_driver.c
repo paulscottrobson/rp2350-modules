@@ -9,6 +9,7 @@
 // *******************************************************************************************
 // *******************************************************************************************
 
+#include "common_module.h"
 #include "dvi_module.h"
 #include "dvi_module_local.h"
 
@@ -36,21 +37,6 @@ DVIMODEINFO dvi_modeInfo;                                                       
 DVIMODEINFO *DVIGetModeInformation(void) {
     return &dvi_modeInfo;
 }
-
-/**
- * @brief      Gets the screen size and mode
- *
- * @param      pWidth   if not NULL, store width in int here
- * @param      pHeight  if not NULL, store height in int here
- *
- * @return     current mode
- */
-uint32_t  DVIGetScreenExtent(uint32_t *pWidth,uint32_t *pHeight) {
-    if (pWidth != NULL) *pWidth = dvi_modeInfo.width;
-    if (pHeight != NULL) *pHeight = dvi_modeInfo.height;
-    return dvi_modeInfo.mode;
-}
-
 
 /**
  * @brief      Set current mode
@@ -253,6 +239,11 @@ static struct dvi_serialiser_cfg olimex_rp2350_cfg = {
  * @brief      Start the DVI driver on Core1.
  */
 void DVIInitialise(void) {
+    static bool isInitialised = false;
+    if (isInitialised) return;
+    isInitialised = true;
+    COMInitialise();
+
     DVISetMode(MODE_640_240_8);
 
     vreg_set_voltage(VREG_VSEL);                                                    // Set CPU voltage
