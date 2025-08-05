@@ -13,4 +13,6 @@ include ../../../environment/system.make
 APPNAME = artdvi
 include $(BUILDENVDIR)pico.$(OS).make
 
-
+update:
+	cp *.c *.S $(MODULEDIR)dvi/library
+	cp include/*.h $(MODULEDIR)dvi/include

@@ -11,8 +11,6 @@
  
 #include "dvi_module.h"
 
-#include "dvi_common.h"
-
 int main() {
     setup_default_uart();                                                           // Initialise the UART
     DVIInitialise();

@@ -24,7 +24,8 @@ There are three macros
 
 System functions are 
 
-- uint32_t COMTimeMS(void) returns the number of milliseconds, which should not be assumed to be zero at boot. This is not a high precision timer, a resolution of about 50Hz or so is about right.
+- uint32_t COMClock(void) returns the number of milliseconds, which should not be assumed to be zero at boot. This is not a high precision timer, a resolution of about 50Hz or so is about right.
+- void COMWait(uint32_t ms) is a delay of the given number of ms, which calls COMUpdate() in the background. It can exit early if the program finished.
 - void COMAddUpdateFunction(COMUPDATEFUNCTION fn) adds an update function which is of type void xxxx(void)
 - void COMUpdate(void) calls all update functions in the order they were registered.
 - uint32_t COMGetFreeSystemMemory() returns the approximate amount of allocatable memory.

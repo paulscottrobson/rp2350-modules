@@ -8,7 +8,7 @@ pico_sdk_init()
 
 include_directories(include)
 
-add_subdirectory(libdvi)
+add_subdirectory(../../../picodvi/software/libdvi lib)
 
 add_executable(artdvi
         main.here/main.c
