@@ -30,6 +30,10 @@ DVISetMode() has one parameter, which is the mode which can be one of the follow
 
 DVIGetModeInformation() returns a structure of information about the current graphics mode. This structure is documented in dvi_module.h
 
+## Note
+
+The source and include files (dvi_driver.c tmds_encode_custom.S and the headers) are copied from other/experiments/artdvi which is where I experiment with different modes.
+
 ## Revision
 
 Written by Paul Robson, last revised 5 August 2025.

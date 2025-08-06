@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 include(pico_sdk_import.cmake)
 
-project(dvi)
+project(input)
 
 pico_sdk_init()
 
@@ -12,32 +12,39 @@ if (USE_DEBUG)
 endif()
 
 include_directories(include)
-add_subdirectory(${DVIDIR} lib)
 include_directories(${MODULEDIR}/common/include)
+include_directories(${MODULEDIR}/usb/include)
+include_directories(${MODULEDIR}/dvi/include)
+
+add_subdirectory(${DVIDIR} lib)
 
 file(GLOB_RECURSE APP_SOURCES "app/*.[csS]")
 file(GLOB_RECURSE C_SOURCES "library/*.[csS]")
 file(GLOB_RECURSE COMMON_MODULE_SOURCES "${MODULEDIR}/common/library/*.[csS]")
+file(GLOB_RECURSE USB_MODULE_SOURCES "${MODULEDIR}/usb/library/*.[csS]")
+file(GLOB_RECURSE DVI_MODULE_SOURCES "${MODULEDIR}/dvi/library/*.[csS]")
 
-add_executable(dvi
+add_executable(input
 	${APP_SOURCES} ${C_SOURCES}
-	${COMMON_MODULE_SOURCES}
+	${COMMON_MODULE_SOURCES} ${USB_MODULE_SOURCES} ${DVI_MODULE_SOURCES}
 )
 
-target_compile_definitions(dvi PRIVATE
+target_compile_definitions(input PRIVATE
     DVI_USE_SIO_TMDS_ENCODER=0
     DVI_VERTICAL_REPEAT=1
     DVI_N_TMDS_BUFFERS=3
     DVI_1BPP_BIT_REVERSE=1
 )
 
-target_link_libraries(dvi PUBLIC
+target_link_libraries(input PUBLIC
 	pico_stdlib
 	pico_multicore
     pico_util
 	hardware_dma
 	pico_sync
+	tinyusb_host
+	tinyusb_board
     libdvi
 )
 
-pico_add_extra_outputs(dvi)
+pico_add_extra_outputs(input)
