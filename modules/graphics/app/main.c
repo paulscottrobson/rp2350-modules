@@ -50,11 +50,6 @@ int MAINPROGRAM() {
     // GFXDraw(SetMapper,(GFXDRAWPARAM)_DemoMapper,0);                               // Set coordinate mapper.
 
     //
-    //      This is a tester for the RGB -> Colour mapping
-    //
-    //showColours();return 0;
-
-    //
     //      Available for testing.
     //
     generalTest();return 0;    

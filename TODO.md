@@ -1,7 +1,6 @@
 # TODO list
 
 - Convert graphics
-- Draw colours with pixels, 64 colour conversion.
 - Vertical lines
 - Do Left/Right.
 - Horizontal lines

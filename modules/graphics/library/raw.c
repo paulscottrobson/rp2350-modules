@@ -23,6 +23,9 @@ static uint8_t bitMask;                                                         
 static uint8_t *pl[DVI_MAX_BITPLANES];                                              // Bitplane pointers.
 bool    inDrawingVert,inDrawingHoriz;                                               // True if currently drawing (e.g. as move, drawing occurs)
 
+static void GFXRawPlot8(bool useFgr);
+static void GFXRawPlot64(bool useFgr);
+
 /**
  * @brief      Move the cursor position to x,y.
  *
@@ -37,10 +40,11 @@ void GFXRawMove(int32_t x,int32_t y) {
     if (modeInfo.bitPlaneDepth == 1) {
         offset = (x >> 3) + y * modeInfo.bytesPerLine;
         bitDraw = 0x80 >> (x & 7);
-        bitMask = bitDraw ^ 0xFF;
     } else {
-        // 64 bit goes here.
+        offset = (x >> 2) + y * modeInfo.bytesPerLine;
+        bitDraw = (0xC0 >> (2*(x & 3)));
     }
+    bitMask = bitDraw ^ 0xFF;
     for (int i = 0;i < modeInfo.bitPlaneCount;i++) {                                // Initialise the bitplane position pointers.
         pl[i] = modeInfo.bitPlane[i] + offset;
     }
@@ -53,6 +57,19 @@ void GFXRawMove(int32_t x,int32_t y) {
  */
 void GFXRawPlot(bool useFgr) {
     if (!inDrawingVert || !inDrawingHoriz) return;                                  // Cannot plot as we are off the screen.
+    if (modeInfo.bitPlaneDepth == 1) {
+        GFXRawPlot8(useFgr);
+    } else {
+        GFXRawPlot64(useFgr);        
+    }
+}
+
+/**
+ * @brief      Raw plotting for 8 colour mode
+ *
+ * @param[in]  useFgr  true foreground colour, false, background colour.
+ */
+static void GFXRawPlot8(bool useFgr) {
     uint8_t colour = useFgr ? draw->foreground:draw->background;                    // Drawing colour.    
     for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
         uint8_t *p = pl[plane];                                                     // Byte we are working on.
@@ -75,7 +92,7 @@ void GFXRawPlot(bool useFgr) {
                     *p |= bitMask;
                 }
                 break;
-            case 3:                                                                 // Draw mode 2, XOR with current pixel
+            case 3:                                                                 // Draw mode 3, XOR with current pixel
                 if (isSet) {                                                        // Toggle bitplane if pixel set.
                     *p ^= bitMask;
                 }
@@ -84,6 +101,27 @@ void GFXRawPlot(bool useFgr) {
     }
 }
 
+/**
+ * @brief      Raw plotting for 64 colour mode
+ *
+ * @param[in]  useFgr  true foreground colour, false, background colour.
+ */
+static void GFXRawPlot64(bool useFgr) {
+    uint8_t colour = useFgr ? draw->foreground:draw->background;                    // Drawing colour.    
+    for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
+        uint8_t *p = pl[plane];                                                     // Byte we are working on.
+        switch(draw->drawMode) {
+            case 0:                                                                 // Draw mode 0 : direct plot.
+                break;
+            case 1:                                                                 // Draw mode 1, AND with current pixel
+                break;
+            case 2:                                                                 // Draw mode 2, OR with current pixel
+                break;
+            case 3:                                                                 // Draw mode 3, XOR with current pixel
+                break;
+        }
+    }
+}
 /**
  * @brief      Move up. 
  */
@@ -136,7 +174,7 @@ void GFXRawRight(void) {
  * @brief      Draws a desktop pattern, either black and white speckles or grey if the mode supports it.
  */
 void GFXDrawDesktop(void) {
-    uint8_t pattern = 0xAA;
+    uint8_t pattern = 0xCC;
     for (int y = 0;y < modeInfo.height;y++) {
         for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
             memset(modeInfo.bitPlane[plane]+y*modeInfo.bytesPerLine,pattern,modeInfo.bytesPerLine);
