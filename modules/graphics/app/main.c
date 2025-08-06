@@ -87,7 +87,7 @@ int MAINPROGRAM() {
  * @brief      General test procedure
  */
 static void generalTest(void) {
-    GFXDraw(RawColour,1,4);
+    GFXDraw(RawColour,6,4);
     GFXDraw(Clear,0,0);
     GFXDraw(Move,100,100);
     GFXDraw(Line,100,200);
@@ -108,6 +108,7 @@ static void generalTest(void) {
 
     GFXDraw(Move,230,40);GFXDraw(Move,300,50);GFXDraw(Triangle,270,100);
     GFXDraw(Move,230,140);GFXDraw(Move,300,150);GFXDraw(FillTriangle,270,200);
+
     while (COMAppRunning()) {                                                                     
         COMUpdate();
     }    

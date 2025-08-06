@@ -196,7 +196,7 @@ void GFXRawRight(void) {
 void GFXDrawDesktop(void) {
     uint8_t pattern = 0xAA;
     for (int y = 0;y < modeInfo.height;y++) {
-        if (modeInfo.bitPlaneDepth == 2) pattern = 0x2A;
+        if (modeInfo.bitPlaneDepth == 2) pattern = 0x55;
         for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
             memset(modeInfo.bitPlane[plane]+y*modeInfo.bytesPerLine,pattern,modeInfo.bytesPerLine);
         }

@@ -1,8 +1,8 @@
 # TODO list
 
 - Optimised horizontal line drawing back in.
-- Runtime redo renderer.
 - Add Colour back
+- Runtime redo renderer.
 - Convert text
 - Convert 'bully'
 - Soak ARM & RISC
