@@ -2,7 +2,12 @@
 
 - Convert graphics
 - Draw colours with pixels, 64 colour conversion.
-- Do the rest of the raw, 8 then 64.
+- Vertical lines
+- Do Left/Right.
+- Horizontal lines
+- Angled lines
+- Check ellipse/rectangles.
+-
 - Optimised horizontal line drawing back in.
 - Runtime redo renderer.
 - Convert text

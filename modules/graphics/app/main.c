@@ -101,8 +101,7 @@ static void generalTest(void) {
             uint32_t c = (x >> 4) + (y >> 4) * 3;
             if ((x & 15) == 0 || (y & 15) == 0) c = 255;
             GFXDraw(Colour,c,0);
-            GFXRawMove(x,y);
-            GFXRawPlot(true);
+            GFXDraw(Plot,x,y);
         }
     }
     while (COMAppRunning()) {                                                                     

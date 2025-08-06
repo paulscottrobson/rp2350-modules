@@ -47,7 +47,9 @@ void GFXRawMove(int32_t x,int32_t y) {
 }    
 
 /**
- * @brief      Draw a pixel in the current position in the current foreground colour.
+ * @brief      Draw a pixel in the current position
+ *
+ * @param[in]  useFgr  true foreground colour, false, background colour.
  */
 void GFXRawPlot(bool useFgr) {
     if (!inDrawingVert || !inDrawingHoriz) return;                                  // Cannot plot as we are off the screen.
@@ -63,29 +65,45 @@ void GFXRawPlot(bool useFgr) {
                     *p &= bitMask;
                 }
                 break;
+            case 1:                                                                 // Draw mode 1, AND with current pixel
+                if (!isSet) {                                                       // Clear bitplane if pixel not set.
+                    *p &= bitMask;
+                }
+                break;
+            case 2:                                                                 // Draw mode 2, OR with current pixel
+                if (isSet) {                                                        // Set bitplane if pixel set.
+                    *p |= bitMask;
+                }
+                break;
+            case 3:                                                                 // Draw mode 2, XOR with current pixel
+                if (isSet) {                                                        // Toggle bitplane if pixel set.
+                    *p ^= bitMask;
+                }
+                break;
         }
     }
-    //         case 1:                                                                 // Draw mode 1 : and with current pixels
-    //         case 2:                                                                 // Draw mode 2 : or with current pixels
-    //         case 3:                                                                 // Draw mode 3 : xor with current pixels
 }
 
 /**
  * @brief      Move up. 
  */
 void GFXRawUp(void) {
-    // draw->currentByte -= vi.bytesPerLine;
-    // draw->y--;
-    // INDRAWVERT();
+    for (int i = 0;i < modeInfo.bitPlaneCount;i++) {
+        pl[i] -= modeInfo.bytesPerLine;
+    }
+    draw->y--;
+    INDRAWVERT();
 }
 
 /**
  * @brief      Move down
  */
 void GFXRawDown(void) {    
-    // draw->currentByte += vi.bytesPerLine;
-    // draw->y++;
-    // INDRAWVERT();
+    for (int i = 0;i < modeInfo.bitPlaneCount;i++) {
+        pl[i] += modeInfo.bytesPerLine;
+    }
+    draw->y++;
+    INDRAWVERT();
 }
 
 /**
