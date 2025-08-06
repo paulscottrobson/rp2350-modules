@@ -203,3 +203,52 @@ void GFXDrawDesktop(void) {
         pattern = pattern ^ 0xFF;
     }
 }
+
+/**
+ * @brief      Possibly optimisable horizontal line.
+ *
+ * @param[in]  x0      left x
+ * @param[in]  x1      right x
+ * @param[in]  y       y
+ * @param[in]  useFgr  use foreground or background.
+ */
+void GFXOptimisedHorizontalLine(int32_t x0, int32_t x1, int32_t y,bool useFgr) {
+    uint8_t colour = useFgr ? draw->foreground:draw->background;
+    GFXRawMove(x0,y);
+    //
+    //      Draw the pixels to a byte border.
+    //
+    uint8_t byteMask = (modeInfo.bitPlaneDepth == 1) ? 0x07: 0x03;
+    while (x0 <= x1 && (x0 & byteMask) != 0) {
+        GFXRawPlot(true);GFXRawRight();
+        x0++;
+    }
+    //
+    //      Do it in byte chunks
+    //
+    uint8_t pixelsPerByte = (modeInfo.bitPlaneDepth == 1) ? 8 : 4;
+    uint8_t planeData[DVI_MAX_BITPLANES];
+    if (modeInfo.bitPlaneDepth == 1) {
+        for (int f = 0;f < modeInfo.bitPlaneCount;f++) {
+            planeData[f] = (colour & (1 << f)) ? 0xFF:0x00;
+        }        
+    } else {
+        for (int f = 0;f < modeInfo.bitPlaneCount;f++) {
+            uint8_t col = (colour >> (2 * f)) & 3;
+            planeData[f] = col | (col << 2) | (col << 4) | (col << 6);
+        }
+    }
+    while (x1-x0 >= pixelsPerByte) {
+        for (int f = 0;f < modeInfo.bitPlaneCount;f++) {
+            *pl[f]++ = planeData[f];
+        }
+        x0 += pixelsPerByte;
+    }
+    //
+    //      Draw any remaining pixels.
+    //
+    while (x0 <= x1) {
+        GFXRawPlot(true);GFXRawRight();
+        x0++;
+    }
+}

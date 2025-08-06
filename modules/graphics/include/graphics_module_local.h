@@ -70,3 +70,4 @@ uint32_t GFXDrawCharacter(uint32_t x,uint32_t y,uint32_t code);
 void GFXOptimisedHorizontalLine(int32_t x0, int32_t x1, int32_t y,bool useFgr);
 
 GFXFONTSOURCE *GFXGetSystemCharacter(uint16_t code);
+

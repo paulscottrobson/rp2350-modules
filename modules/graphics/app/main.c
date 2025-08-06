@@ -37,7 +37,7 @@ int MAINPROGRAM() {
 
     GFXInitialise();                                                                // Initialise Graphics
     GFXDraw(Mode,MODE_320_240_8,0);                                                 // Mode 640x480 8 colours.
-    //GFXDraw(Mode,MODE_320_240_64,0);
+    GFXDraw(Mode,MODE_320_240_64,0);
     
     // GFXDraw(Desktop,0,0);                                                           // Clear to desktop
     // GFXDraw(Move,20,30);                                                            // Clip not whole screen.
@@ -109,16 +109,22 @@ static void generalTest(void) {
     GFXDraw(Move,230,40);GFXDraw(Move,300,50);GFXDraw(Triangle,270,100);
     GFXDraw(Move,230,140);GFXDraw(Move,300,150);GFXDraw(FillTriangle,270,200);
 
+    GFXDraw(RawColour,3,0);
+    for (int i = 0;i < 70;i++) {
+        GFXDraw(Move,120+i,120-i);GFXDraw(Line,260-i,120-i);
+    }
     while (COMAppRunning()) {                                                                     
         COMUpdate();
     }    
 }
 
 static void generalTest2(void) {
-    GFXDraw(RawColour,1,4);
-    GFXDraw(Clear,0,0);
-    GFXDraw(Move,100,100);
-    GFXDraw(Line,200,200);
+    sleep_ms(500);
+    GFXDraw(Desktop,0,0);
+    GFXDraw(RawColour,3,0);
+    for (int i = 0;i < 70;i++) {
+        GFXDraw(Move,120+i,120-i);GFXDraw(Line,260-i,120-i);
+    }
     while (COMAppRunning()) {                                                                     
         COMUpdate();
     }    

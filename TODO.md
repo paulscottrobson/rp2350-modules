@@ -1,6 +1,5 @@
 # TODO list
 
-- Optimised horizontal line drawing back in.
 - Add Colour back
 - Runtime redo renderer.
 - Convert text
