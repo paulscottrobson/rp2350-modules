@@ -36,8 +36,8 @@ void _DemoMapper(uint32_t *x,uint32_t *y) {
 int MAINPROGRAM() {
 
     GFXInitialise();                                                                // Initialise Graphics
-    GFXDraw(Mode,MODE_320_240_8,0);                                                 // Mode 640x480 8 colours.
-    GFXDraw(Mode,MODE_320_240_64,0);
+    GFXDraw(Mode,MODE_640_480_8,0);                                                 // Mode 640x480 8 colours.
+    //GFXDraw(Mode,MODE_320_240_64,0);
     
     // GFXDraw(Desktop,0,0);                                                           // Clear to desktop
     // GFXDraw(Move,20,30);                                                            // Clip not whole screen.
@@ -54,7 +54,7 @@ int MAINPROGRAM() {
     //
     //      Available for testing.
     //
-    generalTest();return 0;    
+    // generalTest();return 0;    
 
     //
     //      Demo code. Cycles through lots of drawing with the various drawing commands.
