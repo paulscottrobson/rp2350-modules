@@ -1,6 +1,10 @@
 # TODO list
 
-
+- Convert graphics
+- Convert text
+- Convert 'bully'
+- Soak ARM & RISC
+- Convert , and complete 'memory'
 - Builder changes to : target_compile_definitions add_subdirectory target_link_libraries
 - Convert modules.md document
 
@@ -22,3 +26,4 @@
 ## Others
 - python script with skeleton for runtimes CMakeLists.txt
 - builder to allow libraries that aren't in the dependency list (e.g. input and usb in console, for testing keyboard.)
+

@@ -1,0 +1,7 @@
+#
+#	Dependencies
+#
+common
+usb
+dvi
+modes
