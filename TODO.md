@@ -1,11 +1,15 @@
 # TODO list
 
 - Convert graphics
+- Draw colours with pixels, 64 colour conversion.
+- Do the rest of the raw, 8 then 64.
+- Optimised horizontal line drawing back in.
+- Runtime redo renderer.
 - Convert text
 - Convert 'bully'
 - Soak ARM & RISC
 - Convert , and complete 'memory'
-- Builder changes to : target_compile_definitions add_subdirectory target_link_libraries
+- Builder changes to : target_compile_definitions add_subdirectory target_link_libraries, always have USB include.
 - Convert modules.md document
 
 

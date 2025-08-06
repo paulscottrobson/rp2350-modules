@@ -43,6 +43,8 @@ struct DrawingContext {
 
 extern struct DrawingContext *draw;                                                 // Current draw information.
 extern int contextStackPointer;
+extern uint32_t currentMode;
+extern DVIMODEINFO modeInfo;
 
 #define CHECKUPDATE()               GFXCheckModeChange()
 #define SORT_PAIR(c1,c2)            if (c1 > c2) { int32_t t = c1;c1 = c2;c2 = t; }
@@ -61,8 +63,8 @@ void GFXCheckModeChange(void);
 void GFXInitialiseDrawStructure(void);
 void GFXResetClipping(void);
 uint32_t GFXGetCharacterExtent(uint32_t code);
-uint8_t GFXToRawColour(uint16_t rgb,uint8_t pixelsPerByte);
 
+void GFXDrawDesktop(void);
 void GFXDrawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, bool drawLastPixel);
 void GFXDrawRectangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1,bool fill);
 void GFXDrawEllipse(int32_t x0, int32_t y0, int32_t x1, int32_t y1,bool fill);

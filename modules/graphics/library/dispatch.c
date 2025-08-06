@@ -12,8 +12,6 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static void GFXDrawDesktop(void);
-
 static void *pointerData = NULL;                                                    // Used as temp for GFXDrawP()
 
 /**
@@ -43,13 +41,13 @@ uint32_t GFXDrawP(enum GFXCommand cmd,void *p,uint32_t y) {
  */
 uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {    
 
-    uint32_t retVal = 0;
+    uint32_t oldFgr,retVal = 0;
     switch(cmd) {
         //
         //      Control functions
         //
         case Mode:                                                                  // Set screen mode
-            VMDSetMode(x);
+            DVISetMode(x);
             GFXCheckModeChange();
             break;
 
@@ -61,9 +59,9 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
             }
             break;
 
-        case Colour:                                                                // Set Colour RGB format
-            draw->foreground = GFXToRawColour(x,vi.pixelsPerByte);
-            draw->background = GFXToRawColour(y,vi.pixelsPerByte);
+        case Colour:                                                                // Set Colour
+            draw->foreground = x;
+            draw->background = y;
             draw->isTransparent = false;  
             if ((y & 0xFFFF) == 0xFFFF) {                                           // Background transparent.
                 draw->background = 0;draw->isTransparent = true; 
@@ -148,11 +146,17 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
             break;
 
         case Clear:                                                                 // Clear whole screen to background
-            memset(vi.drawSurface,draw->background,vi.bufferSize);
+            oldFgr = draw->foreground;draw->foreground = draw->background;
+            for (int y = 0;y < modeInfo.height;y++) {
+                GFXDraw(Move,0,y);
+                GFXDraw(Line,modeInfo.width-1,y);
+            }
+            draw->foreground = oldFgr;
+
             break;
 
         case ClearWindow:                                                           // Clear the window to background
-            uint32_t oldFgr = draw->foreground;draw->foreground = draw->background;
+            oldFgr = draw->foreground;draw->foreground = draw->background;
             for (int y = draw->clip.yTop;y <= draw->clip.yBottom;y++) {
                 GFXDraw(Move,draw->clip.xLeft,y);
                 GFXDraw(Line,draw->clip.xRight,y);
@@ -185,22 +189,3 @@ void GFXPreProcess(int32_t *x,int32_t *y) {
     draw->xPrev[0] = draw->x;       draw->yPrev[0] = draw->y;
 }
 
-/**
- * @brief      Draws a grey desktop, in 2 colour b/w mode this is a dotted display.
- */
-static void GFXDrawDesktop(void) {
-    switch(vi.pixelsPerByte) {
-        case 1:                                                                     // 256 colour
-        case 2:                                                                     // 16 colour
-            memset(vi.drawSurface,vi.pixelsPerByte == 1 ? 0x92:0xDD,vi.bufferSize);
-            break;
-        case 4:                                                                     // 4 level monochrome
-            memset(vi.drawSurface,0xAA,vi.bufferSize);
-            break;
-        case 8:
-            for (int y = 0;y < vi.yScreen;y++) {
-                memset(vi.drawSurface+y*vi.bytesPerLine,(y & 1) ? 0xAA:0x55,vi.bytesPerLine);
-            }
-            break;
-    }
-}

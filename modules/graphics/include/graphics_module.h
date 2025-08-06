@@ -18,7 +18,6 @@
 
 #include "common_module.h"
 #include "dvi_module.h"
-#include "modes_module.h"
 
 enum GFXCommand :uint32_t {
     Mode = 0,                                                                       // Set Graphics Mode to x

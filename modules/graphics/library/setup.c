@@ -15,6 +15,7 @@
 struct DrawingContext *draw;                                                        // Current drawing state
 struct DrawingContext contextStack[MAX_CONTEXTS];
 int contextStackPointer;
+DVIMODEINFO modeInfo;
 
 /**
  * @brief      Initialise the graphics system.
@@ -23,11 +24,11 @@ void GFXInitialise(void) {
     static bool isInitialised = false;                                              // Only initialise once.
     if (isInitialised) return;
     isInitialised = true;
-    VMDInitialise();                                                                // Initialise Video Modes
+    DVIInitialise();                                                                // Initialise DVI
     draw = &contextStack[0];                                                        // Set up the default context.
+    modeInfo = *DVIGetModeInformation();                                            // Get current mode information.
     contextStackPointer = 0;                                                        // Reset the stack of contexts.
     GFXInitialiseDrawStructure();                                                   // Defaults
-    draw->currentMode = 0xFFFFFFFF;                                                 // Effectively "no current mode set". Magic constant, so sue me :)
 }
 
 /**
@@ -61,8 +62,8 @@ bool GFXCloseContext(void) {
  * @brief      Called to check if the mode has changed, it sets up the draw system with the default.
  */
 void GFXCheckModeChange(void) {
-    if (vi.mode != draw->currentMode) {                                             // Has the mode changed, if so reset graphics for it.        
-        draw->currentMode = vi.mode;                                                // Update the current mode.
+    if (DVIGetModeInformation()->mode != modeInfo.mode) {                           // Has the mode changed, if so reset graphics for it.        
+        modeInfo = *DVIGetModeInformation();                                        // Update the current mode info
         GFXInitialiseDrawStructure();
     }
 }
@@ -71,16 +72,14 @@ void GFXCheckModeChange(void) {
  * @brief      Initialise the draw structure
  */
 void GFXInitialiseDrawStructure(void) {
-    draw->foreground = 0xFF;draw->background = 0;                                   // Default foreground/background colour.
+    draw->foreground = 7;draw->background = 0;                                      // Default foreground/background colour.
     draw->isTransparent = false;
-
     draw->xFontScale = draw->yFontScale = 1;                                        // Font scalars
     draw->mapper = NULL;                                                            // No coordinate mapper.
     draw->font = GFXGetSystemCharacter;                                             // Default font.
     draw->drawMode = 0;                                                             // Default draw mode.
     GFXResetClipping();                                                             // No clipping         
     GFXRawMove(0,0);                                                                // Move to the home position.
-
     for (int i = 0;i < 3;i++) {                                                     // Clear the previous coordinates arrays.
         draw->xPrev[i] = draw->yPrev[i] = 0;
     }
@@ -90,7 +89,7 @@ void GFXInitialiseDrawStructure(void) {
  * @brief      Reset all clipping to full screen.
  */
 void GFXResetClipping(void) {
-    draw->clip.xLeft = 0;draw->clip.xRight = vi.xScreen-1;
-    draw->clip.yTop = 0;draw->clip.yBottom = vi.yScreen-1;
+    draw->clip.xLeft = 0;draw->clip.xRight = modeInfo.width-1;
+    draw->clip.yTop = 0;draw->clip.yBottom = modeInfo.height-1;
 }
         

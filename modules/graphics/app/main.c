@@ -10,12 +10,8 @@
 // *******************************************************************************************
  
 #include "graphics_module.h"
-#include "usb_module.h"
 
-static void showColours(void);
 static void generalTest(void);
-
-uint8_t vRAM[640*480];
 
 /**
  * @brief      A simple demo mapper. All it does is halve all the coordinates,
@@ -38,20 +34,16 @@ void _DemoMapper(uint32_t *x,uint32_t *y) {
  */
 int MAINPROGRAM() {
 
-    USBInitialise();                                                                // Initialise USB
-    GFXInitialise();                                                                // Initialise Graphics
-    VMDSetVideoMemory(vRAM,sizeof(vRAM));                                           // Set video ram and size
-    GFXDraw(Mode,MODE_640_480_16,0);                                               // Set mode.
+    DVIInitialise();                                                                // Initialise Graphics
+    GFXDraw(Mode,MODE_640_480_8,0);                                                 // Mode 640x480 8 colours.
+    GFXDraw(Desktop,0,0);
+    
+    // GFXDraw(Desktop,0,0);                                                           // Clear to desktop
+    // GFXDraw(Move,20,30);                                                            // Clip not whole screen.
+    // GFXDraw(SetClip,610,440);
 
-    int speckle = 640*480;
-    speckle = 320;
-
-    GFXDraw(Desktop,0,0);                                                           // Clear to desktop
-    GFXDraw(Move,20,30);                                                            // Clip not whole screen.
-    GFXDraw(SetClip,610,440);
-
-    uint32_t size = GFXDraw(CharExtent,'W',0);                                      // Tells us the extent of 'W' in pixels
-    LOG("%x\n",size);                                                               // Should be 80008 e.g. 8 high 8 wide.
+    // uint32_t size = GFXDraw(CharExtent,'W',0);                                      // Tells us the extent of 'W' in pixels
+    // LOG("%x\n",size);                                                               // Should be 80008 e.g. 8 high 8 wide.
 
     //
     //      To see the mapper working uncomment this.
@@ -66,7 +58,7 @@ int MAINPROGRAM() {
     //
     //      Available for testing.
     //
-    // generalTest();return 0;    
+    generalTest();return 0;    
 
     //
     //      Demo code. Cycles through lots of drawing with the various drawing commands.
@@ -76,11 +68,10 @@ int MAINPROGRAM() {
 
     while (COMAppRunning()) {                                                                     
         count++;
-        vi.drawSurface[random()%speckle] = (random() & 1) ? 0:random();             // Knows we aren't crashing. May consider flashing LED :)
-        GFXDraw(RawColour,random() & 0xFF,0);
+        GFXDraw(RawColour,random() & 7,0);
         uint32_t command;
 
-        command = COMTimeMS()/1000;                                                 // This line does 1s for each draw type
+        command = COMClock()/1000;                                                  // This line does 1s for each draw type
         // command = count / 1000;                                                  // This line shows how long it takes to draw 1000 of each
 
         command = commands[command % 9];                                            // Work out the actual command
@@ -97,42 +88,10 @@ int MAINPROGRAM() {
 }
 
 /**
- * @brief      Test for RGB to Raw conversion.
- */
-static void showColours(void) {
-    GFXDrawP(SetClip,NULL,0);
-    int x = 4;
-    for (int r = 0;r < 4;r++) {
-        for (int g = 0;g < 4;g++) {
-            for (int b = 0;b < 4;b++) {
-                int raw = (r << 6)|(g << 3)|b;
-                if (vi.pixelsPerByte == 2) raw = ((r & 2) << 2) | ((g & 3) << 1) | ((b & 2) >> 1);
-                if (vi.pixelsPerByte == 4) raw = b;
-                if (vi.pixelsPerByte == 8) raw = b & 1;
-                GFXDraw(RawColour,raw,0);
-                GFXDraw(Move,x,10);
-                GFXDraw(FillRect,x+9,200);
-
-                int rgb4 = (r << 10)|(g << 6)|(b << 2);
-                if (vi.pixelsPerByte == 4) rgb4 = (b << 2) | (b << 6) | (b << 10);
-                if (vi.pixelsPerByte == 8) rgb4 = (raw << 3) | (raw << 7) | (raw << 11);
-                GFXDraw(Colour,rgb4,0);
-                GFXDraw(Move,x,210);
-                GFXDraw(FillRect,x+9,410);
-                x += 9;
-            }
-        }
-    }
-    while (COMAppRunning()) {                                                                     
-        COMUpdate();                     
-    }    
-}
-
-/**
  * @brief      General test procedure
  */
 static void generalTest(void) {
-    GFXDraw(Colour,0x0F0,0xF80);
+    GFXDraw(Colour,3,1);
     GFXDraw(ClearWindow,0,0);
     while (COMAppRunning()) {                                                                     
         COMUpdate();
