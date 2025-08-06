@@ -3,7 +3,7 @@
 //
 //      Name :      input_module_local.h
 //      Purpose :   Input Manager System Header files
-//      Date :      2nd July 2025
+//      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
@@ -29,6 +29,7 @@ uint16_t INPTranslateUSBCode(uint8_t keyID,uint8_t modifiers);
 void INPInsertIntoQueue(int16_t key);
 void INPResetQueue(void);
 void INPUpdate(void);
+void INPMouseInitialise(void);
 
 extern char *locales;
 extern const uint16_t localeMapping[];

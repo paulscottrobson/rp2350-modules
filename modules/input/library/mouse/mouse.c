@@ -3,21 +3,30 @@
 //
 //      Name :      mouse.c
 //      Purpose :   Handle USB Mouse Reports
-//      Date :      3rd July 2025
+//      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
 // *******************************************************************************************
 
-#define LOCALS
 #include "input_module.h"
+#include "input_module_local.h"
 
 #define INP_MOUSE_XMAX      (1280)                                                  // Max extent of mouse is 1280x960
 #define INP_MOUSE_YMAX      (960)
 
-static int16_t xMouse = INP_MOUSE_XMAX / 2;                                         // Initially in screen centre.
-static int16_t yMouse = INP_MOUSE_YMAX / 2;
-static int16_t buttons = 0;
+static int32_t xMouse = INP_MOUSE_XMAX / 2;                                         // Initially in screen centre.
+static int32_t yMouse = INP_MOUSE_YMAX / 2;
+static int32_t buttons = 0;
+
+/**
+ * @brief      Initialise the mouse subsystem
+ */
+void INPMouseInitialise(void) {
+    xMouse = INP_MOUSE_XMAX / 2;
+    yMouse = INP_MOUSE_YMAX / 2;
+    buttons = 0;
+}
 
 /**
  * @brief      Handle mouse reports

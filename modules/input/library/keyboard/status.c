@@ -3,7 +3,7 @@
 //
 //      Name :      status.c
 //      Purpose :   Tracks key presses and autorepeat.
-//      Date :      3rd July 2025
+//      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
@@ -93,7 +93,7 @@ void INPProcessKeyboardReport(USBREPORT *r) {
                     keys[emptyRec].keyID = r->data[j];                              // Create the new key state record.
                     keys[emptyRec].isDown = true;
                     keys[emptyRec].modifiers = r->data[0];
-                    keys[emptyRec].repeatTime = COMTimeMS() + repeatDelay;
+                    keys[emptyRec].repeatTime = COMClock() + repeatDelay;
                     lastKeyPressed = emptyRec;                
                     INPHandleKeyEvent(keys[emptyRec].keyID,                         // Convert to ASCII and push into queue.
                                                 keys[emptyRec].modifiers);
@@ -118,9 +118,9 @@ void INPUpdate(void) {
     //      Check for repeats.
     //
     if (keys[lastKeyPressed].isDown &&                                              // Last key pressed is still down, and repeat expired.
-            COMTimeMS() > keys[lastKeyPressed].repeatTime) {
+            COMClock() > keys[lastKeyPressed].repeatTime) {
                 INPHandleKeyEvent(keys[lastKeyPressed].keyID,                       // Convert to ASCII again and put in the queue.
                                             keys[lastKeyPressed].modifiers);
-                keys[lastKeyPressed].repeatTime = COMTimeMS() + repeatRate;         // Time for next repeat, much less than the initial one.
+                keys[lastKeyPressed].repeatTime = COMClock() + repeatRate;          // Time for next repeat, much less than the initial one.
     }
 }

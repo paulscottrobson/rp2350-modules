@@ -3,7 +3,7 @@
 //
 //      Name :      snespad.c
 //      Purpose :   Driver for the Olimex badged SNES pad 081F:E401
-//      Date :      4th July 2025
+//      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************

@@ -3,7 +3,7 @@
 //
 //      Name :      reports.c
 //      Purpose :   Handle USB Reports
-//      Date :      2nd July 2025
+//      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
@@ -43,6 +43,7 @@ void INPInitialise(void) {
     COMInitialise();                                                                // Common initialise
     USBInitialise();                                                                // USB Initialise.
     INPInitialiseStatus();                                                          // Initialise keyboard status.
+    INPMouseInitialise();                                                           // Initialise mouse.
     USBInstallHandler(_INPReportHandler);                                           // Add a handler for USB HID reports.
     INPResetQueue();                                                                // Reset the queue.
     INPSetLocale("us");                                                             // Default US locale.                    
