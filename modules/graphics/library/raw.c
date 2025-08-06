@@ -110,8 +110,11 @@ static void GFXRawPlot64(bool useFgr) {
     uint8_t colour = useFgr ? draw->foreground:draw->background;                    // Drawing colour.    
     for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
         uint8_t *p = pl[plane];                                                     // Byte we are working on.
+        uint8_t drawBits = (colour >> (plane * 2)) & 3;                               // These are the two colour pixels.
+        drawBits = drawBits << (6-2*(draw->x & 3));                                     // Shift into correct place.
         switch(draw->drawMode) {
             case 0:                                                                 // Draw mode 0 : direct plot.
+                *p = (*p & bitMask) | drawBits;
                 break;
             case 1:                                                                 // Draw mode 1, AND with current pixel
                 break;

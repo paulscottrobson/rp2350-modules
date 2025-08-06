@@ -36,6 +36,7 @@ int MAINPROGRAM() {
 
     GFXInitialise();                                                                // Initialise Graphics
     GFXDraw(Mode,MODE_320_240_8,0);                                                 // Mode 640x480 8 colours.
+    GFXDraw(Mode,MODE_320_240_64,0);
     
     // GFXDraw(Desktop,0,0);                                                           // Clear to desktop
     // GFXDraw(Move,20,30);                                                            // Clip not whole screen.
@@ -81,9 +82,6 @@ int MAINPROGRAM() {
     return 0;
 }
 
-void GFXRawMove(int32_t x,int32_t y);
-void GFXRawPlot(bool useFgr);
-
 /**
  * @brief      General test procedure
  */
@@ -91,9 +89,10 @@ static void generalTest(void) {
     sleep_ms(500);
     LOG("Starting");
     GFXDraw(Desktop,0,0);
+
     for (int x = 0;x < 320;x++) {
         for (int y = 0;y < 240;y++) {
-            uint32_t c = (x >> 4) + (y >> 4) * 3;
+            uint32_t c = (x >> 4) + (y >> 4) * 20;
             if ((x & 15) == 0 || (y & 15) == 0) c = 255;
             GFXDraw(Colour,c,0);
             GFXDraw(Plot,x,y);
