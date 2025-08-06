@@ -31,7 +31,7 @@ uint32_t GFXDrawCharacter(uint32_t x,uint32_t y,uint32_t code) {
     for (int yRow = 0;yRow < fs->height;yRow++) {                                   // For each scanline.
         for (int yScalar = 0;yScalar < draw->yFontScale;yScalar++) {                // For each scalar
             GFXRawMove(x,y);
-            if (draw->inDrawingVert) {                                              // If in window vertically
+            if (inDrawingVert) {                                                    // If in window vertically
                 _GFXDrawRenderOneRow(x,y,fs);
             }
             y++;                                                                    // Next line down.

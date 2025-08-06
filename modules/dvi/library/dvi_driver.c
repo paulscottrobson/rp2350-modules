@@ -242,8 +242,8 @@ void DVIInitialise(void) {
     static bool isInitialised = false;
     if (isInitialised) return;
     isInitialised = true;
-    COMInitialise();
 
+    COMInitialise();
     DVISetMode(MODE_640_240_8);
 
     vreg_set_voltage(VREG_VSEL);                                                    // Set CPU voltage
@@ -255,4 +255,5 @@ void DVIInitialise(void) {
 
     dvi_init(&dvi0, next_striped_spin_lock_num(), next_striped_spin_lock_num());    // Initialise DVI
     multicore_launch_core1(dvi_core1_main);                                         // Run DVI driver on core #1
+    stdio_init_all();
 }

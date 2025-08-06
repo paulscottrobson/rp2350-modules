@@ -91,5 +91,4 @@ void GFXInitialiseDrawStructure(void) {
 void GFXResetClipping(void) {
     draw->clip.xLeft = 0;draw->clip.xRight = modeInfo.width-1;
     draw->clip.yTop = 0;draw->clip.yBottom = modeInfo.height-1;
-}
-        
+}        
