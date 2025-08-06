@@ -21,12 +21,12 @@
 
 enum GFXCommand :uint32_t {
     Mode = 0,                                                                       // Set Graphics Mode to x
-    Colour = 1,                                                                     // Set colours to x,y
-    DrawMode = 2,                                                                   // Set drawing mode.
+    RawColour = 1,                                                                  // Set raw colours to x,y
     Scaling = 3,                                                                    // Set font scaling to x,y
     SetClip = 4,                                                                    // Set current clip (pointer)
     NoClip = 5,                                                                     // Remove clipping.
     SetMapper = 6,                                                                  // Set mapper function (pointer)
+    DrawMode = 7,                                                                   // Set drawing mode.
 
     Move = 20,                                                                      // Move cursor
     Plot = 21,                                                                      // Plot pixel

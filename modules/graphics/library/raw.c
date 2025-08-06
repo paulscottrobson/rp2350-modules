@@ -19,7 +19,6 @@
 #define INDRAWVERT()  inDrawingVert  = (draw->y >= draw->clip.yTop && draw->y <= draw->clip.yBottom)
 
 static uint8_t bitDraw;                                                             // Bitmask to set current colour e.g.   ....cc..
-static uint8_t bitMask;                                                             // Bitmask to clear current colour e.g. 11110011
 static uint8_t *pl[DVI_MAX_BITPLANES];                                              // Bitplane pointers.
 bool    inDrawingVert,inDrawingHoriz;                                               // True if currently drawing (e.g. as move, drawing occurs)
 
@@ -44,7 +43,6 @@ void GFXRawMove(int32_t x,int32_t y) {
         offset = (x >> 2) + y * modeInfo.bytesPerLine;
         bitDraw = (0xC0 >> (2*(x & 3)));
     }
-    bitMask = bitDraw ^ 0xFF;
     for (int i = 0;i < modeInfo.bitPlaneCount;i++) {                                // Initialise the bitplane position pointers.
         pl[i] = modeInfo.bitPlane[i] + offset;
     }
@@ -79,22 +77,22 @@ static void GFXRawPlot8(bool useFgr) {
                 if (isSet) {
                     *p |= bitDraw;
                 } else {
-                    *p &= bitMask;
+                    *p &= (~bitDraw);
                 }
                 break;
             case 1:                                                                 // Draw mode 1, AND with current pixel
                 if (!isSet) {                                                       // Clear bitplane if pixel not set.
-                    *p &= bitMask;
+                    *p &= (~bitDraw);
                 }
                 break;
             case 2:                                                                 // Draw mode 2, OR with current pixel
                 if (isSet) {                                                        // Set bitplane if pixel set.
-                    *p |= bitMask;
+                    *p |= bitDraw;
                 }
                 break;
             case 3:                                                                 // Draw mode 3, XOR with current pixel
                 if (isSet) {                                                        // Toggle bitplane if pixel set.
-                    *p ^= bitMask;
+                    *p ^= bitDraw;
                 }
                 break;
         }
@@ -114,13 +112,16 @@ static void GFXRawPlot64(bool useFgr) {
         drawBits = drawBits << (6-2*(draw->x & 3));                                     // Shift into correct place.
         switch(draw->drawMode) {
             case 0:                                                                 // Draw mode 0 : direct plot.
-                *p = (*p & bitMask) | drawBits;
+                *p = (*p & (~bitDraw)) | drawBits;
                 break;
             case 1:                                                                 // Draw mode 1, AND with current pixel
+                *p &= drawBits;
                 break;
             case 2:                                                                 // Draw mode 2, OR with current pixel
+                *p |= drawBits;
                 break;
             case 3:                                                                 // Draw mode 3, XOR with current pixel
+                *p ^= drawBits;
                 break;
         }
     }
@@ -151,34 +152,51 @@ void GFXRawDown(void) {
  * @brief      Move left
  */
 void GFXRawLeft(void) {    
-    // draw->x--;                                                                      // Track horizontal position. 
-    // draw->pixelIndex -= draw->shiftsPerPixel;                                       // Shift left, which is moving right.
-    // if (draw->pixelIndex < 0) {                                                     // Done the whole byte.
-    //     draw->pixelIndex += 8;                                                      // Back to rh pixel
-    //     draw->currentByte--;                                                        // In the next byte left.
-    // }
-    // INDRAWHORIZ();
+    draw->x--;                                                                   
+    if (modeInfo.bitPlaneDepth == 1) {
+        bitDraw <<= 1;
+        if ((draw->x & 7) == 7) {
+            bitDraw = 0x01;
+            for (int i = 0;i < modeInfo.bitPlaneCount;i++) pl[i]--;
+        }
+    } else {
+        bitDraw <<= 2;
+        if ((draw->x & 3) == 3) {
+            bitDraw = 0x03;
+            for (int i = 0;i < modeInfo.bitPlaneCount;i++) pl[i]--;
+        }
+    }
+    INDRAWHORIZ();
 }
 
 /**
  * @brief      Move right
  */
 void GFXRawRight(void) {   
-    // draw->x++;                                                                      // Track horizontal position. 
-    // draw->pixelIndex += draw->shiftsPerPixel;                                       // Shift left, which is moving right.
-    // if (draw->pixelIndex == 8) {                                                    // Done the whole byte.
-    //     draw->pixelIndex = 0;                                                       // Back to lh pixel
-    //     draw->currentByte++;                                                        // In the next byte right.
-    // }
-    // INDRAWHORIZ();
+    draw->x++;                                                                   
+    if (modeInfo.bitPlaneDepth == 1) {
+        bitDraw >>= 1;
+        if ((draw->x & 7) == 0) {
+            bitDraw = 0x80;
+            for (int i = 0;i < modeInfo.bitPlaneCount;i++) pl[i]++;
+        }
+    } else {
+        bitDraw >>= 2;
+        if ((draw->x & 3) == 0) {
+            bitDraw = 0xC0;
+            for (int i = 0;i < modeInfo.bitPlaneCount;i++) pl[i]++;
+        }
+    }
+    INDRAWHORIZ();
 }
 
 /**
  * @brief      Draws a desktop pattern, either black and white speckles or grey if the mode supports it.
  */
 void GFXDrawDesktop(void) {
-    uint8_t pattern = 0xCC;
+    uint8_t pattern = 0xAA;
     for (int y = 0;y < modeInfo.height;y++) {
+        if (modeInfo.bitPlaneDepth == 2) pattern = 0x2A;
         for (int plane = 0;plane < modeInfo.bitPlaneCount;plane++) {
             memset(modeInfo.bitPlane[plane]+y*modeInfo.bytesPerLine,pattern,modeInfo.bytesPerLine);
         }

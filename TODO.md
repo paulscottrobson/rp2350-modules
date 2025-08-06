@@ -1,14 +1,8 @@
 # TODO list
 
-- Convert graphics
-- Vertical lines
-- Do Left/Right.
-- Horizontal lines
-- Angled lines
-- Check ellipse/rectangles.
--
 - Optimised horizontal line drawing back in.
 - Runtime redo renderer.
+- Add Colour back
 - Convert text
 - Convert 'bully'
 - Soak ARM & RISC

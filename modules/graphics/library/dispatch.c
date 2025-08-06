@@ -51,7 +51,7 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
             GFXCheckModeChange();
             break;
 
-        case Colour:                                                                // Set Colour
+        case RawColour:                                                             // Set Colour (raw)
             draw->foreground = x;
             draw->background = y;
             draw->isTransparent = false;  

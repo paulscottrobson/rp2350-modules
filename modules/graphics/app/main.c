@@ -12,6 +12,7 @@
 #include "graphics_module.h"
 
 static void generalTest(void);
+static void generalTest2(void);
 
 /**
  * @brief      A simple demo mapper. All it does is halve all the coordinates,
@@ -36,7 +37,7 @@ int MAINPROGRAM() {
 
     GFXInitialise();                                                                // Initialise Graphics
     GFXDraw(Mode,MODE_320_240_8,0);                                                 // Mode 640x480 8 colours.
-    GFXDraw(Mode,MODE_320_240_64,0);
+    //GFXDraw(Mode,MODE_320_240_64,0);
     
     // GFXDraw(Desktop,0,0);                                                           // Clear to desktop
     // GFXDraw(Move,20,30);                                                            // Clip not whole screen.
@@ -63,7 +64,7 @@ int MAINPROGRAM() {
 
     while (COMAppRunning()) {                                                                     
         count++;
-        GFXDraw(Colour,random() & 7,0);
+        GFXDraw(RawColour,random() & 7,0);
         uint32_t command;
 
         command = COMClock()/1000;                                                  // This line does 1s for each draw type
@@ -86,18 +87,37 @@ int MAINPROGRAM() {
  * @brief      General test procedure
  */
 static void generalTest(void) {
-    sleep_ms(500);
-    LOG("Starting");
-    GFXDraw(Desktop,0,0);
+    GFXDraw(RawColour,1,4);
+    GFXDraw(Clear,0,0);
+    GFXDraw(Move,100,100);
+    GFXDraw(Line,100,200);
+    GFXDraw(Line,200,200);
+    GFXDraw(Line,200,150);
+    GFXDraw(Line,170,150);
+    GFXDraw(Move,50,150);GFXDraw(Line,25,50);
+    GFXDraw(Move,50,150);GFXDraw(Line,75,50);
+    GFXDraw(Move,50,150);GFXDraw(Line,25,220);
+    GFXDraw(Move,50,150);GFXDraw(Line,75,220);
 
-    for (int x = 0;x < 320;x++) {
-        for (int y = 0;y < 240;y++) {
-            uint32_t c = (x >> 4) + (y >> 4) * 20;
-            if ((x & 15) == 0 || (y & 15) == 0) c = 255;
-            GFXDraw(Colour,c,0);
-            GFXDraw(Plot,x,y);
-        }
-    }
+    GFXDraw(Move,10,10);GFXDraw(Rect,70,30);
+    GFXDraw(Move,80,10);GFXDraw(FillRect,140,30);
+    GFXDraw(Move,150,10);GFXDraw(Ellipse,210,30);
+    GFXDraw(Move,220,10);GFXDraw(FillEllipse,280,30);
+
+    GFXDraw(Move,160,40);GFXDraw(Character,'A',0);GFXDraw(Character,'a',0);
+
+    GFXDraw(Move,230,40);GFXDraw(Move,300,50);GFXDraw(Triangle,270,100);
+    GFXDraw(Move,230,140);GFXDraw(Move,300,150);GFXDraw(FillTriangle,270,200);
+    while (COMAppRunning()) {                                                                     
+        COMUpdate();
+    }    
+}
+
+static void generalTest2(void) {
+    GFXDraw(RawColour,1,4);
+    GFXDraw(Clear,0,0);
+    GFXDraw(Move,100,100);
+    GFXDraw(Line,200,200);
     while (COMAppRunning()) {                                                                     
         COMUpdate();
     }    
