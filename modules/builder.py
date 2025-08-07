@@ -3,7 +3,7 @@
 #
 #      Name :      builder.py
 #      Purpose :   Generates a CMakeList.txt for a collection of modules.
-#      Date :      5th August 2025
+#      Date :      7th August 2025
 #      Author :    Paul Robson (paul@robsons.org.uk)
 #
 # *******************************************************************************************
@@ -19,7 +19,7 @@ import os,re,sys
 
 class Module(object):
     def __init__(self,moduleName):
-        assert os.path.isdir(moduleName),"Module directory {0} does not exist".moduleName
+        assert os.path.isdir(moduleName),"Module directory {0} does not exist".format(moduleName)
         self.moduleName = moduleName
         self.includeFile = moduleName+"_module.h"
         self.dependencyPosition = 0
@@ -149,6 +149,9 @@ class ModuleSet(object):
         h.write("\n".join(["include_directories(${{MODULEDIR}}/{0}/include)".format(x) for x in self.sortedModules]))
         h.write("\n\n")
 
+        if "dvi" in self.modules:
+            h.write("add_subdirectory(${DVIDIR} lib)\n")
+
         h.write('file(GLOB_RECURSE APP_SOURCES "app/*.[csS]")\n')
         h.write("file(GLOB_RECURSE C_SOURCES \"library/*.[csS]\")\n")
         for m in self.sortedModules:
@@ -157,7 +160,15 @@ class ModuleSet(object):
         h.write("\t"+" ".join(["${{{0}_MODULE_SOURCES}}".format(c.upper()) for c in self.sortedModules]))
         h.write("\n)\n")
 
-        libs = "pico_stdlib,pico_multicore,hardware_dma,pico_sync"
+        if "dvi" in self.modules:
+            h.write("target_compile_definitions({0} PRIVATE\n".format(projectName));
+            h.write("    DVI_USE_SIO_TMDS_ENCODER=0\n");
+            h.write("    DVI_VERTICAL_REPEAT=1\n");
+            h.write("    DVI_N_TMDS_BUFFERS=3\n");
+            h.write("    DVI_1BPP_BIT_REVERSE=1\n");
+            h.write(")\n\n");
+
+        libs = "pico_stdlib,pico_multicore,pico_util,hardware_dma,pico_sync,libdvi"
         if "usb" in self.modules:
             libs += ",tinyusb_host,tinyusb_board"
         h.write("\ntarget_link_libraries({0} PUBLIC\n".format(projectName))        

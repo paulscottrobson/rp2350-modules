@@ -13,6 +13,7 @@
 #include "graphics_module_local.h"
 
 static void *pointerData = NULL;                                                    // Used as temp for GFXDrawP()
+static void GFXClear(void);
 
 /**
  * @brief      Execute a graphics command. If different signature/same
@@ -49,6 +50,7 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
         case Mode:                                                                  // Set screen mode
             DVISetMode(x);
             GFXCheckModeChange();
+            GFXClear();
             break;
 
         case RawColour:                                                             // Set Colour (raw)
@@ -138,13 +140,7 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
             break;
 
         case Clear:                                                                 // Clear whole screen to background
-            oldFgr = draw->foreground;draw->foreground = draw->background;
-            for (int y = 0;y < modeInfo.height;y++) {
-                GFXDraw(Move,0,y);
-                GFXDraw(Line,modeInfo.width-1,y);
-            }
-            draw->foreground = oldFgr;
-
+            GFXClear();
             break;
 
         case ClearWindow:                                                           // Clear the window to background
@@ -181,3 +177,12 @@ void GFXPreProcess(int32_t *x,int32_t *y) {
     draw->xPrev[0] = draw->x;       draw->yPrev[0] = draw->y;
 }
 
+
+static void GFXClear(void) {
+    uint32_t oldFgr = draw->foreground;draw->foreground = draw->background;
+    for (int y = 0;y < modeInfo.height;y++) {
+        GFXDraw(Move,0,y);
+        GFXDraw(Line,modeInfo.width-1,y);
+    }
+    draw->foreground = oldFgr;
+}
