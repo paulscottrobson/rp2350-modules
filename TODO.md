@@ -1,12 +1,11 @@
 # TODO list
 
-- Add Colour back
-- Runtime redo renderer.
-- Convert text
-- Convert 'bully'
-- Soak ARM & RISC
-- Convert , and complete 'memory'
 - Builder changes to : target_compile_definitions add_subdirectory target_link_libraries, always have USB include.
+- Rebuild 'bully' using it.
+- Soak ARM & RISC
+- Runtime redo renderer.
+- Add Colour back
+- Convert , and complete 'memory'
 - Convert modules.md document
 
 

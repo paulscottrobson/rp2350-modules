@@ -34,7 +34,9 @@ The RP2350PC does not come with the pins soldered in to the connector nearest th
 
 ## Building
 
-Two things are required. One is the Pico SDK, which can be downloaded or git cloned. The other is the C compiler, which is the same as for the RP2040.
+Two things are required. One is the Pico SDK, which can be downloaded or git cloned. This should be done recursively so as to bring in the tinyusb library. (Check the note in README.md about 2.2.0)
+
+The other is the C compiler, which is the same as for the RP2040.
 
 By default it is set up for ARM mode. To switch to RISCV mode edit pico.linux.make ; this involves changing the PLATFORM environment variable and setting the toolchain path below.
 
@@ -54,16 +56,6 @@ If you are uploading from the debugger you have to have previously booted it usi
 
 There are provided UF2s for 'blinky' - this just flashes the green LED for ever in the other/prebuilt directory.
 
-## Booting Up
-
-The boot up has a period of about 5 seconds or so where nothing seems to be happening. This is because the HSTX doesn't seem to like the USB booting. 
-
-As feedback during this boot, the Green LED on the board will flash. This indicates it is waiting for the USB to stabilise.  Shortly after that the monitor will sync.
-
-## Or not booting up
-
-Sometimes when the altcore library is used, it doesn't boot up - the display doesn't work. I *think* this is to do with HSTX not initialising correctly (by not being in reset state ?). Power cycling or pressing the reset button, or simply reuploading seems to solve it and it seems to only happen when uploading via the debugger.
-
 ## Code
 
 This is a brief description on how the module/runtime system worksModules
@@ -79,7 +71,7 @@ Each function is build using cmake. There is a Makefile which has several option
 - make cmake : this rebuilds the Make structure so you can actually build it
 - make compile : this compiles the code
 - make upload : this uploads it to the board using openocd
-- make monitor : this starts the serial TTY program picocom to see what's coming off the board
+- make serial : this starts the serial TTY program picocom to see what's coming off the board
 - make all : does compile upload monitor to run a program
 
 There is nothing for PSRAM, the Codec chip, or PWM audio yet because I haven't looked at it.
@@ -90,4 +82,4 @@ The runtime, which is under development, is a PC/SDL based version of the low le
 
 Paul Robson
 
-19 July 2025
+7 August 2025
