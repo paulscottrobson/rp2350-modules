@@ -12,6 +12,8 @@ add_subdirectory(../../../picodvi/software/libdvi lib)
 
 add_executable(artdvi
         main.here/main.c
+        config.c
+        setup.c
         dvi_driver.c
         tmds_encode_custom.S
         )

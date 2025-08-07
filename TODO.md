@@ -1,8 +1,6 @@
 # TODO list
 
-- Builder changes to : target_compile_definitions add_subdirectory target_link_libraries, always have USB include.
-- Rebuild 'bully' using it.
-- Soak ARM & RISC
+- Soak RISC
 - Runtime redo renderer.
 - Add Colour back
 - Convert , and complete 'memory'

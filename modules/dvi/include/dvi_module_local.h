@@ -30,5 +30,8 @@
 #define VREG_VSEL VREG_VOLTAGE_1_20
 #define DVI_TIMING dvi_timing_640x480p_60hz
 
+extern DVIMODEINFO dvi_modeInfo; 
 
+extern struct dvi_inst dvi0;
 
+void __not_in_flash("main") dvi_core1_main();

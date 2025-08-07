@@ -9,7 +9,6 @@
 // *******************************************************************************************
 // *******************************************************************************************
 
-#include "common_module.h"
 #include "dvi_module.h"
 #include "dvi_module_local.h"
 
@@ -17,99 +16,9 @@
 //        Frame buffer, these are 3 planar bitmaps for 640x480
 //
 
-#define FRAME_WIDTH 640                                                             // Not the *pixels*, it's the display setting.
-#define FRAME_HEIGHT 480
-
-#define PLANE_SIZE(x,y) ((x) * (y) / 8)                                             // Memory usage one bitplane x by y
-
-#define VIDEO_BYTES (PLANE_SIZE(640,480) * 3)
-
-static uint8_t framebuf[VIDEO_BYTES];                                               // Bitplane memory
+uint8_t framebuf[VIDEO_BYTES];                                                      // Bitplane memory
 
 struct dvi_inst dvi0;                                                               // PicoDVI structure
-DVIMODEINFO dvi_modeInfo;                                                           // Mode information structure.
-
-/**
- * @brief      Get mode information
- *
- * @return     Pointer to a mode information structure
- */
-DVIMODEINFO *DVIGetModeInformation(void) {
-    return &dvi_modeInfo;
-}
-
-/**
- * @brief      Set current mode
- *
- * @param[in]  mode  The mode to set.
- *
- * @return     0 if switched ok.
- */
-bool DVISetMode(DVIMODE mode) {
-    bool supported = true;
-
-    for (int i = 0;i < VIDEO_BYTES;i++) framebuf[i] = rand();
-    dvi_modeInfo.mode = mode;                                                       // Record mode
-
-    switch(mode) {
-
-        case MODE_640_480_8:                                                        // 640x480x8 information if enabled.
-            dvi_modeInfo.width = 640;dvi_modeInfo.height = 480;
-            dvi_modeInfo.bitPlaneCount = 3;
-            dvi_modeInfo.bitPlaneSize = PLANE_SIZE(640,480);
-            dvi_modeInfo.bitPlaneDepth = 1;
-            for (int i = 0;i <dvi_modeInfo.bitPlaneCount;i++)
-                dvi_modeInfo.bitPlane[i] = framebuf + dvi_modeInfo.bitPlaneSize * i;
-            dvi_modeInfo.bytesPerLine = dvi_modeInfo.width / 8;
-        break;
-
-        case MODE_640_240_8:                                                        // 640x240x8 information.
-            dvi_modeInfo.width = 640;dvi_modeInfo.height = 240;
-            dvi_modeInfo.bitPlaneCount = 3;
-            dvi_modeInfo.bitPlaneSize = PLANE_SIZE(640,240);
-            dvi_modeInfo.bitPlaneDepth = 1;
-            for (int i = 0;i <dvi_modeInfo.bitPlaneCount;i++)
-                dvi_modeInfo.bitPlane[i] = framebuf + dvi_modeInfo.bitPlaneSize * i;
-            dvi_modeInfo.bytesPerLine = dvi_modeInfo.width / 8;
-        break;
-
-        case MODE_320_240_8:                                                        // 320x240x8 information.
-            dvi_modeInfo.width = 320;dvi_modeInfo.height = 240;
-            dvi_modeInfo.bitPlaneCount = 3;
-            dvi_modeInfo.bitPlaneSize = PLANE_SIZE(320,240);
-            dvi_modeInfo.bitPlaneDepth = 1;
-            for (int i = 0;i <dvi_modeInfo.bitPlaneCount;i++)
-                dvi_modeInfo.bitPlane[i] = framebuf + dvi_modeInfo.bitPlaneSize * i;
-            dvi_modeInfo.bytesPerLine = dvi_modeInfo.width / 8;
-        break;
-
-        case MODE_320_256_8:                                                        // 320x256x8 information.
-            dvi_modeInfo.width = 320;dvi_modeInfo.height = 256;
-            dvi_modeInfo.bitPlaneCount = 3;
-            dvi_modeInfo.bitPlaneSize = PLANE_SIZE(320,256);
-            dvi_modeInfo.bitPlaneDepth = 1;
-            for (int i = 0;i <dvi_modeInfo.bitPlaneCount;i++)
-            dvi_modeInfo.bitPlane[i] = framebuf + dvi_modeInfo.bitPlaneSize * i;
-            dvi_modeInfo.bytesPerLine = dvi_modeInfo.width / 8;
-        break;
-
-        case MODE_320_240_64:                                                       // 320x240x64 information.
-            dvi_modeInfo.width = 320;dvi_modeInfo.height = 240;
-            dvi_modeInfo.bitPlaneCount = 3;
-            dvi_modeInfo.bitPlaneSize = PLANE_SIZE(320,240)*2;
-            dvi_modeInfo.bitPlaneDepth = 2;
-            for (int i = 0;i <dvi_modeInfo.bitPlaneCount;i++)
-            dvi_modeInfo.bitPlane[i] = framebuf + dvi_modeInfo.bitPlaneSize * i;
-            dvi_modeInfo.bytesPerLine = dvi_modeInfo.width / 4;        
-            break;
-        default:
-            supported = false;
-            dvi_modeInfo.mode = -1;                                                 // Failed.
-            break;
-        }
-    return supported;
-}
-
 
 /**
  * @brief      Main core driver
@@ -222,38 +131,4 @@ void __not_in_flash("main") dvi_core1_main() {
                 break;
         }
     }
-}
-
-/**
- *   This is the pinout for the RP2350PC board.
- */
-static struct dvi_serialiser_cfg olimex_rp2350_cfg = {
-    .pio = DVI_DEFAULT_PIO_INST,
-    .sm_tmds = {0, 1, 2},
-    .pins_tmds = {12, 18, 16}, 
-    .pins_clk = 14,
-    .invert_diffpairs = false
-};
-
-/**
- * @brief      Start the DVI driver on Core1.
- */
-void DVIInitialise(void) {
-    static bool isInitialised = false;
-    if (isInitialised) return;
-    isInitialised = true;
-
-    COMInitialise();
-    DVISetMode(MODE_640_240_8);
-
-    vreg_set_voltage(VREG_VSEL);                                                    // Set CPU voltage
-    sleep_ms(10);                                                                   // Let it settle for 0.01s
-    set_sys_clock_khz(DVI_TIMING.bit_clk_khz, true);                                // Set the DVI compatible clock speed
-
-    dvi0.timing = &DVI_TIMING;                                                      // Select timing and pinout
-    dvi0.ser_cfg = olimex_rp2350_cfg;
-
-    dvi_init(&dvi0, next_striped_spin_lock_num(), next_striped_spin_lock_num());    // Initialise DVI
-    multicore_launch_core1(dvi_core1_main);                                         // Run DVI driver on core #1
-    stdio_init_all();
 }

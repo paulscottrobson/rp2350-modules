@@ -47,4 +47,11 @@ typedef enum _DVIMode {
 void DVIInitialise(void);
 bool DVISetMode(DVIMODE mode);
 DVIMODEINFO *DVIGetModeInformation(void);
+uint32_t  DVIGetScreenExtent(uint32_t *pWidth,uint32_t *pHeight);
 
+#define FRAME_WIDTH 640                                                             // Not the *pixels*, it's the display setting.
+#define FRAME_HEIGHT 480
+#define PLANE_SIZE(x,y) ((x) * (y) / 8)                                             // Memory usage one bitplane x by y
+#define VIDEO_BYTES (PLANE_SIZE(FRAME_WIDTH,FRAME_HEIGHT) * 3)
+
+extern uint8_t framebuf[VIDEO_BYTES];
