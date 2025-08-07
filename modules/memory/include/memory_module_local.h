@@ -30,6 +30,8 @@ typedef struct _MemoryUsageTracker {
 //          255     : Block is part of an allocated block.
 //
 void MEMInitialiseBlock(MEMORYTRACKER *tracker,uint8_t *address,uint32_t size);
+uint8_t *MEMAllocateBlock(MEMORYTRACKER *tracker,uint32_t size);
+bool MEMFreeBlock(MEMORYTRACKER *tracker,uint8_t *memory);
 
 #ifndef RUNTIME
 #endif

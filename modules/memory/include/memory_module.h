@@ -26,4 +26,4 @@
 void MEMInitialise(void);
 uint8_t *MEMReset(uint32_t requiredSRAMMemory);
 uint8_t *MEMAlloc(uint32_t ramSize,uint32_t ramType);
-void MEMFree(uint8_t *address);
+bool MEMFree(uint8_t *address);

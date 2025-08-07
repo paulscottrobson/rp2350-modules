@@ -29,3 +29,27 @@ void MEMInitialiseBlock(MEMORYTRACKER *tracker,uint8_t *address,uint32_t size) {
     for (int i = 0;i < tracker->blockCount;i++) tracker->usage[i] = 0;
 }
 
+/**
+ * @brief      Allocate a block of memory in this tracker
+ *
+ * @param      tracker  Memory tracker
+ * @param[in]  size     Bytes to allocate.
+ *
+ * @return     NULL if not possible, or a pointer to the data.
+ */
+uint8_t *MEMAllocateBlock(MEMORYTRACKER *tracker,uint32_t size) {
+    return NULL;
+}
+
+/**
+ * @brief      Free a block of memory in this tracker.
+ *
+ * @param      tracker  Memory tracker
+ * @param      memory   Address of block ; must be a returned value from
+ *                      MEMAllocateBlock
+ *
+ * @return     true if successful ; false if not in this block.
+ */
+bool MEMFreeBlock(MEMORYTRACKER *tracker,uint8_t *memory) {
+    return false;
+}   

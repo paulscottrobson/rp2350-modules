@@ -1,8 +1,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
 //
-//      Name :      setup.c
-//      Purpose :   Initialise the Memory manager
+//      Name :      memory.c
+//      Purpose :   Initialise & Use the Memory manager
 //      Date :      7th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
@@ -50,3 +50,34 @@ uint8_t *MEMReset(uint32_t requiredSRAMMemory) {
     return sRAMAddress;
 }
 
+/**
+ * @brief      Allocate a block of memory.
+ *
+ * @param[in]  ramSize  Amount to allocate
+ * @param[in]  ramType  Type of RAM Slow, Fast or either
+ *
+ * @return     NULL if failed, else address of RAM.
+ */
+uint8_t *MEMAlloc(uint32_t ramSize,uint32_t ramType) {
+    uint8_t *addr;
+    if (ramType & MEM_SLOW) {                                                       // So try PSRAM first as we've lots more of that !
+        addr = MEMAllocateBlock(&psRAMTracker,ramSize);                             // Try to allocate it.
+        if (addr != NULL) return addr;                                              // Successful.
+    }
+    if (ramType & MEM_FAST) {                                                       // Now try Pico SRAM
+        addr = MEMAllocateBlock(&sRAMTracker,ramSize);                              // Try to allocate it.
+        if (addr != NULL) return addr;                                              // Successful.
+    }
+    return NULL;                                                                    // Couldn't allocate it.
+}
+/**
+ * @brief      Free a block of memory in slow or fast ram
+ *
+ * @param      address  The address of the block
+ *
+ * @return     True if successful.
+ */
+bool MEMFree(uint8_t *address) {
+    if (MEMFreeBlock(&sRAMTracker,address)) return true;                            // Try to free SRAM
+    return MEMFreeBlock(&psRAMTracker,address);                                     // Try to free PSRAM
+}
