@@ -14,6 +14,7 @@
 
 static void *pointerData = NULL;                                                    // Used as temp for GFXDrawP()
 static void GFXClear(void);
+static uint32_t GFXMap12BitColour(uint32_t colour);
 
 /**
  * @brief      Execute a graphics command. If different signature/same
@@ -54,6 +55,11 @@ uint32_t GFXDraw(enum GFXCommand cmd,uint32_t x,uint32_t y) {
             break;
 
         case RawColour:                                                             // Set Colour (raw)
+        case Colour:                                                                // Set Colour (12-bit)
+            if (cmd == Colour) {                                                    // 12 bit colour, map to nearest.
+                x = GFXMap12BitColour(x);
+                y = GFXMap12BitColour(x);
+            }
             draw->foreground = x;
             draw->background = y;
             draw->isTransparent = false;  
@@ -178,6 +184,9 @@ void GFXPreProcess(int32_t *x,int32_t *y) {
 }
 
 
+/**
+ * @brief      Screen clear
+ */
 static void GFXClear(void) {
     uint32_t oldFgr = draw->foreground;draw->foreground = draw->background;
     for (int y = 0;y < modeInfo.height;y++) {
@@ -185,4 +194,25 @@ static void GFXClear(void) {
         GFXDraw(Line,modeInfo.width-1,y);
     }
     draw->foreground = oldFgr;
+}
+
+/**
+ * @brief      Map 12 bit colour (BBBBGGGGRRRR) to current mode
+ *
+ * @param[in]  colour  Colour in 12 bit format
+ *
+ * @return     Colour in raw format.
+ */
+static uint32_t GFXMap12BitColour(uint32_t colour) {
+    uint8_t r = (colour == 0) ? 0 : 0xFF;
+    switch(DVIGetModeInformation()->bitPlaneDepth) {
+        case 1:
+            r = ((colour & 0x800) >> 9) + ((colour && 0x080) >> 6) + ((colour & 0x008) >> 3);
+            break;
+        case 2:
+            r = ((colour & 0xC00) >> 6) + ((colour & 0x0C0) >> 4) + ((colour & 0x00C) >> 2);
+            break;
+
+    }
+    return r;
 }

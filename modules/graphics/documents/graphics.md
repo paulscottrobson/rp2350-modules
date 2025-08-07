@@ -32,7 +32,7 @@ Graphic clipping is available, and is done by 'drawing a rectangle' which is the
 - Ellipses are drawn like rectangles, the ellipse 'fills the box'
 - Character uses x for the character to draw, and y should be zero.
 - Mode uses x for the mode (the same as in modes_module.h), y should be zero
-- RawColour and Colour use x for foreground,y for background, the lower 16 bits of each If y is 0xFFFF then transparency is on (for characters). The upper 16 bits should be zero, these are reserved for expansion. RawColour is the internal format, Colour takes an RGGB colour and translates it accordingly, this assumes the palette has not been redefined for modes that support that.
+- RawColour and Colour use x for foreground,y for background, the lower 16 bits of each If y is 0xFFFF then transparency is on (for characters). The upper 16 bits should be zero, these are reserved for expansion. RawColour is the internal format, Coloura 12 bit colour (BBBBGGGGRRR) and translates it accordingly.
 - Scaling sets the x and y scales of the pixel fonts. The defaults are 1,1 
 - DrawMode sets the drawing mode, e.g. how the current value is modified. 0= Copy (the default), 1 = And, 2 = Or, 3 = Xor
 
@@ -51,4 +51,4 @@ The current graphics 'state' - the colours, positions, clipping, mapping is know
 
 ## Revision
 
-Written by Paul Robson, last revised 27 July 2025.
+Written by Paul Robson, last revised 7 August 2025.

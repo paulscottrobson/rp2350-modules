@@ -22,6 +22,7 @@
 enum GFXCommand :uint32_t {
     Mode = 0,                                                                       // Set Graphics Mode to x
     RawColour = 1,                                                                  // Set raw colours to x,y
+    Colour = 2,                                                                     // Set 12 bit BGR colours to x,y
     Scaling = 3,                                                                    // Set font scaling to x,y
     SetClip = 4,                                                                    // Set current clip (pointer)
     NoClip = 5,                                                                     // Remove clipping.
