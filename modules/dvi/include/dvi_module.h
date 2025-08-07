@@ -3,7 +3,7 @@
 //
 //      Name :       dvi_module.h
 //      Purpose :    DVI Module external
-//      Date :       5th August 2025
+//      Date :       7th August 2025
 //      Author :     Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <ctype.h>
-
+#include <common_module.h>
 //
 //      DVI Mode information structure
 //

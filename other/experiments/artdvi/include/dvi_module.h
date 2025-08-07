@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <ctype.h>
-
+#include <common_module.h>
 //
 //      DVI Mode information structure
 //

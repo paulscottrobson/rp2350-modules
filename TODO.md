@@ -1,6 +1,5 @@
 # TODO list
 
-- Soak RISC
 - Add Colour back
 - Convert , and complete 'memory'
 - Convert modules.md document

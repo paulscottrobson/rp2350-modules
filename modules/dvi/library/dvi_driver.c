@@ -3,7 +3,7 @@
 //
 //      Name :       dvi_driver.c
 //      Purpose :    Pico DVI Driver.
-//      Date :       5th August 2025
+//      Date :       7th August 2025
 //      Author :     Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
