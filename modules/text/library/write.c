@@ -58,7 +58,9 @@ void TXTWriteWindow(TXTWINDOW *window,uint32_t ch) {
         case CTL_CRLF:
             _TXTCarriageReturn(window);break;
         case CTL_CLEAR:
-            _TXTClearScreen(window);break;
+            _TXTClearScreen(window);
+            window->xCursor = window->yCursor = 0;
+            break;
         default:
             if (ch >= 0x20 && ch <= 0x7F) {
                 TXTWriteChar(window,window->xCursor,window->yCursor,ch,true);

@@ -18,6 +18,10 @@ TXTWINDOW defText;
  * @brief      Initialise the text window module and set the default to uninitialised.
  */
 void TXTInitialise(void) {
+    static bool isInitialised = false;                                              // Only once
+    if (isInitialised) return;
+    isInitialised = true;
+
     GFXInitialise();
     defText.isInitialised = false;
 }

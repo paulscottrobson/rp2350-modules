@@ -20,6 +20,10 @@ static MEMORYTRACKER psRAMTracker,sRAMTracker;                                  
  * @brief      Initialise the PSRAM and SRAM memory managers.
  */
 void MEMInitialise(void) {
+    static bool isInitialised = false;                                              // Only once
+    if (isInitialised) return;
+    isInitialised = true;
+
     COMInitialise();
     PSRInitialise();                                                                // Initialise PSRAM - or myself, these are my initials :)
     psRAMSize = PSRGetMemorySize();
