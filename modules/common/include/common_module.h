@@ -18,12 +18,12 @@
 #ifdef DEBUG
 #define LOG   COMPrint
 #define ASSERT(x) if (!(x)) ERROR("Assert")
-#define ERROR(x) COMError(x,__LINE__,__FILE__)
 #else
 #define LOG(...)    {}
 #define ASSERT(x)   {}
-#define ERROR(x)    {}
 #endif
+
+#define ERROR(x) COMError(x,__LINE__,__FILE__)
 
 typedef void (*COMUPDATEFUNCTION)(void);
 

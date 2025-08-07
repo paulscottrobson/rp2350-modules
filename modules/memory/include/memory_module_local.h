@@ -14,9 +14,13 @@
 
 #define MAXBLOCKS   (254)                                                           // Fixed # of blocks for now.
 
+//
+//      This structure tracks the usage of all the memory, it divides it up into MAXBLOCKS chunks of equal size.
+//      There is no garbage collection and no compaction.
+//
 typedef struct _MemoryUsageTracker {
     uint8_t     *baseAddress;                                                       // Base address of memory.
-    uint32_t    totalSize;                                                          // Total size in bytes
+    uint32_t    totalSize;                                                          // Total size in bytes (0 if nothing)
     uint32_t    blockCount;                                                         // Count of blocks here.
     uint32_t    blockSize;                                                          // Size of each blocks.
     uint32_t    lastAllocated;                                                      // Last block allocated.

@@ -1,12 +1,8 @@
 # TODO list
 
-- Convert , and complete 'memory'
 
 ## Keyboard
 - Fix 31/32 issue (see LennartB in Discord)
-
-## Memory module
-- Complete allocate/free code.
 
 ## Computer module
 - The base computer system

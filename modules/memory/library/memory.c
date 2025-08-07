@@ -20,6 +20,7 @@ static MEMORYTRACKER psRAMTracker,sRAMTracker;                                  
  * @brief      Initialise the PSRAM and SRAM memory managers.
  */
 void MEMInitialise(void) {
+    COMInitialise();
     PSRInitialise();                                                                // Initialise PSRAM - or myself, these are my initials :)
     psRAMSize = PSRGetMemorySize();
     psRAMAddress = PSRGetMemoryAddress();
@@ -29,7 +30,6 @@ void MEMInitialise(void) {
     if (sRAMAddress == NULL) ERROR("Cannot allocate SRAM. Change fraction in MEMInitialise()");
 
     MEMReset(0);                                                                    // Reset the memory system with no system allocated SRAM.
-    sleep_ms(500);
     LOG("PSRAM %d SRAM %d",psRAMSize,sRAMSize);                                     // Log memory availability.
     LOG("PSRAM $%x SRAM $%x",psRAMAddress,sRAMAddress);
 }

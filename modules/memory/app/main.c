@@ -40,19 +40,17 @@ int MAINPROGRAM(int argc,char *argv[]) {
     uint8_t *psRAM = PSRGetMemoryAddress();
     COMWait(500);
     LOG("Starting.");    
-    uint32_t count = 4096;
-    LOG("Testing %d of %d",count,PSRGetMemorySize());
-    lfsrReset();
-    for (int i = 0;i < count;i++) {
-        psRAM[i] = lfsr();
-    }
 
-    lfsrReset();
-    for (int i = 0;i < count;i++) {
-        uint8_t n = lfsr();
-        if (n != psRAM[i]) LOG("%d %d %d",i,psRAM[i],n);
-    }
+    uint8_t *m1 = MEMAlloc(16384,MEM_FAST);
+    uint8_t *m2 = MEMAlloc(8192,MEM_FAST);
+    uint8_t *m3 = MEMAlloc(100,MEM_FAST);
+    uint8_t *m4 = MEMAlloc(100,MEM_FAST);
 
+    MEMFree(m1);
+    MEMFree(m2);
+    MEMFree(m3);
+    MEMFree(m4);
+    LOG("Done.");
     while (COMAppRunning()) {
         COMUpdate();
     }

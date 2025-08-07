@@ -43,7 +43,7 @@ file(GLOB_RECURSE RUNTIME_SOURCES "source/*.c")
 #
 #       The module/app that one wishes to actually run.
 #
-file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/bully/app/*.[csS]")
+file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/memory/app/*.[csS]")
 #
 #       Libraries out of the bottom interface tier than are required.
 #
