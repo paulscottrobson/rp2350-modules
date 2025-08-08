@@ -14,4 +14,4 @@ APPNAME = input
 include $(BUILDENVDIR)pico.$(OS).make
 
 locales:
-	make -B -C ../../other/data/localisation all
+	make -B -C localisation all

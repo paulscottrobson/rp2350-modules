@@ -50,10 +50,8 @@ bool INPSetLocale(char *locale) {
  */
 uint16_t INPTranslateUSBCode(uint8_t keyID,uint8_t modifiers) {
     if (currentLocale == NULL) INPSetLocale("us");                                  // If no locale default to the US one.
+    if (keyID == 0x64) keyID = 0x31;
     bool shift = (modifiers & (KEY_MOD_LSHIFT|KEY_MOD_RSHIFT)) != 0;                // Is shift key pressed
-    if (keyID == 0x64) {                                                            // The backslash key, the 102nd key.
-        return shift ? '|':'\\';
-    }
     if (currentLocale == NULL || keyID >= 64) return 0;                             // Key ID must be 0-63. SetLocale shouldn't fail.
     return currentLocale[keyID + (shift ? 64 : 0)];                                 // Extract character from the locale dependent on shift.
 }

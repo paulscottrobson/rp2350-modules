@@ -45,6 +45,8 @@ class Extractor(object):
                 self.currentUSBCode = None
 
     def accept(self,n):
+        if n == 0x31:                                                               # Accept the 102 key coded as $31
+            return True
         if n >= 0x28 and n <= 0x2B:                                                 # ENTER, ESC, BACKSPACE, TAB
             return False
         if n >= 0x39:                                                               # All the control characters, number keypad and odd things.
@@ -60,7 +62,7 @@ class Extractor(object):
             mode = "" if m is None else m.group(1).upper()
             if mode == "":                                                          # Put in shifted or unshifted slot.
                 self.usbToChars[self.currentUSBCode][0] = keyChar
-            if mode == "VK_SHIFT":
+            if mode.find("VK_SHIFT") >= 0:
                 self.usbToChars[self.currentUSBCode][1] = keyChar
 
     def dump(self):
@@ -84,7 +86,7 @@ class Extractor(object):
 #
 #       Outputs the string, which is the locales seperated by commas
 #       
-#       The local data which is 128 word records, 1 per locale. The first 64 bytes
+#       The local data which is 128 byte records, 1 per locale. The first 64 bytes
 #       are the unshifted characters, the second are the shifted characters
 #               
 if __name__ == "__main__":

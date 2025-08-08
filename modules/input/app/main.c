@@ -65,7 +65,7 @@ int MAINPROGRAM(int argc,char *argv[]) {
         //      Track key presses.
         //
         uint32_t k = INPGetKey();
-        if (k != 0) LOG("%d pressed.",k);
+        if (k != 0) LOG("%d %c pressed.",k,k);
         COMUpdate();    
     }	
     return 0;

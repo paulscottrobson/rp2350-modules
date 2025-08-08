@@ -2,9 +2,10 @@ wget -nc https://kbdlayout.info/kbduk/download/xml -O uk.xml
 wget -nc https://kbdlayout.info/kbdus/download/xml -O us.xml
 wget -nc https://kbdlayout.info/kbdda/download/xml -O dk.xml
 wget -nc https://kbdlayout.info/kbdnl/download/xml -O us.xml
-wget -nc https://kbdlayout.info/kbdfi/download/xml -O fi.xml
+wget -nc https://kbdlayout.info/kbdfi/download/xml -O nl.xml
 wget -nc https://kbdlayout.info/kbdfrna/download/xml -O fr.xml
 wget -nc https://kbdlayout.info/kbdgr/download/xml -O de.xml
 wget -nc https://kbdlayout.info/kbdno/download/xml -O no.xml
 wget -nc https://kbdlayout.info/kbdpl/download/xml -O pl.xml
 wget -nc https://kbdlayout.info/kbdsw/download/xml -O se.xml
+wget -nc https://kbdlayout.info/kbdit/download/xml -O it.xml

@@ -12,56 +12,93 @@
     <PK VK="VK_2" SC="03">
       <Result Text="2" />
       <Result Text="&quot;" With="VK_SHIFT" />
+      <Result Text="@" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_3" SC="04">
       <Result Text="3" />
-      <Result Text="£" With="VK_SHIFT" />
+      <Result Text="#" With="VK_SHIFT" />
+      <Result Text="£" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_4" SC="05">
       <Result Text="4" />
-      <Result Text="$" With="VK_SHIFT" />
-      <Result Text="€" With="VK_CONTROL VK_MENU" />
+      <Result Text="¤" With="VK_SHIFT" />
+      <Result Text="$" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_5" SC="06">
       <Result Text="5" />
       <Result Text="%" With="VK_SHIFT" />
+      <Result Text="€" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_6" SC="07">
       <Result Text="6" />
-      <Result Text="^" With="VK_SHIFT" />
+      <Result Text="&amp;" With="VK_SHIFT" />
       <Result TextCodepoints="001E" With="VK_SHIFT VK_CONTROL" />
     </PK>
     <PK VK="VK_7" SC="08">
       <Result Text="7" />
-      <Result Text="&amp;" With="VK_SHIFT" />
+      <Result Text="/" With="VK_SHIFT" />
+      <Result Text="{" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_8" SC="09">
       <Result Text="8" />
-      <Result Text="*" With="VK_SHIFT" />
+      <Result Text="(" With="VK_SHIFT" />
+      <Result Text="[" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_9" SC="0A">
       <Result Text="9" />
-      <Result Text="(" With="VK_SHIFT" />
+      <Result Text=")" With="VK_SHIFT" />
+      <Result Text="]" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_0" SC="0B">
       <Result Text="0" />
-      <Result Text=")" With="VK_SHIFT" />
+      <Result Text="=" With="VK_SHIFT" />
+      <Result Text="}" With="VK_CONTROL VK_MENU" />
     </PK>
-    <PK VK="VK_OEM_MINUS" SC="0C">
-      <Result Text="-" />
-      <Result Text="_" With="VK_SHIFT" />
-      <Result TextCodepoints="001F" With="VK_SHIFT VK_CONTROL" />
+    <PK VK="VK_OEM_PLUS" SC="0C">
+      <Result Text="+" />
+      <Result Text="?" With="VK_SHIFT" />
+      <Result Text="\" With="VK_CONTROL VK_MENU" />
     </PK>
-    <PK VK="VK_OEM_PLUS" SC="0D">
-      <Result Text="=" />
-      <Result Text="+" With="VK_SHIFT" />
+    <PK VK="VK_OEM_4" SC="0D">
+      <Result>
+        <DeadKeyTable Accent="´" Name="AKUUTTIAKSENTTI">
+          <Result Text="á" With="a" />
+          <Result Text="é" With="e" />
+          <Result Text="í" With="i" />
+          <Result Text="ó" With="o" />
+          <Result Text="ú" With="u" />
+          <Result Text="ý" With="y" />
+          <Result Text="Á" With="A" />
+          <Result Text="É" With="E" />
+          <Result Text="Í" With="I" />
+          <Result Text="Ó" With="O" />
+          <Result Text="Ú" With="U" />
+          <Result Text="Ý" With="Y" />
+          <Result Text="´" With=" " />
+        </DeadKeyTable>
+      </Result>
+      <Result With="VK_SHIFT">
+        <DeadKeyTable Accent="`" Name="GRAVISAKSENTTI">
+          <Result Text="à" With="a" />
+          <Result Text="è" With="e" />
+          <Result Text="ì" With="i" />
+          <Result Text="ò" With="o" />
+          <Result Text="ù" With="u" />
+          <Result Text="À" With="A" />
+          <Result Text="È" With="E" />
+          <Result Text="Ì" With="I" />
+          <Result Text="Ò" With="O" />
+          <Result Text="Ù" With="U" />
+          <Result Text="`" With=" " />
+        </DeadKeyTable>
+      </Result>
     </PK>
-    <PK VK="VK_BACK" SC="0E" Name="BACKSPACE">
+    <PK VK="VK_BACK" SC="0E" Name="ASKELPALAUTIN">
       <Result TextCodepoints="0008" />
       <Result TextCodepoints="0008" With="VK_SHIFT" />
       <Result Text="" With="VK_CONTROL" />
     </PK>
-    <PK VK="VK_TAB" SC="0F" Name="TAB">
+    <PK VK="VK_TAB" SC="0F" Name="SARKAIN">
       <Result TextCodepoints="0009" />
       <Result TextCodepoints="0009" With="VK_SHIFT" />
     </PK>
@@ -82,10 +119,7 @@
       <Result Text="E" With="VK_SHIFT" />
       <Result Text="E" With="VK_CAPITAL" />
       <Result Text="e" With="VK_SHIFT VK_CAPITAL" />
-      <Result Text="é" With="VK_CONTROL VK_MENU" />
-      <Result Text="É" With="VK_SHIFT VK_CONTROL VK_MENU" />
-      <Result Text="É" With="VK_CONTROL VK_MENU VK_CAPITAL" />
-      <Result Text="é" With="VK_SHIFT VK_CONTROL VK_MENU VK_CAPITAL" />
+      <Result Text="€" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_R" SC="13">
       <Result Text="r" />
@@ -110,30 +144,18 @@
       <Result Text="U" With="VK_SHIFT" />
       <Result Text="U" With="VK_CAPITAL" />
       <Result Text="u" With="VK_SHIFT VK_CAPITAL" />
-      <Result Text="ú" With="VK_CONTROL VK_MENU" />
-      <Result Text="Ú" With="VK_SHIFT VK_CONTROL VK_MENU" />
-      <Result Text="Ú" With="VK_CONTROL VK_MENU VK_CAPITAL" />
-      <Result Text="ú" With="VK_SHIFT VK_CONTROL VK_MENU VK_CAPITAL" />
     </PK>
     <PK VK="VK_I" SC="17">
       <Result Text="i" />
       <Result Text="I" With="VK_SHIFT" />
       <Result Text="I" With="VK_CAPITAL" />
       <Result Text="i" With="VK_SHIFT VK_CAPITAL" />
-      <Result Text="í" With="VK_CONTROL VK_MENU" />
-      <Result Text="Í" With="VK_SHIFT VK_CONTROL VK_MENU" />
-      <Result Text="Í" With="VK_CONTROL VK_MENU VK_CAPITAL" />
-      <Result Text="í" With="VK_SHIFT VK_CONTROL VK_MENU VK_CAPITAL" />
     </PK>
     <PK VK="VK_O" SC="18">
       <Result Text="o" />
       <Result Text="O" With="VK_SHIFT" />
       <Result Text="O" With="VK_CAPITAL" />
       <Result Text="o" With="VK_SHIFT VK_CAPITAL" />
-      <Result Text="ó" With="VK_CONTROL VK_MENU" />
-      <Result Text="Ó" With="VK_SHIFT VK_CONTROL VK_MENU" />
-      <Result Text="Ó" With="VK_CONTROL VK_MENU VK_CAPITAL" />
-      <Result Text="ó" With="VK_SHIFT VK_CONTROL VK_MENU VK_CAPITAL" />
     </PK>
     <PK VK="VK_P" SC="19">
       <Result Text="p" />
@@ -141,15 +163,57 @@
       <Result Text="P" With="VK_CAPITAL" />
       <Result Text="p" With="VK_SHIFT VK_CAPITAL" />
     </PK>
-    <PK VK="VK_OEM_4" SC="1A">
-      <Result Text="[" />
-      <Result Text="{" With="VK_SHIFT" />
+    <PK VK="VK_OEM_6" SC="1A">
+      <Result Text="å" />
+      <Result Text="Å" With="VK_SHIFT" />
       <Result TextCodepoints="001B" With="VK_CONTROL" />
+      <Result Text="Å" With="VK_CAPITAL" />
+      <Result Text="å" With="VK_SHIFT VK_CAPITAL" />
     </PK>
-    <PK VK="VK_OEM_6" SC="1B">
-      <Result Text="]" />
-      <Result Text="}" With="VK_SHIFT" />
+    <PK VK="VK_OEM_1" SC="1B">
+      <Result>
+        <DeadKeyTable Accent="¨" Name="TREEMA">
+          <Result Text="ä" With="a" />
+          <Result Text="ë" With="e" />
+          <Result Text="ï" With="i" />
+          <Result Text="ö" With="o" />
+          <Result Text="ü" With="u" />
+          <Result Text="ÿ" With="y" />
+          <Result Text="Ä" With="A" />
+          <Result Text="Ë" With="E" />
+          <Result Text="Ï" With="I" />
+          <Result Text="Ö" With="O" />
+          <Result Text="Ü" With="U" />
+          <Result Text="¨" With=" " />
+        </DeadKeyTable>
+      </Result>
+      <Result With="VK_SHIFT">
+        <DeadKeyTable Accent="^" Name="SIRKUMFLEKSI">
+          <Result Text="â" With="a" />
+          <Result Text="ê" With="e" />
+          <Result Text="î" With="i" />
+          <Result Text="ô" With="o" />
+          <Result Text="û" With="u" />
+          <Result Text="Â" With="A" />
+          <Result Text="Ê" With="E" />
+          <Result Text="Î" With="I" />
+          <Result Text="Ô" With="O" />
+          <Result Text="Û" With="U" />
+          <Result Text="^" With=" " />
+        </DeadKeyTable>
+      </Result>
       <Result TextCodepoints="001D" With="VK_CONTROL" />
+      <Result With="VK_CONTROL VK_MENU">
+        <DeadKeyTable Accent="~" Name="TILDE">
+          <Result Text="ã" With="a" />
+          <Result Text="õ" With="o" />
+          <Result Text="ñ" With="n" />
+          <Result Text="Ã" With="A" />
+          <Result Text="Õ" With="O" />
+          <Result Text="Ñ" With="N" />
+          <Result Text="~" With=" " />
+        </DeadKeyTable>
+      </Result>
     </PK>
     <PK VK="VK_RETURN" SC="1C" Name="ENTER">
       <Result TextCodepoints="000D" />
@@ -162,10 +226,6 @@
       <Result Text="A" With="VK_SHIFT" />
       <Result Text="A" With="VK_CAPITAL" />
       <Result Text="a" With="VK_SHIFT VK_CAPITAL" />
-      <Result Text="á" With="VK_CONTROL VK_MENU" />
-      <Result Text="Á" With="VK_SHIFT VK_CONTROL VK_MENU" />
-      <Result Text="Á" With="VK_CONTROL VK_MENU VK_CAPITAL" />
-      <Result Text="á" With="VK_SHIFT VK_CONTROL VK_MENU VK_CAPITAL" />
     </PK>
     <PK VK="VK_S" SC="1F">
       <Result Text="s" />
@@ -215,27 +275,27 @@
       <Result Text="L" With="VK_CAPITAL" />
       <Result Text="l" With="VK_SHIFT VK_CAPITAL" />
     </PK>
-    <PK VK="VK_OEM_1" SC="27">
-      <Result Text=";" />
-      <Result Text=":" With="VK_SHIFT" />
+    <PK VK="VK_OEM_3" SC="27">
+      <Result Text="ö" />
+      <Result Text="Ö" With="VK_SHIFT" />
+      <Result Text="Ö" With="VK_CAPITAL" />
+      <Result Text="ö" With="VK_SHIFT VK_CAPITAL" />
     </PK>
-    <PK VK="VK_OEM_3" SC="28">
-      <Result Text="'" />
-      <Result Text="@" With="VK_SHIFT" />
-      <Result TextCodepoints="0000" With="VK_SHIFT VK_CONTROL" />
+    <PK VK="VK_OEM_7" SC="28">
+      <Result Text="ä" />
+      <Result Text="Ä" With="VK_SHIFT" />
+      <Result Text="Ä" With="VK_CAPITAL" />
+      <Result Text="ä" With="VK_SHIFT VK_CAPITAL" />
     </PK>
-    <PK VK="VK_OEM_8" SC="29">
-      <Result Text="`" />
-      <Result Text="¬" With="VK_SHIFT" />
-      <Result Text="¦" With="VK_CONTROL VK_MENU" />
-    </PK>
-    <PK VK="VK_LSHIFT" SC="2A" Name="SHIFT" />
-    <PK VK="VK_OEM_7" SC="2B">
-      <Result Text="#" />
-      <Result Text="~" With="VK_SHIFT" />
+    <PK VK="VK_OEM_5" SC="29">
+      <Result Text="§" />
+      <Result Text="½" With="VK_SHIFT" />
       <Result TextCodepoints="001C" With="VK_CONTROL" />
-      <Result Text="\" With="VK_CONTROL VK_MENU" />
-      <Result Text="|" With="VK_SHIFT VK_CONTROL VK_MENU" />
+    </PK>
+    <PK VK="VK_LSHIFT" SC="2A" Name="VAIHTO" />
+    <PK VK="VK_OEM_2" SC="2B">
+      <Result Text="'" />
+      <Result Text="*" With="VK_SHIFT" />
     </PK>
     <PK VK="VK_Z" SC="2C">
       <Result Text="z" />
@@ -278,31 +338,33 @@
       <Result Text="M" With="VK_SHIFT" />
       <Result Text="M" With="VK_CAPITAL" />
       <Result Text="m" With="VK_SHIFT VK_CAPITAL" />
+      <Result Text="µ" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_OEM_COMMA" SC="33">
       <Result Text="," />
-      <Result Text="&lt;" With="VK_SHIFT" />
+      <Result Text=";" With="VK_SHIFT" />
     </PK>
     <PK VK="VK_OEM_PERIOD" SC="34">
       <Result Text="." />
-      <Result Text="&gt;" With="VK_SHIFT" />
+      <Result Text=":" With="VK_SHIFT" />
     </PK>
-    <PK VK="VK_OEM_2" SC="35">
-      <Result Text="/" />
-      <Result Text="?" With="VK_SHIFT" />
+    <PK VK="VK_OEM_MINUS" SC="35">
+      <Result Text="-" />
+      <Result Text="_" With="VK_SHIFT" />
+      <Result TextCodepoints="001F" With="VK_CONTROL" />
     </PK>
-    <PK VK="VK_RSHIFT" SC="36" Name="RIGHT SHIFT" />
-    <PK VK="VK_MULTIPLY" SC="37" Name="NUMMULT">
+    <PK VK="VK_RSHIFT" SC="36" Name="OIKEA VAIHTO" />
+    <PK VK="VK_MULTIPLY" SC="37" Name="NUM KERTO">
       <Result Text="*" />
       <Result Text="*" With="VK_SHIFT" />
     </PK>
     <PK VK="VK_LMENU" SC="38" Name="ALT" />
-    <PK VK="VK_SPACE" SC="39" Name="SPACE">
+    <PK VK="VK_SPACE" SC="39" Name="VÄLI">
       <Result Text=" " />
       <Result Text=" " With="VK_SHIFT" />
       <Result Text=" " With="VK_CONTROL" />
     </PK>
-    <PK VK="VK_CAPITAL" SC="3A" Name="CAPSLOCK" />
+    <PK VK="VK_CAPITAL" SC="3A" Name="CAPS LOCK" />
     <PK VK="VK_F1" SC="3B" Name="F1" />
     <PK VK="VK_F2" SC="3C" Name="F2" />
     <PK VK="VK_F3" SC="3D" Name="F3" />
@@ -313,7 +375,7 @@
     <PK VK="VK_F8" SC="42" Name="F8" />
     <PK VK="VK_F9" SC="43" Name="F9" />
     <PK VK="VK_F10" SC="44" Name="F10" />
-    <PK VK="VK_NUMLOCK" SC="45" Name="Pause" />
+    <PK VK="VK_NUMLOCK" SC="45" Name="PAUSE" />
     <PK VK="VK_SCROLL" SC="46" Name="SCROLL LOCK" />
     <PK VK="VK_HOME" SC="47" Name="NUM 7">
       <Result Text="7" VK="VK_NUMPAD7" With="VK_NUMLOCK" />
@@ -324,7 +386,7 @@
     <PK VK="VK_PRIOR" SC="49" Name="NUM 9">
       <Result Text="9" VK="VK_NUMPAD9" With="VK_NUMLOCK" />
     </PK>
-    <PK VK="VK_SUBTRACT" SC="4A" Name="NUM SUB">
+    <PK VK="VK_SUBTRACT" SC="4A" Name="NUM MIINUS">
       <Result Text="-" />
       <Result Text="-" With="VK_SHIFT" />
     </PK>
@@ -353,14 +415,15 @@
     <PK VK="VK_INSERT" SC="52" Name="NUM 0">
       <Result Text="0" VK="VK_NUMPAD0" With="VK_NUMLOCK" />
     </PK>
-    <PK VK="VK_DELETE" SC="53" Name="NUM DECIMAL">
-      <Result Text="." VK="VK_DECIMAL" With="VK_NUMLOCK" />
+    <PK VK="VK_DELETE" SC="53" Name="NUM DESIMAALI">
+      <Result Text="," VK="VK_DECIMAL" With="VK_NUMLOCK" />
     </PK>
     <PK VK="VK_SNAPSHOT" SC="54" />
-    <PK VK="VK_OEM_5" SC="56">
-      <Result Text="\" />
-      <Result Text="|" With="VK_SHIFT" />
+    <PK VK="VK_OEM_102" SC="56">
+      <Result Text="&lt;" />
+      <Result Text="&gt;" With="VK_SHIFT" />
       <Result TextCodepoints="001C" With="VK_CONTROL" />
+      <Result Text="|" With="VK_CONTROL VK_MENU" />
     </PK>
     <PK VK="VK_F11" SC="57" Name="F11" />
     <PK VK="VK_F12" SC="58" Name="F12" />
@@ -401,7 +464,7 @@
       <Result TextCodepoints="000D" With="VK_SHIFT" />
       <Result TextCodepoints="000A" With="VK_CONTROL" />
     </PK>
-    <PK VK="VK_RCONTROL" SC="E01D" Name="Right Ctrl" />
+    <PK VK="VK_RCONTROL" SC="E01D" Name="OIKEA CTRL" />
     <PK VK="VK_VOLUME_MUTE" SC="E020" />
     <PK VK="VK_LAUNCH_APP2" SC="E021" />
     <PK VK="VK_MEDIA_PLAY_PAUSE" SC="E022" />
@@ -409,30 +472,30 @@
     <PK VK="VK_VOLUME_DOWN" SC="E02E" />
     <PK VK="VK_VOLUME_UP" SC="E030" />
     <PK VK="VK_BROWSER_HOME" SC="E032" />
-    <PK VK="VK_DIVIDE" SC="E035" Name="NUM DIVIDE">
+    <PK VK="VK_DIVIDE" SC="E035" Name="NUM JAKO">
       <Result Text="/" />
       <Result Text="/" With="VK_SHIFT" />
     </PK>
-    <PK VK="VK_SNAPSHOT" SC="E037" Name="Prnt Scrn" />
-    <PK VK="VK_RMENU" SC="E038" Name="RIGHT ALT" />
-    <PK VK="VK_CANCEL" SC="E046" Name="Break">
+    <PK VK="VK_SNAPSHOT" SC="E037" Name="PRINT SCRN" />
+    <PK VK="VK_RMENU" SC="E038" Name="OIKEA ALT" />
+    <PK VK="VK_CANCEL" SC="E046" Name="BREAK">
       <Result TextCodepoints="0003" />
       <Result TextCodepoints="0003" With="VK_SHIFT" />
       <Result TextCodepoints="0003" With="VK_CONTROL" />
     </PK>
     <PK VK="VK_HOME" SC="E047" Name="HOME" />
-    <PK VK="VK_UP" SC="E048" Name="UP" />
-    <PK VK="VK_PRIOR" SC="E049" Name="PGUP" />
-    <PK VK="VK_LEFT" SC="E04B" Name="LEFT" />
-    <PK VK="VK_RIGHT" SC="E04D" Name="RIGHT" />
+    <PK VK="VK_UP" SC="E048" Name="YLÄNUOLI" />
+    <PK VK="VK_PRIOR" SC="E049" Name="PG UP" />
+    <PK VK="VK_LEFT" SC="E04B" Name="VASEN NUOLI" />
+    <PK VK="VK_RIGHT" SC="E04D" Name="OIKEA NUOLI" />
     <PK VK="VK_END" SC="E04F" Name="END" />
-    <PK VK="VK_DOWN" SC="E050" Name="DOWN" />
-    <PK VK="VK_NEXT" SC="E051" Name="PGDOWN" />
-    <PK VK="VK_INSERT" SC="E052" Name="INSERT" />
-    <PK VK="VK_DELETE" SC="E053" Name="DELETE" />
-    <PK VK="VK_LWIN" SC="E05B" Name="Left Windows" />
-    <PK VK="VK_RWIN" SC="E05C" Name="Right Windows" />
-    <PK VK="VK_APPS" SC="E05D" Name="Application" />
+    <PK VK="VK_DOWN" SC="E050" Name="ALANUOLI" />
+    <PK VK="VK_NEXT" SC="E051" Name="PG DN" />
+    <PK VK="VK_INSERT" SC="E052" Name="INS" />
+    <PK VK="VK_DELETE" SC="E053" Name="DEL" />
+    <PK VK="VK_LWIN" SC="E05B" Name="Vasen Windows" />
+    <PK VK="VK_RWIN" SC="E05C" Name="Oikea Windows" />
+    <PK VK="VK_APPS" SC="E05D" Name="Sovellus" />
     <PK VK="VK_SLEEP" SC="E05F" />
     <PK VK="VK_BROWSER_SEARCH" SC="E065" />
     <PK VK="VK_BROWSER_FAVORITES" SC="E066" />

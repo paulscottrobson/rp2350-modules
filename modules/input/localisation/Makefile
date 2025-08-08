@@ -12,5 +12,5 @@
 include ../../../environment/system.make
 
 all:
-	$(PYTHON) extract.py >$(MODULEDIR)input/library/keyboard/locale_data.c
+	$(PYTHON) extract.py >../library/keyboard/locale_data.c
 	echo "Update locale data"

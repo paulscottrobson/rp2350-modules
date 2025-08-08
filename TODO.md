@@ -4,6 +4,9 @@
 ## Keyboard
 - Fix 31/32 issue (see LennartB in Discord)
 
+## Patches
+- Working directory code in hook.
+
 ## Computer module
 - The base computer system
 

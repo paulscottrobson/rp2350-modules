@@ -72,7 +72,6 @@ class ScanToUSB(object):
                 0x001A:0x2F,   # [ 
                 0x001B:0x30,   # ] 
                 0x002B:0x31,   # \ |
-                0x002B:0x32,   # Europe 1 (Note 2)
                 0x0027:0x33,   # ; :
                 0x0028:0x34,   # ' "
                 0x0029:0x35,   # ` ~
