@@ -1,0 +1,9 @@
+#
+#	Dependencies
+#
+common
+usb
+dvi
+psram
+input
+memory

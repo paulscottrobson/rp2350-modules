@@ -44,7 +44,8 @@ static int palette_64[64] = {
  *             palettes ready to go for the different renderer. The mono palette
  *             can do 4 colour Greyscale and Monochrome
  */
-void DVIInitialise(void) {    
+void DVIInitialise(void) { 
+    for (int i = 0;i < VIDEO_BYTES;i++) framebuf[i] = rand();   
 }
 
 

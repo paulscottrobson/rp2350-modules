@@ -73,7 +73,9 @@ typedef struct FontSource {
 
 typedef GFXFONTSOURCE *(*GFXFONTSOURCEFUNCTION)(uint16_t code);                     // Function that gets font data
 
-#define COL_BLACK       (0)                                                         // RGGB colours supported by 16 and 256 colour modes.
+GFXFONTSOURCE *GFXGetSystemCharacter(uint16_t code);
+
+#define COL_BLACK       (0)                                                         // BGR colours (8 colour modes)
 #define COL_RED         (1)
 #define COL_GREEN       (2)
 #define COL_YELLOW      (3)
