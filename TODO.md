@@ -1,8 +1,8 @@
 # TODO list
 
 
-## Keyboard
-- Fix 31/32 issue (see LennartB in Discord)
+## Screen Editor
+- Design screen editor.
 
 ## Patches
 - Working directory code in hook.
