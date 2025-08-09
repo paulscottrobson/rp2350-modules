@@ -65,6 +65,8 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
     if (ch < 32 || ch > 127) ch = 32;                                               // Force into range.
 
     DVIMODEINFO *m = DVIGetModeInformation();                                       // Get current mode information.
+    if (x >= m->width/8 || y >= m->height/8) return;                                // Mode could have changed, this stops out of bounds access.
+
     uint8_t *fontData = DVIGetSystemFont() + (ch - ' ') * 8;                        // Access font data.
     if (bHighlight) fontData = _cursor;
     uint32_t offset;

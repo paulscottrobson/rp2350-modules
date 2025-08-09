@@ -18,6 +18,9 @@ SEDSTATUS sedInfo;
  * @brief      Initialise screen editor
  */
 void SEDInitialise(void) {
+    static bool isInitialised = false;
+    if (isInitialised) return;
+    isInitialised = true;
     DVIInitialise();
     INPInitialise();
     MEMInitialise();
@@ -35,6 +38,7 @@ void SEDInitialise(void) {
 void SEDReset(void) {
     DVIMODEINFO *m = DVIGetModeInformation();
     sedInfo.x = sedInfo.y = 0;
+    sedInfo.currentMode = m->mode;
     sedInfo.width = m->width/8;sedInfo.height = m->height/8;
     sedInfo.xCursor = sedInfo.yCursor = 0;
     sedInfo.colour = (m->bitPlaneDepth == 1) ? 2 : 0x08;

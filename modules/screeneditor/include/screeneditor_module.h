@@ -31,6 +31,7 @@ typedef struct _ScreenEditor {
     uint8_t     *extendLine;                                                        // Extended line flags.
     uint8_t     colour;                                                             // Text colour.
     uint8_t     cursorColour;                                                       // Cursor colour.
+    uint32_t    currentMode;                                                        // Current display mode.
 } SEDSTATUS;
 
 extern SEDSTATUS sedInfo;
