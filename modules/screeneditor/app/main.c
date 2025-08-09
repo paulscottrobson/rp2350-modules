@@ -12,7 +12,8 @@ int MAINPROGRAM() {
     DVISetMode(MODE_320_240_64);
     SEDReset();
     sedInfo.x = 1;sedInfo.y = 1;
-    sedInfo.width -=2 ;sedInfo.height -= 2;
+    sedInfo.width = 15;
+    sedInfo.height = 8;
     SEDClear();
     while (COMAppRunning()) {                                                                     
         while (SEDProcess(buffer,sizeof(buffer),INPGetKey())) COMUpdate();                         

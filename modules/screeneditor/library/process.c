@@ -16,6 +16,7 @@ static void SEDProcessKey(uint32_t key);
 static void SEDAdjust(int32_t xi,int32_t yi);
 static void SEDBackSpace(void);
 static void SEDCarriageReturn(void);
+static void SEDScrollWindow(void);
 
 /**
  * @brief      Process a key. If ENTER then fill the buffer with the current
@@ -38,7 +39,6 @@ bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     SEDDraw(sedInfo.xCursor,sedInfo.yCursor,sedInfo.colour,false);                  // Hide the cursor
 
     if (key == CTL_CRLF) {                                                          // If CR load the current line in.
-
     }
     SEDProcessKey(key); 
     return COMAppRunning() && key != CTL_CRLF;
@@ -86,11 +86,17 @@ static void SEDProcessKey(uint32_t key) {
                 if (sedInfo.xCursor == sedInfo.width-1) {                           // Have we done a multiple line ?
                     sedInfo.extendLine[sedInfo.yCursor] = 1;                        // Set the 'extended line' flag.
                 }
-                SEDAdjust(1,0);
+                sedInfo.xCursor++;                                                  // Right, CR if right edge.
+                if (sedInfo.xCursor == sedInfo.width) {
+                    sedInfo.yCursor++;sedInfo.xCursor = 0;
+                }
             }
             break;
     }
-    // TODO: Check for scroll.
+    if (sedInfo.yCursor == sedInfo.height) {
+        SEDScrollWindow();
+        sedInfo.yCursor = sedInfo.height-1;
+    }
 }
 
 /**
@@ -129,4 +135,20 @@ static void SEDBackSpace(void) {
 static void SEDCarriageReturn(void) {
     sedInfo.xCursor = 0;
     sedInfo.yCursor++;
+}
+
+/**
+ * @brief      Scroll the window up.
+ */
+static void SEDScrollWindow(void) {
+    for (int x = 0;x < sedInfo.width;x++) {                                         // Scroll the characters up.
+        for (int y = 0;y < sedInfo.height-1;y++) {
+            *SEDCharAccess(x,y) = *SEDCharAccess(x,y+1);
+
+        }
+        *SEDCharAccess(x,sedInfo.height-1) = ' ';
+    }
+    memcpy(sedInfo.extendLine,sedInfo.extendLine+1,SED_MAXHEIGHT-1);                // Scroll the extended line array up to keep synced.
+    sedInfo.extendLine[SED_MAXHEIGHT-1] = 0;
+    SEDRepaint();
 }

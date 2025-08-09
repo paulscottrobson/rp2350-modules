@@ -2,7 +2,7 @@
 
 
 ## Screen Editor
-- scrolling
+- line text extraction.
 - insert and delete.
 
 ## Patches
