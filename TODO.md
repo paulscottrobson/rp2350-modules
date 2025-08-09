@@ -2,7 +2,8 @@
 
 
 ## Screen Editor
-- copy code over & start re-implementing.
+- scrolling
+- insert and delete.
 
 ## Patches
 - Working directory code in hook.

@@ -16,7 +16,7 @@
  * @brief      Clear the screen.
  */
 void SEDClear(void) {
-    memset(sedInfo.charMem,'*',SED_MAXWIDTH*SED_MAXHEIGHT);                         // Clear the screen
+    memset(sedInfo.charMem,' ',SED_MAXWIDTH*SED_MAXHEIGHT);                         // Clear the screen
     memset(sedInfo.extendLine,0,SED_MAXHEIGHT);                                     // Reset the extend line flags.
     SEDRepaint();
 }
@@ -92,3 +92,4 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
         }   
     }
 }
+

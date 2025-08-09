@@ -24,9 +24,9 @@
 #include "memory_module.h"
 
 typedef struct _ScreenEditor {
-    uint32_t    x,y;                                                                // Character position on screen
+    int32_t     x,y;                                                                // Character position on screen
     uint32_t    width,height;                                                       // Width & height in characters
-    uint32_t    xCursor,yCursor;                                                    // Cursor position.
+    int32_t     xCursor,yCursor;                                                    // Cursor position.
     uint8_t     *charMem;                                                           // Character memory
     uint8_t     *extendLine;                                                        // Extended line flags.
     uint8_t     colour;                                                             // Text colour.
