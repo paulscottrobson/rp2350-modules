@@ -21,6 +21,12 @@
 void KBDProcessEvent(int scanCode,int modifiers,bool isDown) {
 
     static uint8_t packet[8];
+
+    //
+    //      Ignore key codes for modifiers.
+    //
+    if (scanCode >= 224) return;
+
     USBREPORT report;
     //
     //      Convert the modifier to the USB format.
