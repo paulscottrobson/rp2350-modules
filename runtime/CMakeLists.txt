@@ -47,13 +47,13 @@ file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/screeneditor/app/*.[csS]")
 #
 file(GLOB_RECURSE INPUT_LIB "${MODULEDIR}/input/library/*.[csS]")
 file(GLOB_RECURSE GRAPHICS_LIB "${MODULEDIR}/graphics/library/*.[csS]")
-file(GLOB_RECURSE TEXT_LIB "${MODULEDIR}/screeneditor/library/*.[csS]")
+file(GLOB_RECURSE SCREENEDITOR_LIB "${MODULEDIR}/screeneditor/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 
 add_executable(runtime 
     ${APP_SOURCES} ${RUNTIME_SOURCES}
     ${MODULEDIR}dvi/library/config.c
-    ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${TEXT_LIB} ${SPRITES_LIB} ${PSRAM_LIB} ${MEMORY_LIB}
+    ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREENEDITOR_LIB}
 )
 
 if(TARGET SDL2::SDL2main)

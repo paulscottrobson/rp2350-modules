@@ -2,7 +2,8 @@
 
 
 ## Screen Editor
-- Design screen editor.
+- render characters in 8/64 bit modes.
+- copy code over & start re-implementing.
 
 ## Patches
 - Working directory code in hook.

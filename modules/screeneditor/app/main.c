@@ -6,11 +6,12 @@
  * @return     0 if no error.
  */
 int MAINPROGRAM() {
-    DVIInitialise();                                                                // Initialise Graphics    
+    SEDInitialise();                                                                // Initialise Screen Editor
     DVISetMode(MODE_640_480_8);
-    INPInitialise();
-    MEMInitialise();
-
+    SEDReset();
+    sedInfo.x = 1;sedInfo.y = 1;
+    sedInfo.width -=2 ;sedInfo.height -= 2;
+    
     while (COMAppRunning()) {                                                                     
         COMUpdate();                         
     }

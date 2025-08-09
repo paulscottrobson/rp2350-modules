@@ -55,7 +55,7 @@ uint8_t *MEMAllocateBlock(MEMORYTRACKER *tracker,uint32_t size) {
         tracker->usage[(firstBlock+i) % tracker->blockCount] = 0xFF;
     }
     tracker->lastAllocated = (firstBlock + blocks) % tracker->blockCount;           // Where to search from next time.
-    LOG("Allocating %d",firstBlock);
+    LOG("Allocating from block %d",firstBlock);
     return tracker->baseAddress + firstBlock * tracker->blockSize;                  // Return address.
 }
 
