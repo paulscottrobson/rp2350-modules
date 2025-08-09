@@ -37,5 +37,6 @@ void SEDReset(void) {
     sedInfo.x = sedInfo.y = 0;
     sedInfo.width = m->width/8;sedInfo.height = m->height/8;
     sedInfo.xCursor = sedInfo.yCursor = 0;
-    sedInfo.colour = (m->bitPlaneDepth == 1) ? 3 : 0x0B;
+    sedInfo.colour = (m->bitPlaneDepth == 1) ? 2 : 0x08;
+    sedInfo.cursorColour = (m->bitPlaneDepth == 1) ? 6 : 0x3C;
 }

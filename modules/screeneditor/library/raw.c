@@ -16,7 +16,7 @@
  * @brief      Clear the screen.
  */
 void SEDClear(void) {
-    memset(sedInfo.charMem,0,SED_MAXWIDTH*SED_MAXHEIGHT);                           // Clear the screen
+    memset(sedInfo.charMem,'*',SED_MAXWIDTH*SED_MAXHEIGHT);                         // Clear the screen
     memset(sedInfo.extendLine,0,SED_MAXHEIGHT);                                     // Reset the extend line flags.
     SEDRepaint();
 }
@@ -27,7 +27,7 @@ void SEDClear(void) {
 void SEDRepaint(void) {
     for (uint32_t x = 0;x < sedInfo.width;x++) {
         for (uint32_t y = 0;y < sedInfo.height;y++) {
-            SEDDraw(x,y,*SEDCharAccess(x,y),sedInfo.colour,y == sedInfo.yCursor && x == sedInfo.xCursor);
+            SEDDraw(x,y,sedInfo.colour,y == sedInfo.yCursor && x == sedInfo.xCursor);
         }
     }
 }
@@ -49,11 +49,10 @@ uint8_t *SEDCharAccess(uint32_t x,uint32_t y) {
  *
  * @param[in]  x           x position (offset from left)
  * @param[in]  y           y position (offset from top)
- * @param[in]  ch          character code
  * @param[in]  colour      colour to write in (raw)
  * @param[in]  bHighlight  if true, highlight it by drawing the 'shaded' graphic.
  */
-void SEDDraw(uint32_t x,uint32_t y,uint8_t ch,uint8_t colour,bool bHighlight) {
+void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
 
     static uint8_t _pixelMapper[16] = { 0x00,0x03,0x0C,0x0F, 0x30,0x33,0x3C,0x3F,   // Map 4 bit pixels -> byte for 64 bit mode.
                                         0xC0,0xC3,0xCC,0xCF, 0xF0,0xF3,0xFC,0xFF  };
@@ -62,9 +61,8 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t ch,uint8_t colour,bool bHighlight) {
 
     static uint8_t _cursor[8] = { 0xAA,0x55,0xAA,0x55,0xAA,0x55,0xAA,0x55 };
 
+    uint8_t ch = *SEDCharAccess(x,y);                                               // Read character.
     if (ch < 32 || ch > 127) ch = 32;                                               // Force into range.
-
-    ch = (x + y * 16 + 3) % 96 + 32;
 
     DVIMODEINFO *m = DVIGetModeInformation();                                       // Get current mode information.
     uint8_t *fontData = DVIGetSystemFont() + (ch - ' ') * 8;                        // Access font data.

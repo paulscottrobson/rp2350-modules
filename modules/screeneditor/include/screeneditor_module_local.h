@@ -16,7 +16,7 @@
 
 void SEDRepaint(void);
 uint8_t *SEDCharAccess(uint32_t x,uint32_t y);
-void SEDDraw(uint32_t x,uint32_t y,uint8_t ch,uint8_t colour,bool bHighlight);
+void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight);
 
 #ifndef RUNTIME
 #endif

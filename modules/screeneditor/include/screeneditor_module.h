@@ -30,6 +30,7 @@ typedef struct _ScreenEditor {
     uint8_t     *charMem;                                                           // Character memory
     uint8_t     *extendLine;                                                        // Extended line flags.
     uint8_t     colour;                                                             // Text colour.
+    uint8_t     cursorColour;                                                       // Cursor colour.
 } SEDSTATUS;
 
 extern SEDSTATUS sedInfo;
@@ -37,3 +38,4 @@ extern SEDSTATUS sedInfo;
 void SEDInitialise(void);
 void SEDReset(void);
 void SEDClear(void);
+bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key);

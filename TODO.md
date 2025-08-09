@@ -2,7 +2,6 @@
 
 
 ## Screen Editor
-- flashing cursor with key input in update loop.
 - copy code over & start re-implementing.
 
 ## Patches
