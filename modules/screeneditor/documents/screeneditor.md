@@ -35,6 +35,8 @@ The loop ends either when ENTER is pressed, or if the runtime is terminated if t
 
 When it finishes it loads one or more lines of screen text into the buffer as an ASCIIZ string ; the first two parameters are the pointer to a buffer and it's physical size. A line is deemed multiline when a character is printed in the right most column causing it to drop to the next line.
 
+This is wrapped in the function SEDGetLine()
+
 
 ## Revision
 

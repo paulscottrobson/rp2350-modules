@@ -20,6 +20,21 @@ static void SEDScrollWindow(void);
 static uint32_t SEDExtract(uint32_t y,uint8_t *buffer,uint32_t size);
 static void SEDInsert(void);
 static void SEDDelete(void);
+static uint32_t SEDFindEndCurrent(uint32_t y);
+static uint32_t SEDFindEndCurrent(uint32_t y);
+
+/**
+ * @brief      Get one line into the buffer from the current cursor position.
+ *
+ * @param      buffer  Buffer for line.
+ * @param[in]  size    Buffer size in bytes
+ */
+
+void SEDGetLine(uint8_t *buffer,uint32_t size) {
+    while (SEDProcess(buffer,size,INPGetKey())) {
+        COMUpdate();
+    }
+}
 
 /**
  * @brief      Process a key. If ENTER then fill the buffer with the current
@@ -188,7 +203,7 @@ uint32_t SEDExtract(uint32_t y,uint8_t *buffer,uint32_t size) {
             *buffer ++ = *SEDCharAccess(x,y);
         }
         size = size - sedInfo.width;                                                // Adjust the size remaining accordingly.
-        completed = (sedInfo.extendLine[y] == 0);                                   // Completed if the line is not extended.
+        completed = (sedInfo.extendLine[y] == 0) || (y == sedInfo.height-1);        // Completed if the line is not extended or at bottom.
         y++;                                                                        // Go to next line.
     }
     while (buffer > start && *(buffer-1) == ' ') buffer--;                          // Strip trailing spaces.
@@ -200,12 +215,43 @@ uint32_t SEDExtract(uint32_t y,uint8_t *buffer,uint32_t size) {
  * @brief      Insert a space at the current position, moving things to make space.
  */
 static void SEDInsert(void) {
-    LOG("Insert");
+    int32_t x,y,x1,y1;
+    x = sedInfo.width-1;y = SEDFindEndCurrent(sedInfo.yCursor);
+    while (x != sedInfo.xCursor || y != sedInfo.yCursor) {
+        x1 = x;y1 = y;
+        x--;if (x < 0) x = sedInfo.width-1,y--;
+        *SEDCharAccess(x1,y1) = *SEDCharAccess(x,y);
+        SEDDraw(x1,y1,sedInfo.colour,false);
+    }
+    *SEDCharAccess(x,y) = ' ';
+    SEDDraw(x,y,sedInfo.colour,false);    
 }
 
 /**
  * @brief      Delete character at the current position, shifting everything back one.
  */
 static void SEDDelete(void) {
-    LOG("Delete");
+    uint32_t x,y,y1;
+    x = sedInfo.xCursor;y = sedInfo.yCursor;
+    y1 = SEDFindEndCurrent(y);
+    while (x != sedInfo.width-1 || y != y1) {
+        *SEDCharAccess(x,y) = *SEDCharAccess(x+1,y);
+        SEDDraw(x,y,sedInfo.colour,false);
+        x++;if (x == sedInfo.width) x = 0,y++;
+    }
+    *SEDCharAccess(x,y) = ' ';
+    SEDDraw(x,y,sedInfo.colour,false);
 }
+
+/**
+ * @brief      Find the end of the line at the cursor by tracking extensions.
+ *
+ * @param[in]  y     Start line
+ *
+ * @return     End line.
+ */
+static uint32_t SEDFindEndCurrent(uint32_t y) {
+    while (sedInfo.extendLine[y] != 0 && y != sedInfo.height-1) y++;
+    return y;
+}
+

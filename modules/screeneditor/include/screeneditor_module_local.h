@@ -12,7 +12,7 @@
 #pragma once
 
 #define SED_MAXWIDTH    (80)
-#define SED_MAXHEIGHT   (50)
+#define SED_MAXHEIGHT   (60)
 
 void SEDRepaint(void);
 uint8_t *SEDCharAccess(uint32_t x,uint32_t y);

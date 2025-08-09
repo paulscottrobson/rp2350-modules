@@ -40,3 +40,4 @@ void SEDInitialise(void);
 void SEDReset(void);
 void SEDClear(void);
 bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key);
+void SEDGetLine(uint8_t *buffer,uint32_t size);

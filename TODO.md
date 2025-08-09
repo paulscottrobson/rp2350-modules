@@ -1,11 +1,7 @@
 # TODO list
 
-
-## Screen Editor
-- insert and delete.
-
 ## Patches
-- Working directory code in hook.
+- Working directory code in hook ?
 
 ## Computer module
 - The base computer system
