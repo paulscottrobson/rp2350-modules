@@ -31,7 +31,7 @@ static void SEDCarriageReturn(void);
 bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     *buffer = '\0';                                                                 // Empty buffer in case we exit runtime.
     if (key == 0) {                                                                 // No key, flash the cursor.
-        bool showCursor = (COMClock() & 512) != 0;
+        bool showCursor = (COMClock() & 512) != 0;        
         SEDDraw(sedInfo.xCursor,sedInfo.yCursor,showCursor ? sedInfo.cursorColour : sedInfo.colour ,showCursor);
         return COMAppRunning();
     }
@@ -40,7 +40,7 @@ bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     if (key == CTL_CRLF) {                                                          // If CR load the current line in.
 
     }
-    SEDProcessKey(key);
+    SEDProcessKey(key); 
     return COMAppRunning() && key != CTL_CRLF;
 }
 
@@ -76,7 +76,8 @@ static void SEDProcessKey(uint32_t key) {
         case CTL_CRLF:
             SEDCarriageReturn();break;
         case CTL_CLEAR:
-            SEDClear();sedInfo.xCursor = sedInfo.yCursor = 0;
+            SEDClear();
+            sedInfo.xCursor = sedInfo.yCursor = 0;            
             break;
         default:
             if (key >= 0x20 && key <= 0x7F) {

@@ -27,7 +27,7 @@ void SEDClear(void) {
 void SEDRepaint(void) {
     for (uint32_t x = 0;x < sedInfo.width;x++) {
         for (uint32_t y = 0;y < sedInfo.height;y++) {
-            SEDDraw(x,y,sedInfo.colour,y == sedInfo.yCursor && x == sedInfo.xCursor);
+            SEDDraw(x,y,sedInfo.colour,false);
         }
     }
 }
