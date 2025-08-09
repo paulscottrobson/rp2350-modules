@@ -2,7 +2,7 @@
 
 
 ## Screen Editor
-- render characters in 8/64 bit modes.
+- flashing cursor with key input in update loop.
 - copy code over & start re-implementing.
 
 ## Patches

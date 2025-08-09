@@ -14,10 +14,9 @@
 #define SED_MAXWIDTH    (80)
 #define SED_MAXHEIGHT   (50)
 
-void SEDClear(void);
 void SEDRepaint(void);
-void SEDDraw(uint32_t x,uint32_t y,uint8_t ch);
 uint8_t *SEDCharAccess(uint32_t x,uint32_t y);
+void SEDDraw(uint32_t x,uint32_t y,uint8_t ch,uint8_t colour,bool bHighlight);
 
 #ifndef RUNTIME
 #endif
