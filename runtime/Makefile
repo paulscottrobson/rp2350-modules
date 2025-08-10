@@ -3,7 +3,7 @@ include ../environment/system.make
 #
 #		This is the address of the app you want to run. Note, this can be relative to ${ROOTDIR} ${MODULEDIR} or anywhere.
 #
-APPLICATION = ${ROOTDIR}apps/bully
+APPLICATION = ${MODULEDIR}screeneditor
 
 compile: 
 	cd build ; make -j10

@@ -62,7 +62,7 @@ class Extractor(object):
             mode = "" if m is None else m.group(1).upper()
             if mode == "":                                                          # Put in shifted or unshifted slot.
                 self.usbToChars[self.currentUSBCode][0] = keyChar
-            if mode.find("VK_SHIFT") >= 0:
+            if mode.find("VK_SHIFT") >= 0 and mode.find("VK_CAPITAL") < 0:
                 self.usbToChars[self.currentUSBCode][1] = keyChar
 
     def dump(self):
