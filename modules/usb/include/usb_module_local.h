@@ -20,7 +20,7 @@
 #include "diskio.h"
 #endif
 
-#define CHECKFSAVAILABLE() if (!USBWaitForFileSystem()) return FSERR_STORAGE        // Wait FS, error if times out.
+#define CHECKFSAVAILABLE() if (!USBIsFileSystemAvailable()) return FSERR_STORAGE    // Wait FS, error if times out.
 
 #define INPUSBKEY_TIMEOUT   (10*1000)                                               // USB Key timeout, in ms.
 #define USBHANDLERCOUNT     (4)                                                     // Max # report handlers supported
@@ -30,7 +30,6 @@ void USBDispatchReport(uint8_t type,uint16_t vid, uint16_t pid, uint8_t *report,
 uint32_t FSMapErrorCode(FRESULT res);
 uint32_t FSGetValidateHandle(uint32_t handle, bool isDirectory,void **fsObjectPtr);
 void USBUpdate(void);
-bool USBWaitForFileSystem(void);
 
 void FSInitialise(void);
 bool FSProcessFileName(char **pFileName);

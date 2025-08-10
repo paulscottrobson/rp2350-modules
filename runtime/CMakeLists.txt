@@ -41,8 +41,9 @@ file(GLOB_RECURSE RUNTIME_SOURCES "source/*.c")
 #
 #       The module/app that one wishes to actually run.
 #
-file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/screeneditor/app/*.[csS]")
-include_directories(${MODULEDIR}/screeneditor/include)
+file(GLOB_RECURSE APP_SOURCES "${ROOTDIR}/apps/bully/app/*.[csS]")
+include_directories(${ROOTDIR}/apps/bully/include)
+
 #
 #       Libraries out of the bottom interface tier than are required.
 #

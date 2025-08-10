@@ -5,7 +5,7 @@ compile:
 cmake:
 	mkdir -p build
 	rm -f build/CMakeCache.txt 
-	cd build ; cmake -DMODULEDIR=$(MODULEDIR) ..
+	cd build ; cmake -DMODULEDIR=$(MODULEDIR) -DROOTDIR=$(ROOTDIR) ..
 
 run: compile
 	build/runtime

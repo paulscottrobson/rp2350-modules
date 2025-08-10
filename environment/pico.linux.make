@@ -66,7 +66,7 @@ cmake:
 	rm -f build/CMakeCache.txt 
 	rm -rf build/CMakeFiles build/generated build/pico-sdk build/pioasm build/pioasm-install
 	rm -f build/CMakeDoxy* build/pico_flash*
-	cd build ; cmake -DPICO_PLATFORM=$(PLATFORM) -DMODULEDIR=$(MODULEDIR) -DDVIDIR=${ROOTDIR}picodvi/software/libdvi -DROOTDIR=${ROOTDIR} ..
+	cd build ; cmake -DPICO_PLATFORM=$(PLATFORM) -DMODULEDIR=$(MODULEDIR) -DDVIDIR=${ROOTDIR}picodvi/software/libdvi -DROOTDIR=$(ROOTDIR) ..
 
 upload: compile
 	$(UPLOADER) $(UPCONFIG) $(UPCOMMANDS)

@@ -76,7 +76,7 @@ Hopefully these are largely self explanatory - handles are now 32 bit signed int
 
 There are simple examples in main.c
 
-Note the FSChangeDirectory function does not operate relatively ; it selects a directory from the root (e.g. it must be "/something")
+One change is there is no concept of the "current working directory" ; this must be managed by the developer. All file names and directory names are absolute.
 
 ## Revision
 

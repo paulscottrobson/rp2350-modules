@@ -165,9 +165,9 @@ To make it run "circle" do the following (I'll tidy this up as it's a bit rubbis
 
 1. Switch to the "runtime" directory
 2. Edit CMakeLists.txt
-3. Look for the line file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/screeneditor/app/*.[csS]") - the 'screeneditor' may change, but the APP_SOURCES should be easy to find.
-4. Change 'screeneditor' to 'circle' (e.g. take sources from the circle directory)
-5. Change the line below that from 'screeneditor' (or whatever) to 'circle'
+3. Look for the line something like file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/screeneditor/app/*.[csS]") - the APP_SOURCES is the best thing to search on.
+4. Change '${MODULEDIR}/screeneditor' to '${MODULEDIR}/circle' (e.g. take sources from the circle directory)
+5. Change the line below that , the include, in a similar fashion.
 
 Then do *make cmake* as before, but after that *make run* and you should see the yellow ellipse again ... unless you changed it, in which case you'll get whatever you changed it to. 
 

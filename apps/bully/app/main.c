@@ -68,7 +68,7 @@ static void decorate(void) {
  * @brief      List the root directory
  */
 static void ListDirectory(void) {
-    char *path = ""; 
+    char *path = "/cdtest"; 
     int32_t error,handle = FSOpenDirectory(path);
     if (handle >= 0) {
         FSOBJECTINFO fInfo;
@@ -77,6 +77,9 @@ static void ListDirectory(void) {
         }
         if (error != FSERR_EOF) LOG("Read error : %d",error);
         FSCloseDirectory(handle);        
+        LOG("..."); 
+    } else {
+        LOG("Couldn't open path %s",path);
     }
 }
 
@@ -84,7 +87,7 @@ static void ListDirectory(void) {
  * @brief      List part of a file on the USB key.
  */
 static void ListFile(void) {
-    int32_t error,handle = FSOpen("loops.bsc");
+    int32_t error,handle = FSOpen("/cdtest/test.txt");
     if (handle == 0) {
         error = FSSeek(handle,12);
         char buffer[129];

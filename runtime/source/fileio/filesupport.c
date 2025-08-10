@@ -32,7 +32,6 @@ struct _filedirRecord {
  */
 void FSInitialise(void) {
     for (int i = 0;i < MAXFILESDIRS;i++) fsObject[i].type = Unused;                 // Set all types to unused.
-    FSChangeDirectory("/");                                                         // Change directory to the root.
 }
 
 /**

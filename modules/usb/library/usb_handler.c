@@ -36,38 +36,6 @@ void USBInitialise(void) {
     COMAddUpdateFunction(USBUpdate);                                                // It has to be updated.
 }
 
-/**
- * @brief      Wait for the USB Key or other FS hardware to stabilise.
- *
- * @return     true if hardware discovered.
- */
-bool USBWaitForFileSystem(void) {
-    uint32_t timeOut = COMClock() + INPUSBKEY_TIMEOUT;                              // Time out after this period.
-    uint32_t lastBlink = 0;
-    bool blinkState = false;
-
-    #ifdef USE_BLINK_FEEDBACK
-    gpio_init(BLINK_LED_PIN);
-    gpio_set_dir(BLINK_LED_PIN, GPIO_OUT);
-    #endif
-
-    while (!USBIsFileSystemAvailable() && COMClock() < timeOut) {                   // Wait for USB Key or timeout.
-        USBUpdate();    
-        if (COMClock() > lastBlink) {                                               // We blink the LED while waiting for this.
-            blinkState = !blinkState;                                               // Some feedback ; tinyUSB crashes the display when
-            lastBlink = COMClock() + 250;                                           // booting so has to be done first.
-            #ifdef USE_BLINK_FEEDBACK
-            gpio_put(BLINK_LED_PIN, blinkState);        
-            #endif
-        }
-    }
-    #ifdef USE_BLINK_FEEDBACK                                                       // LED off.
-    gpio_put(BLINK_LED_PIN, false);        
-    #endif
-
-    if (!USBIsFileSystemAvailable()) { LOG("USB File System timed out.");}          // Probably no key, or programming cable plugged in.
-    return USBIsFileSystemAvailable();
-}
 
 /**
  * @brief      Install a USB Report Handler
