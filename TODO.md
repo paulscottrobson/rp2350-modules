@@ -1,8 +1,5 @@
 # TODO list
 
-## Patches
-- Working directory code in hook ?
-
 ## Computer module
 - The base computer system
 

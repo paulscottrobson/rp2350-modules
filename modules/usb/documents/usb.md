@@ -36,7 +36,7 @@ A module currently under consideration will provide higher level interface to th
 
 ## Important
 
-If using the USB and HSTX system together, USB has to be initialised first. Experimentally if HSTX is started first, some event in the USB stack (which I do not actively control) causes HSTX to stop.
+If using the USB and HSTX system together, USB has to be initialised first. 
 
 ## Usage Notes
 
@@ -76,9 +76,11 @@ Hopefully these are largely self explanatory - handles are now 32 bit signed int
 
 There are simple examples in main.c
 
+Note the FSChangeDirectory function does not operate relatively ; it selects a directory from the root (e.g. it must be "/something")
+
 ## Revision
 
-Written by Paul Robson, last revised 15 July 2025.
+Written by Paul Robson, last revised 10 August 2025.
 
 
 

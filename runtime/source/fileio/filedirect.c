@@ -60,6 +60,21 @@ uint32_t FSCreateDirectory(char *dirName) {
 }
 
 /**
+ * @brief      Change directory
+ *
+ * @param      dirName  The directory to change to.
+ *
+ * @return     Error code or zero.
+ */
+uint32_t FSChangeDirectory(char *dirName) {
+    CHECKFSAVAILABLE();
+    if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;
+    if (chdir(dirName) < 0) return FSMapErrorCode();                                // Change directory
+    return 0;
+}
+
+
+/**
  * @brief      Delete a directory if it exists
  *
  * @param      dirName  Directory to delete

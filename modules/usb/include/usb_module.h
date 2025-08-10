@@ -42,6 +42,7 @@ typedef struct _fsobjectInfo {                                                  
 
 uint32_t FSCreate(char *fileName);                                                   // File & Directory prototypes.
 uint32_t FSDelete(char *fileName);
+uint32_t FSChangeDirectory(char *dirName);
 uint32_t FSCreateDirectory(char *dirName);
 uint32_t FSDeleteDirectory(char *dirName);
 
