@@ -6,21 +6,21 @@ Modules are a standalone entity that can be built using cmake (this can be done 
 
 Modules outside the lowest level are abstracted from the Pico API. It is perfectly possible to use the API in any program that uses a module, but it isn't required. Such a program would not run on the runtime version of course.
 
-## Current Modules
+## Current Modules / Applications
 
 These are the current modules. In the runtime the functionality of the low level modules is partly handled by the runtime itself, to provide a functionally equivalent interface at a mid-level.
 
-|  Module  | Low  | Purpose                                                      |      |
-| :------: | ---- | ------------------------------------------------------------ | ---- |
-|  Common  | Yes  | Provides some common hardware functions and logging facilities. |      |
-|   DVI    | Yes  | Lowest level possible DVI interface, horizontal line drivers. |      |
-|   USB    | Yes  | Provides low level HID device interface (e.g. USB packets) and a simple File system. |      |
-|  PSRAM   | Yes  | This is the physical hardware interface to the PSRAM Chip    |      |
-|  Input   |      | HID Manager. Converts the Keyboard HID data to a keyboard queue/tracking system in ASCII with localisation. The Gamepad HID is converted to an easy interface, with a keyboard option if no Gamepad is available. The mouse HID is converted into position and button tracking |      |
-| Graphics |      | Low level graphics functions - draws rectangles, ellipses, text, lines and similar. |      |
-|   Text   |      | Provides a text display module for console style input/output |      |
-|  Bully   |      | This is an application which allows me to 'bully' the USB system (and other things) to see if they crash. |      |
-|  Memory  |      | This manages static RAM in the Pico and PSRAM.               |      |
+|    Module    | Low  | Purpose                                                      |      |
+| :----------: | ---- | ------------------------------------------------------------ | ---- |
+|    Common    | Yes  | Provides some common hardware functions and logging facilities. |      |
+|     DVI      | Yes  | Lowest level possible DVI interface provides                 |      |
+|     USB      | Yes  | Provides low level HID device interface (e.g. USB packets) and a simple File system. |      |
+|    PSRAM     | Yes  | This is the physical hardware interface to the PSRAM Chip    |      |
+|    Input     |      | HID Manager. Converts the Keyboard HID data to a keyboard queue/tracking system in ASCII with localisation. The Gamepad HID is converted to an easy interface, with a keyboard option if no Gamepad is available. The mouse HID is converted into position and button tracking |      |
+|   Graphics   |      | Low level graphics functions - draws rectangles, ellipses, text, lines and similar. |      |
+| ScreenEditor |      | Provides a full screen editor for text input rather like the Commodore machines. |      |
+|    Bully     |      | This is an application which allows me to 'bully' the USB system (and other things) to see if they crash. |      |
+|    Memory    |      | This manages static RAM in the Pico and PSRAM.               |      |
 
 ## Elements of Modules
 
@@ -88,8 +88,18 @@ The syntax is **python [module] [module] [module] -o [directory]**
 
 Modules dependencies are detected automatically, inserting them does no harm though. 
 
-Currently they all have to be in the same directory which is something I must fix :)
+## Location
+
+Modules and Applications should be created in the modules directory. However, they can be moved to other directories. 
+
+Attention needs to be paid to the first line of the Makefile which is generated
+
+`include ../../environment/system.make`
+
+This may need to be changed so that the environment directory can be found, if it's not on the same 'level' in the directory tree, as apps and modules are in the repository.
+
+------
 
 Paul Robson 
 
-7 August 2025
+10 August 2025
