@@ -41,8 +41,9 @@ file(GLOB_RECURSE RUNTIME_SOURCES "source/*.c")
 #
 #       The module/app that one wishes to actually run.
 #
-file(GLOB_RECURSE APP_SOURCES "${ROOTDIR}/apps/bully/app/*.[csS]")
-include_directories(${ROOTDIR}/apps/bully/include)
+file(GLOB_RECURSE APP_SOURCES "${APPDIR}/app/*.[csS]")
+file(GLOB_RECURSE APP_LIBRARY "${APPDIR}/library/*.[csS]")
+include_directories(${APPDIR}/include)
 
 #
 #       Libraries out of the bottom interface tier than are required.
@@ -53,7 +54,7 @@ file(GLOB_RECURSE SCREENEDITOR_LIB "${MODULEDIR}/screeneditor/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 
 add_executable(runtime 
-    ${APP_SOURCES} ${RUNTIME_SOURCES}
+    ${APP_SOURCES} ${APP_LIBRARY} ${RUNTIME_SOURCES}
     ${MODULEDIR}dvi/library/config.c
     ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREENEDITOR_LIB}
 )

@@ -142,7 +142,9 @@ Add the following code into app/main.c in the MAINFUNCTION function.
 
 *make compile* and either boot/reset copying or uploading via debug (as before) should run this program.
 
-You should get a yellow circle on a black background. Well, an ellipse.  An explanation of the lines in order.
+You should get a yellow circle on a black background. Well, an ellipse.  
+
+An explanation of the lines in order.
 
 1. Initialises the graphics system (and any subsystems)
 2. Sets the display mode to 320x240 pixels, 8 colours. Other modes are available.
@@ -157,17 +159,16 @@ The purpose of the last three lines is two fold.
 1. It repeatedly calls COMUpdate() which updates things that ... need updating, like the USB system. This should be called in any loop. 
 2. It allows the runtime program, which is a sort of emulator/simulator of the hardware, to exit and refresh, as it's written using the SDL library.
 
-## Doing it on the Runtime
+## Running it on the "Runtime"
 
 The runtime is a sort of "emulator". It emulates the hardware functionality, not the processor itself. It is not speed limited, so it will do some things much faster than the RP2350 will, so while it is a useful tool for development if you are doing a lot of work check it does work on the hardware.
 
-To make it run "circle" do the following (I'll tidy this up as it's a bit rubbish)
+To make it run "circle" do the following 
 
 1. Switch to the "runtime" directory
-2. Edit CMakeLists.txt
-3. Look for the line something like file(GLOB_RECURSE APP_SOURCES "${MODULEDIR}/screeneditor/app/*.[csS]") - the APP_SOURCES is the best thing to search on.
-4. Change '${MODULEDIR}/screeneditor' to '${MODULEDIR}/circle' (e.g. take sources from the circle directory)
-5. Change the line below that , the include, in a similar fashion.
+2. Edit Makefile
+3. At the top of the Makefile there is a line APPLICATION = ${ROOTDIR}apps/bully or something similar. This is the root directory of your application.
+4. Change this direction to wherever the app you are running (drawcircle is), probably ${MODULEDIR}circle.
 
 Then do *make cmake* as before, but after that *make run* and you should see the yellow ellipse again ... unless you changed it, in which case you'll get whatever you changed it to. 
 
