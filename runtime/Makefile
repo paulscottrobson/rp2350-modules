@@ -11,7 +11,7 @@ compile:
 cmake:
 	mkdir -p build
 	rm -f build/CMakeCache.txt 
-	cd build ; cmake -DMODULEDIR=$(MODULEDIR) -DROOTDIR=$(ROOTDIR) -DAPPDIR=${APPLICATION} ..
+	cd build ; cmake -DMODULEDIR=$(MODULEDIR) -DROOTDIR=$(ROOTDIR) -DAPPDIR=$(APPLICATION) -DBACKSLASH=$(BACKSLASH) ..
 
 run: compile
 	build/runtime

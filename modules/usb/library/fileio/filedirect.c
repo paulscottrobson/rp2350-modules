@@ -45,20 +45,6 @@ uint32_t FSDelete(char *fileName) {
 }
 
 /**
- * @brief      Change directory
- *
- * @param      dirName  The subdirectory or root directory to change to.
- *
- * @return     Error code or zero.
- */
-uint32_t FSChangeDirectory(char *dirName) {
-    CHECKFSAVAILABLE();
-    if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;
-    uint32_t res = f_chdir(dirName);                                                // Change directory.
-    return (res == 0) ? 0 : FSMapErrorCode(res);
-}
-
-/**
  * @brief      Create a directory, ignored if it already exists.
  *
  * @param      dirName  Directory to create

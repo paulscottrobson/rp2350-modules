@@ -68,7 +68,9 @@ static void decorate(void) {
  * @brief      List the root directory
  */
 static void ListDirectory(void) {
-    char *path = "/cdtest"; 
+    char *path = "/cdtest";
+    FSChangeDirectory(path);
+    path = ""; 
     int32_t error,handle = FSOpenDirectory(path);
     if (handle >= 0) {
         FSOBJECTINFO fInfo;
@@ -87,7 +89,8 @@ static void ListDirectory(void) {
  * @brief      List part of a file on the USB key.
  */
 static void ListFile(void) {
-    int32_t error,handle = FSOpen("/cdtest/test.txt");
+    FSChangeDirectory("/cdtest");
+    int32_t error,handle = FSOpen("test.txt");
     if (handle == 0) {
         error = FSSeek(handle,12);
         char buffer[129];

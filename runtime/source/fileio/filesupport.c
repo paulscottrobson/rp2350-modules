@@ -10,6 +10,7 @@
 // *******************************************************************************************
 
 #include "usb_module.h"
+#include "usb_module_local.h"
 #include "sys/stat.h"
 #include "errno.h"
 #include "dirent.h"
@@ -83,8 +84,19 @@ uint32_t FSMapErrorCode(void) {
 
 bool FSProcessFileName(char **pFileName) {
     static char buffer[512];
-    strcpy(buffer,"storage/");
+    char *p;
+    strcpy(buffer,"storage/");                                                      // Append full file name to storage
     strcat(buffer,FSCDMapCurrentName(*pFileName));
+    while (p = strstr(buffer,"//"),p != NULL) {                                     // Remove any double slashes. Don't think Linux minds
+        strcpy(p,p+1);                                                              // but Windows uses it as a server marker ?
+    }
+    #if BACKSLASH==1                                                                // Make windows slashes correct. 
+    p = buffer;
+    while (*p != '\0') {
+        if (*p == '/') *p = '\\';
+        p++;
+    }
+    #endif
     *pFileName = buffer;
     return true;
 }
