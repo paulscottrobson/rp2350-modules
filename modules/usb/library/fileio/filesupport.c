@@ -88,6 +88,7 @@ uint32_t FSMapErrorCode(FRESULT res) {
  * @return     true if valid.
  */
 bool FSProcessFileName(char **pFileName) {
+    *pFileName = FSCDMapCurrentName(*pFileName);
     return true;
 }
 

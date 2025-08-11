@@ -32,6 +32,7 @@ struct _filedirRecord {
  */
 void FSInitialise(void) {
     for (int i = 0;i < MAXFILESDIRS;i++) fsObject[i].type = Unused;                 // Set all types to unused.
+    FSCDInitialise();                                                               // Initialise the chdir() tracking.
 }
 
 /**
@@ -79,13 +80,11 @@ uint32_t FSMapErrorCode(void) {
  *
  * @return     true if valid.
  */
-static char buffer1[128],buffer2[128];
-static int buffID = 0;
 
 bool FSProcessFileName(char **pFileName) {
-    buffID = 1-buffID;                                                              // 2 alternating buffers, some functs take 2 parameters.
-    char *buffer = buffID ? buffer1:buffer2;
-    strcpy(buffer,"storage/");strcat(buffer,*pFileName);
+    static char buffer[512];
+    strcpy(buffer,"storage/");
+    strcat(buffer,FSCDMapCurrentName(*pFileName));
     *pFileName = buffer;
     return true;
 }

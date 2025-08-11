@@ -56,6 +56,7 @@ file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 add_executable(runtime 
     ${APP_SOURCES} ${APP_LIBRARY} ${RUNTIME_SOURCES}
     ${MODULEDIR}dvi/library/config.c
+    ${MODULEDIR}usb/library/fileio/changedir.c
     ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREENEDITOR_LIB}
 )
 

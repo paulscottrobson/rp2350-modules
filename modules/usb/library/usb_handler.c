@@ -25,6 +25,7 @@ void USBInitialise(void) {
 
     COMInitialise();                                                                // Initialise common code.
     FSInitialise();                                                                 // Initialise the file wrapper (not a module, part of USB)
+    FSCDInitialise();                                                               // Initialise the chdir() tracking.
     for (int i = 0;i < USBHANDLERCOUNT;i++) usbReportHandlers[i] = NULL;            // Remove all report handlers
 
     board_init();                                                                   // Most of this code comes from the tinyUSB examples

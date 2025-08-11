@@ -56,6 +56,9 @@ uint32_t FSSeek(uint32_t handle,uint32_t position);
 uint32_t FSTell(uint32_t handle);
 uint32_t FSClose(uint32_t handle);
 
+void FSCDInitialise(void);
+char *FSCDMapCurrentName(char *name);
+
 #define FSERR_BADNAME       (-1)                                                    // Bad file name.
 #define FSERR_SYSTEM        (-2)                                                    // System error.
 #define FSERR_EXIST         (-3)                                                    // File/Path/Directory bad
