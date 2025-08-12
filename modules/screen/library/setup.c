@@ -41,6 +41,5 @@ void SCRReset(void) {
     scrInfo.currentMode = m->mode;
     scrInfo.width = m->width/8;scrInfo.height = m->height/8;
     scrInfo.xCursor = scrInfo.yCursor = 0;
-    scrInfo.colour = (m->bitPlaneDepth == 1) ? 2 : 0x08;
-    scrInfo.cursorColour = (m->bitPlaneDepth == 1) ? 6 : 0x3C;
+    scrInfo.ink = (m->bitPlaneDepth == 1) ? 2 : 0x08;
 }

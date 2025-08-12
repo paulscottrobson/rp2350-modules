@@ -29,8 +29,7 @@ typedef struct _ScreenInfo {
     int32_t     xCursor,yCursor;                                                    // Cursor position.
     uint8_t     *charMem;                                                           // Character memory
     uint8_t     *extendLine;                                                        // Extended line flags.
-    uint8_t     colour;                                                             // Text colour.
-    uint8_t     cursorColour;                                                       // Cursor colour.
+    uint8_t     ink;                                                                // Text colour.
     uint32_t    currentMode;                                                        // Current display mode.
 } SCRSTATUS;
 

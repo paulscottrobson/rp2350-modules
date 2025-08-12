@@ -2,7 +2,7 @@
 
 ## ScreenEditor
 - Becomes 'screen', writeable, multi colour, storage only for reading.
-- colour to ink. Store ink.
+- Store ink.
 
 ## Computer module
 - The base computer system

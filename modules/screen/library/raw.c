@@ -20,7 +20,7 @@ void SCRClear(void) {
     memset(scrInfo.extendLine,0,SCR_MAXHEIGHT);                                     // Reset the extend line flags.
     for (uint32_t x = 0;x < scrInfo.width;x++) {                                    // Actually clear it.
         for (uint32_t y = 0;y < scrInfo.height;y++) {
-            SCRDraw(x,y,scrInfo.colour,' ',false);
+            SCRDraw(x,y,scrInfo.ink,' ',false);
         }
     }
 }
@@ -46,7 +46,7 @@ uint8_t *SCRCharAccess(uint32_t x,uint32_t y) {
  */
 void SCRWrite(uint32_t x,uint32_t y,uint32_t ch) {
     *SCRCharAccess(x,y) = ch;
-    SCRDraw(x,y,scrInfo.colour,ch,false);
+    SCRDraw(x,y,scrInfo.ink,ch,false);
 }
 
 /**
@@ -60,7 +60,7 @@ void SCRWrite(uint32_t x,uint32_t y,uint32_t ch) {
 void SCRCopy(uint32_t xSrc,uint32_t ySrc,uint32_t xTgt,uint32_t yTgt) {
     uint8_t ch = *SCRCharAccess(xSrc,ySrc);
     *SCRCharAccess(xTgt,yTgt) = ch;
-    SCRDraw(xTgt,yTgt,scrInfo.colour,ch,false);
+    SCRDraw(xTgt,yTgt,scrInfo.ink,ch,false);
 }
 
 /**

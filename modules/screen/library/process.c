@@ -51,12 +51,12 @@ bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     if (key == 0) {                                                                 // No key, flash the cursor.
         bool showCursor = (COMClock() & 512) != 0;        
         SCRDraw(scrInfo.xCursor,scrInfo.yCursor,
-                showCursor ? scrInfo.cursorColour : scrInfo.colour, 
+                scrInfo.ink, 
                 *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),showCursor);
         return COMAppRunning();
     }
     SCRDraw(scrInfo.xCursor,scrInfo.yCursor,                                        // Hide the cursor
-            scrInfo.colour,
+            scrInfo.ink,
             *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),false);                  
 
     if (key == CTL_CRLF) {                                                          // If CR load the current line in.
