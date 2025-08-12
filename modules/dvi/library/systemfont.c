@@ -121,5 +121,5 @@ static const uint8_t USEFLASH systemFont[] = {
  * @return     This is an 8x8 bitmap font starting at ' '
  */
 uint8_t * DVIGetSystemFont(void) {
-    return systemFont;
+    return (uint8_t *)systemFont;
 }
