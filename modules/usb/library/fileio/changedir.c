@@ -15,6 +15,7 @@
 #define MAXFILESIZE     (32)
 
 static char current[MAXDIRSIZE+1];                                                  // The current directory.
+static uint32_t FSChangeDirectorySingle(char *change);
 
 /**
  * @brief      Initialise the CWD system
@@ -47,14 +48,45 @@ char *FSCDMapCurrentName(char *name) {
  * @return     Error codes.
  */
 uint32_t FSChangeDirectory(char *newDir) {
+    char changeDir[MAXDIRSIZE+1];
+    uint32_t cd = 0;
     if (*newDir == '/') {                                                           // Absolute path, so back to the root
         strcpy(current,"/");
-        newDir++;                                                                   // Consume initial slash.
+    }
+    while (*newDir == '/') newDir++;                                                // Skip any leading slashes.
+
+    while (*newDir != '\0') {                                                       // Finished each directory change ?
+        cd = 0;
+        while (*newDir != '\0' && *newDir != '/') {                                 // While not read in complete subsection 
+            if (cd == MAXDIRSIZE) return FSERR_BADNAME;                             // Name is too long.
+            changeDir[cd++] = *newDir++;                                            // Copy it in.
+        }
+        changeDir[cd] = '\0';                                                       // Make ASCIIZ
+        LOG("Before %s %s",current,changeDir);
+        uint32_t err = FSChangeDirectorySingle(changeDir);
+        LOG("After %s",current);
+        if (err != 0) return err;
+        while (*newDir == '/') newDir++;                                            // Skip any leading slashes.
+    }
+    return 0;
+}
+
+/**
+ * @brief      Make a single change to the current directory.
+ *
+ * @param      change  Change : new directory, ..  or .
+ *
+ * @return     Error code.
+ */
+static uint32_t FSChangeDirectorySingle(char *change) {
+    if (strcmp(change,".") == 0) return 0;                                          // . doesn't change anything at all.
+
+    if (strcmp(change,"..") == 0) {                                                 // .. goes up one level.
+        if (strlen(current) == 1) return FSERR_EXIST;                               // Already at the top.
     }
     //
-    //      Scan through / seperated entries which can be a directory .. . or empty (cwd ////) and make and
-    //      validate those changes.
+    //      Change to a named directory.
     //
-    strcat(current,newDir);
+    strcat(current,change);
     return 0;
 }

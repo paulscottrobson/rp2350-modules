@@ -94,7 +94,7 @@ static void ListFile(void) {
     if (handle == 0) {
         error = FSSeek(handle,12);
         char buffer[129];
-        error = FSRead(handle,buffer,128);buffer[128] = '\0';
+        error = FSRead(handle,buffer,36);buffer[36] = '\0';
         LOG("Read %d : [%s]",error,buffer);
         error = FSClose(handle);
     }
