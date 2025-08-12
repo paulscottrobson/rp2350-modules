@@ -50,10 +50,14 @@ bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     *buffer = '\0';                                                                 // Empty buffer in case we exit runtime.
     if (key == 0) {                                                                 // No key, flash the cursor.
         bool showCursor = (COMClock() & 512) != 0;        
-        SCRDraw(scrInfo.xCursor,scrInfo.yCursor,showCursor ? scrInfo.cursorColour : scrInfo.colour, *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),showCursor);
+        SCRDraw(scrInfo.xCursor,scrInfo.yCursor,
+                showCursor ? scrInfo.cursorColour : scrInfo.colour, 
+                *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),showCursor);
         return COMAppRunning();
     }
-    SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,*SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),false);                  // Hide the cursor
+    SCRDraw(scrInfo.xCursor,scrInfo.yCursor,                                        // Hide the cursor
+            scrInfo.colour,
+            *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),false);                  
 
     if (key == CTL_CRLF) {                                                          // If CR load the current line in.
         scrInfo.xCursor = 0;
@@ -108,8 +112,7 @@ void SCRWriteChar(uint32_t key) {
             break;
         default:
             if (key >= 0x20 && key <= 0x7F) {
-                *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor) = key;
-                SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,key,false);
+                SCRWrite(scrInfo.xCursor,scrInfo.yCursor,key);                      // Write to display.
                 if (scrInfo.xCursor == scrInfo.width-1) {                           // Have we done a multiple line ?
                     scrInfo.extendLine[scrInfo.yCursor] = 1;                        // Set the 'extended line' flag.
                 }
@@ -170,13 +173,12 @@ static void SCRCarriageReturn(void) {
 static void SCRScrollWindow(void) {
     for (int x = 0;x < scrInfo.width;x++) {                                         // Scroll the characters up.
         for (int y = 0;y < scrInfo.height-1;y++) {
-            *SCRCharAccess(x,y) = *SCRCharAccess(x,y+1);
+            SCRCopy(x,y+1,x,y);
         }
-        *SCRCharAccess(x,scrInfo.height-1) = ' ';
+        SCRWrite(x,scrInfo.height-1,' ');
     }
     memcpy(scrInfo.extendLine,scrInfo.extendLine+1,SCR_MAXHEIGHT-1);                // Scroll the extended line array up to keep synced.
     scrInfo.extendLine[SCR_MAXHEIGHT-1] = 0;
-    SCRRepaint();
 }
 
 /**
@@ -218,11 +220,9 @@ static void SCRInsert(void) {
     while (x != scrInfo.xCursor || y != scrInfo.yCursor) {
         x1 = x;y1 = y;
         x--;if (x < 0) x = scrInfo.width-1,y--;
-        *SCRCharAccess(x1,y1) = *SCRCharAccess(x,y);
-        SCRDraw(x1,y1,scrInfo.colour,*SCRCharAccess(x1,y1),false);
+        SCRCopy(x,y,x1,y1);
     }
-    *SCRCharAccess(x,y) = ' ';
-    SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);    
+    SCRWrite(x,y,' ');
 }
 
 /**
@@ -233,12 +233,10 @@ static void SCRDelete(void) {
     x = scrInfo.xCursor;y = scrInfo.yCursor;
     y1 = SCRFindEndCurrent(y);
     while (x != scrInfo.width-1 || y != y1) {
-        *SCRCharAccess(x,y) = *SCRCharAccess(x+1,y);
-        SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);
+        SCRCopy(x+1,y,x,y);
         x++;if (x == scrInfo.width) x = 0,y++;
     }
-    *SCRCharAccess(x,y) = ' ';
-    SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);
+    SCRWrite(x,y,' ');
 }
 
 /**
