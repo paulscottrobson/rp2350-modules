@@ -9,25 +9,25 @@
 // *******************************************************************************************
 // *******************************************************************************************
 
-#include "screeneditor_module.h"
-#include "screeneditor_module_local.h"
+#include "screen_module.h"
+#include "screen_module_local.h"
 
 /**
  * @brief      Clear the screen.
  */
-void SEDClear(void) {
-    memset(sedInfo.charMem,' ',SED_MAXWIDTH*SED_MAXHEIGHT);                         // Clear the screen
-    memset(sedInfo.extendLine,0,SED_MAXHEIGHT);                                     // Reset the extend line flags.
-    SEDRepaint();
+void SCRClear(void) {
+    memset(scrInfo.charMem,' ',SCR_MAXWIDTH*SCR_MAXHEIGHT);                         // Clear the screen
+    memset(scrInfo.extendLine,0,SCR_MAXHEIGHT);                                     // Reset the extend line flags.
+    SCRRepaint();
 }
 
 /**
  * @brief      Repaint the screen.
  */
-void SEDRepaint(void) {
-    for (uint32_t x = 0;x < sedInfo.width;x++) {
-        for (uint32_t y = 0;y < sedInfo.height;y++) {
-            SEDDraw(x,y,sedInfo.colour,false);
+void SCRRepaint(void) {
+    for (uint32_t x = 0;x < scrInfo.width;x++) {
+        for (uint32_t y = 0;y < scrInfo.height;y++) {
+            SCRDraw(x,y,scrInfo.colour,false);
         }
     }
 }
@@ -40,8 +40,8 @@ void SEDRepaint(void) {
  *
  * @return     Pointer to byte holding character
  */
-uint8_t *SEDCharAccess(uint32_t x,uint32_t y) {
-    return sedInfo.charMem + x + y * SED_MAXWIDTH;
+uint8_t *SCRCharAccess(uint32_t x,uint32_t y) {
+    return scrInfo.charMem + x + y * SCR_MAXWIDTH;
 }
 
 /**
@@ -52,7 +52,7 @@ uint8_t *SEDCharAccess(uint32_t x,uint32_t y) {
  * @param[in]  colour      colour to write in (raw)
  * @param[in]  bHighlight  if true, highlight it by drawing the 'shaded' graphic.
  */
-void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
+void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
 
     static uint8_t _pixelMapper[16] = { 0x00,0x03,0x0C,0x0F, 0x30,0x33,0x3C,0x3F,   // Map 4 bit pixels -> byte for 64 bit mode.
                                         0xC0,0xC3,0xCC,0xCF, 0xF0,0xF3,0xFC,0xFF  };
@@ -61,7 +61,7 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
 
     static uint8_t _cursor[8] = { 0xAA,0x55,0xAA,0x55,0xAA,0x55,0xAA,0x55 };
 
-    uint8_t ch = *SEDCharAccess(x,y);                                               // Read character.
+    uint8_t ch = *SCRCharAccess(x,y);                                               // Read character.
     if (ch < 32 || ch > 127) ch = 32;                                               // Force into range.
 
     DVIMODEINFO *m = DVIGetModeInformation();                                       // Get current mode information.
@@ -72,7 +72,7 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
     uint32_t offset;
 
     if (m->bitPlaneDepth == 1) {                                                    // 8 colours
-        offset = (x + sedInfo.x) + (y + sedInfo.y) * 8 * m->bytesPerLine;           // Offset in each line.
+        offset = (x + scrInfo.x) + (y + scrInfo.y) * 8 * m->bytesPerLine;           // Offset in each line.
         for (uint32_t p = 0;p < m->bitPlaneCount;p++) {                             // Each bit plane
             uint8_t *pt = m->bitPlane[p] + offset;
             for (uint32_t y = 0;y < 8;y++) {                                        // Each line of character.
@@ -84,7 +84,7 @@ void SEDDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
         for (uint32_t i = 0;i < 3;i++) {
             colourMask[i] = _colourMapper[(colour >> (2 * i)) & 3];
         }
-        offset = (x + sedInfo.x)*2 + (y + sedInfo.y) * 8 * m->bytesPerLine;         // Offset in each line.
+        offset = (x + scrInfo.x)*2 + (y + scrInfo.y) * 8 * m->bytesPerLine;         // Offset in each line.
         for (uint32_t p = 0;p < m->bitPlaneCount;p++) {                             // Each bit plane
             uint8_t *pt = m->bitPlane[p] + offset;
             for (uint32_t y = 0;y < 8;y++) {                                        // Each line of character.

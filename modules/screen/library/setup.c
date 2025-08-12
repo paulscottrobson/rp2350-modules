@@ -9,38 +9,38 @@
 // *******************************************************************************************
 // *******************************************************************************************
 
-#include "screeneditor_module.h"
-#include "screeneditor_module_local.h"
+#include "screen_module.h"
+#include "screen_module_local.h"
 
-SEDSTATUS sedInfo;
+SCRSTATUS scrInfo;
 
 /**
  * @brief      Initialise screen editor
  */
-void SEDInitialise(void) {
+void SCRInitialise(void) {
     static bool isInitialised = false;
     if (isInitialised) return;
     isInitialised = true;
     DVIInitialise();
     INPInitialise();
     MEMInitialise();
-    uint8_t *mem = MEMAlloc(SED_MAXWIDTH*SED_MAXHEIGHT+SED_MAXHEIGHT,MEM_ANY);
+    uint8_t *mem = MEMAlloc(SCR_MAXWIDTH*SCR_MAXHEIGHT+SCR_MAXHEIGHT,MEM_ANY);
     LOG("%p",mem);
     if (mem == NULL) ERROR("Couldn't allocate screen memory");
-    sedInfo.charMem = mem;
-    sedInfo.extendLine = mem + SED_MAXHEIGHT*SED_MAXWIDTH;
-    SEDReset();
+    scrInfo.charMem = mem;
+    scrInfo.extendLine = mem + SCR_MAXHEIGHT*SCR_MAXWIDTH;
+    SCRReset();
 }
 
 /**
  * @brief      Reset screen editor to use current mode, and clear display.
  */
-void SEDReset(void) {
+void SCRReset(void) {
     DVIMODEINFO *m = DVIGetModeInformation();
-    sedInfo.x = sedInfo.y = 0;
-    sedInfo.currentMode = m->mode;
-    sedInfo.width = m->width/8;sedInfo.height = m->height/8;
-    sedInfo.xCursor = sedInfo.yCursor = 0;
-    sedInfo.colour = (m->bitPlaneDepth == 1) ? 2 : 0x08;
-    sedInfo.cursorColour = (m->bitPlaneDepth == 1) ? 6 : 0x3C;
+    scrInfo.x = scrInfo.y = 0;
+    scrInfo.currentMode = m->mode;
+    scrInfo.width = m->width/8;scrInfo.height = m->height/8;
+    scrInfo.xCursor = scrInfo.yCursor = 0;
+    scrInfo.colour = (m->bitPlaneDepth == 1) ? 2 : 0x08;
+    scrInfo.cursorColour = (m->bitPlaneDepth == 1) ? 6 : 0x3C;
 }

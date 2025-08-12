@@ -1,3 +1,3 @@
 include ../../environment/system.make
-APPNAME = screeneditor
+APPNAME = screen
 include $(BUILDENVDIR)pico.$(OS).make

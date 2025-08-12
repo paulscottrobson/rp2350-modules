@@ -24,7 +24,7 @@ include_directories(${MODULEDIR}/input/include)
 include_directories(${MODULEDIR}/modes/include)
 include_directories(${MODULEDIR}/graphics/include)
 include_directories(${MODULEDIR}/memory/include)
-include_directories(${MODULEDIR}/screeneditor/include)
+include_directories(${MODULEDIR}/screen/include)
 #
 #       Add the SDL2 stuff
 #
@@ -50,15 +50,15 @@ include_directories(${APPDIR}/include)
 #
 file(GLOB_RECURSE INPUT_LIB "${MODULEDIR}/input/library/*.[csS]")
 file(GLOB_RECURSE GRAPHICS_LIB "${MODULEDIR}/graphics/library/*.[csS]")
-file(GLOB_RECURSE SCREENEDITOR_LIB "${MODULEDIR}/screeneditor/library/*.[csS]")
+file(GLOB_RECURSE SCREEN_LIB "${MODULEDIR}/screen/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 
 add_executable(runtime 
     ${APP_SOURCES} ${APP_LIBRARY} ${RUNTIME_SOURCES}
     ${MODULEDIR}dvi/library/config.c
     ${MODULEDIR}dvi/library/systemfont.c
-        ${MODULEDIR}usb/library/fileio/changedir.c
-    ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREENEDITOR_LIB}
+    ${MODULEDIR}usb/library/fileio/changedir.c
+    ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREEN_LIB}
 )
 
 if(TARGET SDL2::SDL2main)

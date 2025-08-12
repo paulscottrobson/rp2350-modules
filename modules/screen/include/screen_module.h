@@ -1,8 +1,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
 //
-//      Name :      screeneditor_module.h
-//      Purpose :   Screen Editor Headers
+//      Name :      screenr_module.h
+//      Purpose :   Screen  Headers
 //      Date :      9th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //
@@ -23,7 +23,7 @@
 #include "input_module.h"
 #include "memory_module.h"
 
-typedef struct _ScreenEditor {
+typedef struct _ScreenInfo {
     int32_t     x,y;                                                                // Character position on screen
     uint32_t    width,height;                                                       // Width & height in characters
     int32_t     xCursor,yCursor;                                                    // Cursor position.
@@ -32,12 +32,12 @@ typedef struct _ScreenEditor {
     uint8_t     colour;                                                             // Text colour.
     uint8_t     cursorColour;                                                       // Cursor colour.
     uint32_t    currentMode;                                                        // Current display mode.
-} SEDSTATUS;
+} SCRSTATUS;
 
-extern SEDSTATUS sedInfo;
+extern SCRSTATUS scrInfo;
 
-void SEDInitialise(void);
-void SEDReset(void);
-void SEDClear(void);
-bool SEDProcess(uint8_t *buffer,uint32_t size,uint32_t key);
-void SEDGetLine(uint8_t *buffer,uint32_t size);
+void SCRInitialise(void);
+void SCRReset(void);
+void SCRClear(void);
+bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key);
+void SCRGetLine(uint8_t *buffer,uint32_t size);

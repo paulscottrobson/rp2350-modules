@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 include(pico_sdk_import.cmake)
 
-project(screeneditor)
+project(screen)
 
 pico_sdk_init()
 
@@ -29,11 +29,11 @@ file(GLOB_RECURSE PSRAM_MODULE_SOURCES "${MODULEDIR}/psram/library/*.[csS]")
 file(GLOB_RECURSE INPUT_MODULE_SOURCES "${MODULEDIR}/input/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_MODULE_SOURCES "${MODULEDIR}/memory/library/*.[csS]")
 
-add_executable(screeneditor
+add_executable(screen
 	${APP_SOURCES} ${C_SOURCES}
 	${COMMON_MODULE_SOURCES} ${USB_MODULE_SOURCES} ${DVI_MODULE_SOURCES} ${PSRAM_MODULE_SOURCES} ${INPUT_MODULE_SOURCES} ${MEMORY_MODULE_SOURCES}
 )
-target_compile_definitions(screeneditor PRIVATE
+target_compile_definitions(screen PRIVATE
     DVI_USE_SIO_TMDS_ENCODER=0
     DVI_VERTICAL_REPEAT=1
     DVI_N_TMDS_BUFFERS=3
@@ -41,7 +41,7 @@ target_compile_definitions(screeneditor PRIVATE
 )
 
 
-target_link_libraries(screeneditor PUBLIC
+target_link_libraries(screen PUBLIC
 	pico_stdlib
 	pico_multicore
 	pico_util
@@ -52,4 +52,4 @@ target_link_libraries(screeneditor PUBLIC
 	tinyusb_board
 )
 
-pico_add_extra_outputs(screeneditor)
+pico_add_extra_outputs(screen)
