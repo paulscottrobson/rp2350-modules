@@ -11,8 +11,8 @@
 
 #include "usb_module.h"
 
-#define MAXDIRSIZE      (64)
-#define MAXFILESIZE     (32)
+#define MAXDIRSIZE      (64)                                                        // Max size of complete path
+#define MAXFILESIZE     (32)                                                        // Max size of file name / directory name.
 
 static char current[MAXDIRSIZE+1];                                                  // The current directory.
 static uint32_t FSChangeDirectorySingle(char *change);
@@ -48,7 +48,7 @@ char *FSCDMapCurrentName(char *name) {
  * @return     Error codes.
  */
 uint32_t FSChangeDirectory(char *newDir) {
-    char changeDir[MAXDIRSIZE+1];
+    char changeDir[MAXFILESIZE+1];
     uint32_t cd = 0;
     if (*newDir == '/') {                                                           // Absolute path, so back to the root
         strcpy(current,"/");
@@ -58,13 +58,11 @@ uint32_t FSChangeDirectory(char *newDir) {
     while (*newDir != '\0') {                                                       // Finished each directory change ?
         cd = 0;
         while (*newDir != '\0' && *newDir != '/') {                                 // While not read in complete subsection 
-            if (cd == MAXDIRSIZE) return FSERR_BADNAME;                             // Name is too long.
+            if (cd == MAXFILESIZE) return FSERR_BADNAME;                            // Name is too long.
             changeDir[cd++] = *newDir++;                                            // Copy it in.
         }
         changeDir[cd] = '\0';                                                       // Make ASCIIZ
-        LOG("Before %s %s",current,changeDir);
-        uint32_t err = FSChangeDirectorySingle(changeDir);
-        LOG("After %s",current);
+        uint32_t err = FSChangeDirectorySingle(changeDir);                          // Do that single change.
         if (err != 0) return err;
         while (*newDir == '/') newDir++;                                            // Skip any leading slashes.
     }
@@ -79,14 +77,29 @@ uint32_t FSChangeDirectory(char *newDir) {
  * @return     Error code.
  */
 static uint32_t FSChangeDirectorySingle(char *change) {
-    if (strcmp(change,".") == 0) return 0;                                          // . doesn't change anything at all.
+    if (strcmp(change,".") == 0) {                                                  // . doesn't change anything at all.
+        return 0;
+    }
 
     if (strcmp(change,"..") == 0) {                                                 // .. goes up one level.
         if (strlen(current) == 1) return FSERR_EXIST;                               // Already at the top.
+        char *p = current+strlen(current)-1;                                        // Last character.
+        while (*p != '/') p--;                                                      // Find the previous /
+        *p = '\0';                                                                  // Chop it
+        if (current == p) strcpy(current,"/");                                      // Back at root.
+        return 0;
     }
-    //
-    //      Change to a named directory.
-    //
+
+    if (strlen(current)+1+strlen(change) > MAXDIRSIZE) return FSERR_BADNAME;        // Whole thing is too long.
+
+    char *remove = current+strlen(current);                                         // So we can delete it if it is bad.
+    if (strlen(current) > 1) strcat(current,"/");                                   // Not at root.
     strcat(current,change);
+    uint32_t h = FSOpenDirectory(current);                                          // Try to open it.
+    if (h < 0) {                                                                    // Failed, probably directory not found.
+        *remove = '\0';                                                             // Fix current back
+        return h;
+    }
+    FSCloseDirectory(h);
     return 0;
 }

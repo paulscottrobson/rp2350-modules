@@ -1,7 +1,7 @@
 # TODO list
 
-## Miscellany
-- Finish the CWD code.
+## ScreenEditor
+- Becomes 'screen', writeable, multi colour, storage only for reading.
 
 ## Computer module
 - The base computer system

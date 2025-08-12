@@ -68,7 +68,8 @@ static void decorate(void) {
  * @brief      List the root directory
  */
 static void ListDirectory(void) {
-    char *path = "/cdtest";
+    char *path = "/cdtest/..";
+    LOG(path);
     FSChangeDirectory(path);
     path = ""; 
     int32_t error,handle = FSOpenDirectory(path);
