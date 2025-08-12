@@ -81,7 +81,7 @@ void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,uint32_t ch,bool bHighlight) {
 
     static uint8_t _cursor[8] = { 0xAA,0x55,0xAA,0x55,0xAA,0x55,0xAA,0x55 };
 
-    if (ch < 32 || ch > 127) ch = 32;                                               // Force into range.
+    if (ch < 32 || ch >= 0x100) ch = 32;                                            // Force into range.
 
     DVIMODEINFO *m = DVIGetModeInformation();                                       // Get current mode information.
     if (x >= m->width/8 || y >= m->height/8) return;                                // Mode could have changed, this stops out of bounds access.

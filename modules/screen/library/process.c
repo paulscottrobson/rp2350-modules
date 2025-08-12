@@ -111,7 +111,7 @@ void SCRWriteChar(uint32_t key) {
             SCRDelete();
             break;
         default:
-            if (key >= 0x20 && key <= 0x7F) {
+            if (key >= 0x20 && key <= 0xFF) {
                 SCRWrite(scrInfo.xCursor,scrInfo.yCursor,key);                      // Write to display.
                 if (scrInfo.xCursor == scrInfo.width-1) {                           // Have we done a multiple line ?
                     scrInfo.extendLine[scrInfo.yCursor] = 1;                        // Set the 'extended line' flag.

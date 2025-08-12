@@ -22,7 +22,7 @@
  */
 GFXFONTSOURCE *GFXGetSystemCharacter(uint16_t code) {
     static GFXFONTSOURCE ch;                                                        // Information structure
-    if (code < ' ' || code >= 0x80) return NULL;                                    // Bad character
+    if (code < ' ' || code >= 0x100) return NULL;                                   // Bad character
     ch.pixelData = DVIGetSystemFont()+(code - ' ') * 8;                             // Address in above byte array
     ch.bytesPerLine = 1;                                                            // 8x8 pixels, so 1 byte per line 
     ch.height = ch.width = 8;                                                       // 8x8 pixels

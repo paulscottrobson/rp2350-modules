@@ -15,6 +15,7 @@ int MAINPROGRAM() {
     scrInfo.width -= 2;
     scrInfo.height -= 2;
     SCRWriteChar(CTL_CLEAR);
+    for (int i = 32;i < 256;i++) SCRWriteChar(i);
     while (COMAppRunning()) {                                                                     
         while (SCRProcess(buffer,sizeof(buffer),INPGetKey())) COMUpdate();                         
         LOG("Entered '%s'",buffer);
