@@ -16,7 +16,8 @@
 
 void SCRRepaint(void);
 uint8_t *SCRCharAccess(uint32_t x,uint32_t y);
-void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight);
+void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,uint32_t ch,bool bHighlight);
+void SCRClear(void);
 
 #ifndef RUNTIME
 #endif

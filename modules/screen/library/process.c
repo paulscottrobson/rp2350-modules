@@ -12,7 +12,6 @@
 #include "screen_module.h"
 #include "screen_module_local.h"
 
-static void SCRProcessKey(uint32_t key);
 static void SCRAdjust(int32_t xi,int32_t yi);
 static void SCRBackSpace(void);
 static void SCRCarriageReturn(void);
@@ -51,17 +50,17 @@ bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
     *buffer = '\0';                                                                 // Empty buffer in case we exit runtime.
     if (key == 0) {                                                                 // No key, flash the cursor.
         bool showCursor = (COMClock() & 512) != 0;        
-        SCRDraw(scrInfo.xCursor,scrInfo.yCursor,showCursor ? scrInfo.cursorColour : scrInfo.colour ,showCursor);
+        SCRDraw(scrInfo.xCursor,scrInfo.yCursor,showCursor ? scrInfo.cursorColour : scrInfo.colour, *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),showCursor);
         return COMAppRunning();
     }
-    SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,false);                  // Hide the cursor
+    SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,*SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor),false);                  // Hide the cursor
 
     if (key == CTL_CRLF) {                                                          // If CR load the current line in.
         scrInfo.xCursor = 0;
         scrInfo.yCursor = SCRExtract(scrInfo.yCursor,buffer,size);                  // Extract text
-        SCRProcessKey(0);                                                           // Forces checking of y position
+        SCRWriteChar(0);                                                            // Forces checking of y position
     } else {
-        SCRProcessKey(key); 
+        SCRWriteChar(key); 
     }
     return COMAppRunning() && key != CTL_CRLF;
 }
@@ -71,7 +70,7 @@ bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key) {
  *
  * @param[in]  key   key to process
  */
-static void SCRProcessKey(uint32_t key) {
+void SCRWriteChar(uint32_t key) {
     switch(key) {
         case CTL_TAB:
             scrInfo.xCursor = ((scrInfo.xCursor + 8) & 0xFFF8);
@@ -110,7 +109,7 @@ static void SCRProcessKey(uint32_t key) {
         default:
             if (key >= 0x20 && key <= 0x7F) {
                 *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor) = key;
-                SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,false);
+                SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,key,false);
                 if (scrInfo.xCursor == scrInfo.width-1) {                           // Have we done a multiple line ?
                     scrInfo.extendLine[scrInfo.yCursor] = 1;                        // Set the 'extended line' flag.
                 }
@@ -153,8 +152,8 @@ static void SCRAdjust(int32_t xi,int32_t yi) {
  */
 static void SCRBackSpace(void) {
     SCRAdjust(-1,0);
-    *SCRCharAccess(scrInfo.xCursor,scrInfo.yCursor) = ' ';
-    SCRDraw(scrInfo.xCursor,scrInfo.yCursor,scrInfo.colour,false);
+    SCRWriteChar(' ');
+    SCRAdjust(-1,0);
 }
 
 /**
@@ -172,7 +171,6 @@ static void SCRScrollWindow(void) {
     for (int x = 0;x < scrInfo.width;x++) {                                         // Scroll the characters up.
         for (int y = 0;y < scrInfo.height-1;y++) {
             *SCRCharAccess(x,y) = *SCRCharAccess(x,y+1);
-
         }
         *SCRCharAccess(x,scrInfo.height-1) = ' ';
     }
@@ -221,10 +219,10 @@ static void SCRInsert(void) {
         x1 = x;y1 = y;
         x--;if (x < 0) x = scrInfo.width-1,y--;
         *SCRCharAccess(x1,y1) = *SCRCharAccess(x,y);
-        SCRDraw(x1,y1,scrInfo.colour,false);
+        SCRDraw(x1,y1,scrInfo.colour,*SCRCharAccess(x1,y1),false);
     }
     *SCRCharAccess(x,y) = ' ';
-    SCRDraw(x,y,scrInfo.colour,false);    
+    SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);    
 }
 
 /**
@@ -236,11 +234,11 @@ static void SCRDelete(void) {
     y1 = SCRFindEndCurrent(y);
     while (x != scrInfo.width-1 || y != y1) {
         *SCRCharAccess(x,y) = *SCRCharAccess(x+1,y);
-        SCRDraw(x,y,scrInfo.colour,false);
+        SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);
         x++;if (x == scrInfo.width) x = 0,y++;
     }
     *SCRCharAccess(x,y) = ' ';
-    SCRDraw(x,y,scrInfo.colour,false);
+    SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);
 }
 
 /**

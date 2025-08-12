@@ -27,7 +27,7 @@ void SCRClear(void) {
 void SCRRepaint(void) {
     for (uint32_t x = 0;x < scrInfo.width;x++) {
         for (uint32_t y = 0;y < scrInfo.height;y++) {
-            SCRDraw(x,y,scrInfo.colour,false);
+            SCRDraw(x,y,scrInfo.colour,*SCRCharAccess(x,y),false);
         }
     }
 }
@@ -47,12 +47,13 @@ uint8_t *SCRCharAccess(uint32_t x,uint32_t y) {
 /**
  * @brief      Draw character in a particular cell.
  *
- * @param[in]  x           x position (offset from left)
- * @param[in]  y           y position (offset from top)
- * @param[in]  colour      colour to write in (raw)
+ * @param[in]  x       x position (offset from left)
+ * @param[in]  y       y position (offset from top)
+ * @param[in]  colour  colour to write in (raw)
+ * @param[in]  ch      Character to draw.
  * @param[in]  bHighlight  if true, highlight it by drawing the 'shaded' graphic.
  */
-void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
+void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,uint32_t ch,bool bHighlight) {
 
     static uint8_t _pixelMapper[16] = { 0x00,0x03,0x0C,0x0F, 0x30,0x33,0x3C,0x3F,   // Map 4 bit pixels -> byte for 64 bit mode.
                                         0xC0,0xC3,0xCC,0xCF, 0xF0,0xF3,0xFC,0xFF  };
@@ -61,7 +62,6 @@ void SCRDraw(uint32_t x,uint32_t y,uint8_t colour,bool bHighlight) {
 
     static uint8_t _cursor[8] = { 0xAA,0x55,0xAA,0x55,0xAA,0x55,0xAA,0x55 };
 
-    uint8_t ch = *SCRCharAccess(x,y);                                               // Read character.
     if (ch < 32 || ch > 127) ch = 32;                                               // Force into range.
 
     DVIMODEINFO *m = DVIGetModeInformation();                                       // Get current mode information.

@@ -38,6 +38,6 @@ extern SCRSTATUS scrInfo;
 
 void SCRInitialise(void);
 void SCRReset(void);
-void SCRClear(void);
 bool SCRProcess(uint8_t *buffer,uint32_t size,uint32_t key);
 void SCRGetLine(uint8_t *buffer,uint32_t size);
+void SCRWriteChar(uint32_t key);

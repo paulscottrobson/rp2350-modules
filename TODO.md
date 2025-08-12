@@ -2,6 +2,8 @@
 
 ## ScreenEditor
 - Becomes 'screen', writeable, multi colour, storage only for reading.
+- implement copy, copies one square to another. fix up scrolling.
+- remove Repaint()
 
 ## Computer module
 - The base computer system
