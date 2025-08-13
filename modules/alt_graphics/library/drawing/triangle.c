@@ -9,8 +9,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
-#include "graphics_module.h"
-#include "graphics_module_local.h"
+#include "alt_graphics_module.h"
+#include "alt_graphics_module_local.h"
 
 #define HORIZLINE(x1,x2,y)      { GFXRawMove(x1,y);GFXDrawLine(x1,y,x2,y,true); }
 #define ANYLINE(x1,y1,x2,y2)    { GFXRawMove(x1,y1);GFXDrawLine(x1,y1,x2,y2,true); }

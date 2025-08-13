@@ -1,7 +1,7 @@
 // *******************************************************************************************
 // *******************************************************************************************
 //
-//      Name :      graphics_module.h
+//      Name :      alt_graphics_module.h
 //      Purpose :   Graphics module header.
 //      Date :      6th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)

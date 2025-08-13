@@ -1,4 +1,4 @@
-# Graphics Module
+# Alt_Graphics Module
 
 ## Required Modules
 
@@ -11,8 +11,7 @@ This module provides basic graphics functionality ; lines, shapes text and so on
 
 ## Further Modules
 
-- Console
-- Sprites
+- Deprecated
 
 ## Usage Notes
 
@@ -44,11 +43,7 @@ The coordinates can be mapped from anything you like ; a function defined as voi
 
 The current graphics 'state' - the colours, positions, clipping, mapping is known as the Display or Graphics Context. It is possible to open a new one with GFXOpenContext() (and close it with GFXCloseContext()) ; this allows the user to do an entirely different draw (say update window contents) transparently, as the current context is restored by GFXCloseContext().
 
-## Improvements
-
-- More functionality
-- More fonts (interface to GEOS fonts ?)
 
 ## Revision
 
-Written by Paul Robson, last revised 7 August 2025.
+Written by Paul Robson, last revised 13 August 2025.

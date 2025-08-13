@@ -9,7 +9,7 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
-#include "graphics_module.h"
+#include "alt_graphics_module.h"
 
 static void generalTest(void);
 static void generalTest2(void);

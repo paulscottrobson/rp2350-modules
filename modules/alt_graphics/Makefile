@@ -10,5 +10,5 @@
 # *******************************************************************************************
  
 include ../../environment/system.make
-APPNAME = graphics
+APPNAME = alt_graphics
 include $(BUILDENVDIR)pico.$(OS).make
