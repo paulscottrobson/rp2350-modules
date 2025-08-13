@@ -19,6 +19,7 @@ static int fgCol = 7;                                                           
 static int bgCol = 0;
 static bool cursorIsVisible = false;                                                // Cursor visible
 static bool cursorIsEnabled = true;
+static int  textHeight = 8;                                                         // Height of text character
 
 static int  xLeft = 0,yTop = 0,xRight = 79,yBottom = 29;                            // Text window (these are inclusive values)
 
@@ -42,7 +43,6 @@ void VDUFontInitialise(void) {
  *
  * @return     { description_of_the_return_value }
  */
-
 
 uint8_t VDUGetCharacterLineData(int c,int y) {
     c &= 0xFF;
@@ -134,10 +134,13 @@ static void _VDURenderCharacter(int x,int y,int c) {
 
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Do all three planes.
-        for (int yChar = 0;yChar < 8;yChar++) {                                     // Each line in a bit plane.
-            uint8_t pixels = VDUGetCharacterLineData(c,yChar);                      // Get the character line data.
-            uint8_t *p = dmi->bitPlane[plane] + (y*8+yChar)*dmi->bytesPerLine;      // Position in bitmap.
-            if (dmi->bitPlaneDepth == 1) {                                          // Handle 8 bits per bitmap (2,8 colours)
+        for (int yChar = 0;yChar < textHeight;yChar++) {                            // Each line in a bit plane.
+            uint8_t pixels = (textHeight == 8) ?                                    // Get the character line data.
+                                    VDUGetCharacterLineData(c,yChar):
+                                    VDUGetCharacterLineData(c,yChar/2);   
+            uint8_t *p = dmi->bitPlane[plane]+                                      // Position in bitmap.
+                                (y*textHeight+yChar)*dmi->bytesPerLine;      
+            if (dmi->bitPlaneDepth == 1) {                                          // Handle 8 bits per bitmap (8 colours)
                 *(p+x) = _VDUMapToBitplaneByte(pixels,plane);
             } else {                                                                // Handle 4 bits per bitmap (64 colours)
                 *(p+x*2) = _VDUMapToBitplaneByte64(_pixelMap[pixels >> 4],plane);
@@ -254,8 +257,8 @@ void VDUCursor(int c) {
  * @param[in]  xRight   right edge of window to scroll.
  */
 static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int xRight) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();                       // Get information.
-    yFrom *= 8;yTo *= 8;yTarget *= 8;                                               // Scale from characters to lines.
+    DVIMODEINFO *dmi = DVIGetModeInformation();                                     // Get information.
+    yFrom *= textHeight;yTo *= textHeight;yTarget *= textHeight;                    // Scale from characters to lines.
     int dir = (yFrom > yTarget) ? -1 : 1;                                           // How From and to are adjusted.
     int bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2;                      // Bytes per character. 
     int copySize = (xRight-xLeft+1) * bytesPerCharacter;                            // Amount to copy.
@@ -287,8 +290,8 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
  */
 static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
 {
-    DVIMODEINFO *dmi = DVIGetModeInformation();                       // Get information.
-    int bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2; // Bytes per character.
+    DVIMODEINFO *dmi = DVIGetModeInformation();                                     // Get information.
+    int bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2;                      // Bytes per character.
     int xFrom, xTo;
     if (dir < 0) {
         xTo = xLeft*bytesPerCharacter;
@@ -297,11 +300,11 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
         xFrom = xLeft*bytesPerCharacter;
         xTo = xFrom + bytesPerCharacter;
     } // Byte offsets to copy from and to.
-    int copySize = (xRight-xLeft)*bytesPerCharacter;     // Amount to copy.
-    for (int y=yTop*8; y<(yBottom+1)*8; y++) {
+    int copySize = (xRight-xLeft)*bytesPerCharacter;                                // Amount to copy.
+    for (int y=yTop*textHeight; y<(yBottom+1)*textHeight; y++) {
         for (int i = 0;i < dmi->bitPlaneCount;i++) {                                // For each bitplane
-            uint8_t *la = dmi->bitPlane[i] + dmi->bytesPerLine * y;              // Start Line from
-            memmove(la+xTo,la+xFrom,copySize);                                              // Copy it
+            uint8_t *la = dmi->bitPlane[i] + dmi->bytesPerLine * y;                 // Start Line from
+            memmove(la+xTo,la+xFrom,copySize);                                      // Copy it
         }        
     // Scroll the line left/right.
     }
@@ -368,8 +371,8 @@ void VDUSetDefaultTextColour(void) {
 void VDUResetTextWindow(void) {    
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     xLeft = yTop = 0;
-    xRight = (dmi->width >> 3)-1;
-    yBottom = (dmi->height >> 3) - 1;
+    xRight = (dmi->width / 8)-1;
+    yBottom = (dmi->height /textHeight) - 1;
 }
 
 /**
@@ -382,8 +385,8 @@ void VDUResetTextWindow(void) {
  */
 void VDUSetTextWindow(int x1,int y1,int x2,int y2) {
     DVIMODEINFO *dmi = DVIGetModeInformation();            
-    int w = (dmi->width >> 3)-1;
-    int h = (dmi->height >> 3)-1;
+    int w = (dmi->width / 8)-1;
+    int h = (dmi->height / textHeight)-1;
     xLeft = x1;yTop = y2;
     xRight = min(w,x2);yBottom = min(h,y1);
 }
@@ -397,8 +400,8 @@ static void _VDUDrawCursor(bool isVisible) {
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     bool is64Bit = (dmi->bitPlaneDepth == 2);
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {        
-        uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * 8 * (yCursor+yTop)) + ((xCursor+xLeft) * (is64Bit ? 2 : 1));
-        for (int y = 0;y < 8;y++) {
+        uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * textHeight * (yCursor+yTop)) + ((xCursor+xLeft) * (is64Bit ? 2 : 1));
+        for (int y = 0;y < textHeight;y++) {
             *p ^= 0xFF;if (is64Bit) *(p+1) ^= 0xFF;
             p += dmi->bytesPerLine;
         }
