@@ -1,13 +1,14 @@
-/**
- * @file       atomic.c
- *
- * @brief      Lowest level graphics routines
- *
- * @author     Paul Robson
- *
- * @date       29/01/2025
- *
- */
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      atomic.c
+//      Purpose :   Low level drawing on the bitplanes
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
 
 #include "graphics_module.h"
 #include "graphics_module_local.h"

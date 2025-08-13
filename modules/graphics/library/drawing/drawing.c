@@ -1,14 +1,15 @@
-/**
- * @file drawing.c
- *
- * @brief      Extended drawing functions built from the atomic functions
- *             Rectangles and Ellipses
- *
- * @author     Paul Robson
- *
- * @date       29/01/2025
- */
-
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      drawing.c
+//      Purpose :   Rectangle and Ellipse drawing functions.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
+ 
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 

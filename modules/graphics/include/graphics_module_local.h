@@ -1,5 +1,15 @@
-
-
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      graphics_module_local.h
+//      Purpose :   Internal headers.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
+ 
 #pragma once
 #ifndef RUNTIME
 #endif
@@ -47,6 +57,7 @@ void VDUAFillEllipse(int x0,int y0,int x1,int y1);
 void VDUAFrameEllipse(int x0,int y0,int x1,int y1);
 void VDUAFillTriangle(int x0,int y0,int x1,int y1,int x2,int y2);
 void VDUAFrameTriangle(int x0,int y0,int x1,int y1,int x2,int y2);
+void VDUFontInitialise(void);
 
 void VDUAUp(void);
 void VDUADown(void);

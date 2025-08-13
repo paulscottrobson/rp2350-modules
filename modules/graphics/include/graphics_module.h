@@ -1,4 +1,15 @@
-
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      graphics_module.h
+//      Purpose :   External headers.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
+ 
 #pragma once
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,6 +21,7 @@
 #include "common_module.h"
 #include "dvi_module.h"
 
+void VDUInitialise(void);
 void VDUWrite(int c);
 void VDUWriteString(char *fmt, ...);
 void VDUPlotCommand(int cmd,int x,int y);

@@ -1,13 +1,14 @@
-/**
- * @file       hfill.c
- *
- * @brief      Horizontal flood fill
- *
- * @author     Paul Robson
- *
- * @date       05/02/2025
- *
- */
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      hfill.c
+//      Purpose :   Horizontal fill background code.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
 
 #include "graphics_module.h"
 #include "graphics_module_local.h"

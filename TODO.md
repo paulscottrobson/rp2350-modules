@@ -1,18 +1,19 @@
 # TODO list
 
 ## VDU module
-- Use the full font.
-- Tidy up. add initialise.
 - Test the various functions.
 - Add screen read.
+- VDUWrite(8) fails at home (e.g. immediately after mode change) on runtime with GPF.
 
 ## Update Bully
+- To work with VDU Module.
 
 ## ScreenEditor module
 
 - Remove all reads *except* the final extraction.
 - Double height support.
 - Set ink, height options etc.
+
 ## Computer module
 - The base computer system
 

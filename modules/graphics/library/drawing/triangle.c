@@ -1,13 +1,14 @@
-/**
- * @file       triangle.c
- *
- * @brief      Triangle Drawing functions
- *
- * @author     Paul Robson
- *
- * @date       29/01/2025
- *
- */
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      triangle.c 
+//      Purpose :   Triangle drawing functions.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// ******************************************************************************************* 
 
 #include "graphics_module.h"
 #include "graphics_module_local.h"

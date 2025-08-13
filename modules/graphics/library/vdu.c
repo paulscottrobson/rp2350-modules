@@ -1,14 +1,15 @@
-/**
-* @file       vduhandler.c
-*
-* @brief      Handles and dispatches VDU Commands
-*
-* @author     Paul Robson
-*
-* @date       27/01/2025
-*
-*/
-
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      vdu.c
+//      Purpose :   Main interface, VDU Dispatcher.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
+ 
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
@@ -43,6 +44,19 @@ static uint8_t _vduIndex = 0;                                                   
 static uint8_t _vduPendingCommand = 0;                                              // Command to do when all collected.
 static bool writeTextToGraphics = false;                                            // When set, text output is via graphics
 static bool vduEnabled = true;                                                      // Text I/O enabled ?
+
+/**
+ * @brief      Initialise the VDU Graphic subsystem
+ */
+void VDUInitialise(void) {
+    static bool isInitialised = false;
+    if (isInitialised) return;
+    isInitialised = true;
+    DVIInitialise();
+    VDUFontInitialise();
+    VDUWrite(22);
+    VDUWrite(MODE_640_480_8);
+}
 
 /**
  * @brief      Extract signed 16 bit integer from the VDU Buffer

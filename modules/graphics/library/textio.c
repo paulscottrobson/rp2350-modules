@@ -1,19 +1,17 @@
-/**
-* @file       textio.c
-*
-* @brief      Text mode driver
-*
-* @author     Paul Robson
-*
-* @date       27/01/2025
-*
-*/
-
+// *******************************************************************************************
+// *******************************************************************************************
+//
+//      Name :      textio.c
+//      Purpose :   Text I/O functions.
+//      Date :      13th August 2025
+//      Author :    Paul Robson (paul@robsons.org.uk)
+//                  Lennart Benschop
+//
+// *******************************************************************************************
+// *******************************************************************************************
+ 
 #include "graphics_module.h"
 #include "graphics_module_local.h"
-
-//#include "support/font_thin_8x8.h"                                                       
-#include "font_bbc_8x8.h"                                                       
 
 static int xCursor = 0;                                                             // Posiiton in character cells in the window.
 static int yCursor = 0;
@@ -29,6 +27,10 @@ static uint8_t udgMemory[128*8];                                                
 static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int xRight);
 static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom);
 
+void VDUFontInitialise(void) {
+    uint8_t *font = DVIGetSystemFont()+96*8;                                        // Preload font 128-255 into UDG Memory.
+    memcpy(udgMemory,font,sizeof(udgMemory));
+}
 
 /**
  * @brief      Get the line data for line y of character c, in l-r bit format
@@ -46,7 +48,7 @@ uint8_t VDUGetCharacterLineData(int c,int y) {
     c &= 0xFF;
     if (c < ' ' || c == 0x7F) return 0;                                             // Control $00-$1F and $7F
     if (c >= 0x80) return udgMemory[(c-0x80)*8+y];                                  // UDG $80-$FF
-    return font_8x8[(c - ' ') * 8+y];                                               // ASCII $20-$7E ($7F is a control character)
+    return DVIGetSystemFont()[(c - ' ') * 8+y];                                     // ASCII $20-$7E ($7F is a control character)
 }
 
 /**
@@ -62,7 +64,6 @@ void VDUDefineCharacter(int c,uint8_t *gData) {
         }
     } 
 }
-
 
 /**
  * @brief      Convert a pixel pattern to the byte to write to the plane
@@ -228,7 +229,7 @@ void VDUCursor(int c) {
         case 11:                                                                    // VDU 11 up.
             yCursor--;                                                              
             if (yCursor < 0) {
-  	        _VDUScroll(yBottom,yBottom+1,yTop-1,yTop,xLeft,xRight);               // Vertical scroll down.
+  	        _VDUScroll(yBottom,yBottom+1,yTop-1,yTop,xLeft,xRight);                 // Vertical scroll down.
                 yCursor = 0;
             }
             break;
