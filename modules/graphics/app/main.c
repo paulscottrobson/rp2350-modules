@@ -28,11 +28,11 @@ int MAINPROGRAM() {
         VDUSetGraphicsColour(0,rand() & 63);                                            
         uint8_t element = plotList[(COMClock()/1000+5) % sizeof(plotList)];
         if (element < 149) {
-            VDUPlotCommand(element,rand() % 1280,rand() % 1024);
+            VDUPlot(element,rand() % 1280,rand() % 1024);
         } else {
             x = rand() % 1024+128; y = rand() % 768+128;
-            VDUPlotCommand(4,x,y);
-            VDUPlotCommand(element,x+rand() % 256,y+rand() % 256);
+            VDUPlot(4,x,y);
+            VDUPlot(element,x+rand() % 256,y+rand() % 256);
         }
         COMUpdate();
     }   }
@@ -48,7 +48,7 @@ static void generalTest(void) {
         if (COMClock() > next) {
             uint32_t x = rand() % 512,y = rand() % 200+400;
             next = COMClock()+1000;
-            VDUPlotCommand(5,x,y);
+            VDUPlot(5,x,y);
             LOG("%d %d",x,y);
         }
         COMUpdate();

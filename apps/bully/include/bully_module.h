@@ -11,4 +11,4 @@
 #include "usb_module.h"
 #include "dvi_module.h"
 #include "input_module.h"
-#include "alt_graphics_module.h"
+#include "graphics_module.h"

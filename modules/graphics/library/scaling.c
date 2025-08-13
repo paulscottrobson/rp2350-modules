@@ -144,7 +144,7 @@ int  VDUReadPixel(int x,int y) {
  * @param[in]  x     Logical X coordinate
  * @param[in]  y     Logical Y coordinate
  */
-void VDUPlotCommand(int cmd,int x,int y) {
+void VDUPlot(int cmd,int x,int y) {
 
     //
     //      Handle offset (e.g. command bit 2 is zero)

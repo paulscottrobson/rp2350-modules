@@ -202,7 +202,7 @@ void VDUWrite(int c) {
 
         case 25:                                                                    // 25 Plot cmd,x,y command PLOT
             VDUHideCursor();
-            VDUPlotCommand(_vduBuffer[0],_VDUShort(1),_VDUShort(3));
+            VDUPlot(_vduBuffer[0],_VDUShort(1),_VDUShort(3));
             break;
 
         case 26:                                                                    // 26 reset text and graphics windows

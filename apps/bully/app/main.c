@@ -28,21 +28,23 @@ static void speckleTest(void) {
 int MAINPROGRAM(int argc,char *argv[]) {
     INPInitialise();                                                                // Initialise input
     INPSetFunctionKey(2,"ABCD");
-    GFXInitialise();
-    GFXDraw(Mode,MODE_320_240_8,0);
+    VDUInitialise();
+    VDUWrite(22);VDUWrite(MODE_320_240_8);
     decorate();                                                                     // Draw ellipses.
-    //DVIAddVSyncHandler(speckleTest);
 
     while (COMAppRunning()) {                                                       // Our "main program"
         int16_t k = INPGetKey();                                                    // Get key, log to serial and list if F or D pressed
-        if (k != 0) LOG("Key %d",k);
+        if (k != 0) {
+            LOG("Key %d",k);
+            VDUWrite(k);
+        }
         if (toupper(k) == 'F') ListFile();
         if (toupper(k) == 'D') ListDirectory();
         if (toupper(k) == 'S') {                                                    // Show free memory
             LOG("Free memory %d",COMGetFreeSystemMemory());
         }
         if (toupper(k) == 'M') {                                                    // M switches mode so I can test that.
-            GFXDraw(Mode,MODE_320_240_64,0);
+            VDUWrite(22);VDUWrite(MODE_320_240_64);
             decorate();
         }
         speckleTest();
@@ -54,14 +56,16 @@ int MAINPROGRAM(int argc,char *argv[]) {
  * @brief      Draw rectangles so we've something to see.
  */
 static void decorate(void) {
-    for (int i = 0; i < 120;i += 3) {                                               // Draw *something* as a background :)
-        GFXDraw(RawColour,rand() % 64+1,0);                                      
-        GFXDraw(Move,i,i);GFXDraw(Rect,319-i,239-i);
+    for (int i = 0; i < 400;i += 12) {                                              // Draw *something* as a background :)
+        VDUSetGraphicsColour(0,rand() % 7+1);                                      
+        VDUPlot(4,i,i);
+        VDUPlot(5,1279-i,i);VDUPlot(5,1279-i,959-i);
+        VDUPlot(5,i,959-i);VDUPlot(5,i,i);
     }
-    for (int i = 0;i < 8;i++) {
-        GFXDraw(RawColour,i,i);
-        GFXDraw(Move,i*10,100);GFXDraw(FillRect,i*10+9,139);
-    }
+    // for (int i = 0;i < 8;i++) {
+    //     GFXDraw(RawColour,i,i);
+    //     GFXDraw(Move,i*10,100);GFXDraw(FillRect,i*10+9,139);
+    // }
 }
 
 /**

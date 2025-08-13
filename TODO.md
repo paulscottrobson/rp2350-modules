@@ -1,14 +1,13 @@
 # TODO list
 
-## Update Bully
-- To work with new Graphics Module.
+## Graphics
+- Support double height text.
+- Read character from screen.
 
 ## ScreenEditor module
 
 - Fix to use the new graphics system.
-- Remove all reads *except* the final extraction.
 - Double height support.
-- Set ink, height options etc.
 
 ## Computer module
 - The base computer system
