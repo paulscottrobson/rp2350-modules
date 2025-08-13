@@ -17,11 +17,23 @@
 #define min(a,b) ((a) < (b) ? (a) : (b))
 #define max(a,b) ((a) > (b) ? (a) : (b))
 
-struct _GraphicWindow {
+struct _Window {
     int xLeft,yBottom,xRight,yTop;
 };
 
-extern struct _GraphicWindow window;
+#define SAVED_COORDS    (3)
+
+
+struct VDUConfig {
+    int xOrigin,yOrigin;                                                            // Origin position, this is in logical coordinates.
+    int gColMode,fgrGraphic,bgrGraphic;                                             // Graphic mode, foreground, background graphic colours
+    struct _Window gw;                                                              // Graphic window
+    int xCoord[SAVED_COORDS],yCoord[SAVED_COORDS];                                  // Coordinate buffer (PHYSICAL coordinates)
+    bool writeTextToGraphics;                                                       // When set, text output is via graphics
+    bool vduEnabled;                                                                // Text I/O enabled ?
+};
+
+extern struct VDUConfig vc;
 
 void VDUCursor(int c);
 void VDUWriteText(uint8_t c);
