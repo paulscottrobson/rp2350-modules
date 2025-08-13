@@ -23,7 +23,6 @@ struct _Window {
 
 #define SAVED_COORDS    (3)
 
-
 struct VDUConfig {
     int xCursor,yCursor;                                                            // Posiiton in character cells in the window.
     struct _Window tw;                                                              // Text window

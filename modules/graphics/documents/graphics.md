@@ -23,13 +23,17 @@ All graphics operations take place within a window which is by default the whole
 
 Graphics commands work on a sequence of coordinates, as previous commands are tracked. So, for example, to draw a filled triangle, you would Move to one point, move to a second point, and draw to the third point. If you follow this with another triangle draw command, it will use the second, third and the newest point.
 
+## Changes from Standards
+
+Printer commands (1,2,3) Beep (7), Page Mode (14,15) are not implemented and won't be. 19 (Redefine logical colour) is not used because there is at the time of writing no palette.
+
 ## Functions
 
 These are fairly straightforward ; VDUInitialise() does the set up, defaulting to 640x480 mode. VDUWrite() VDUWriteWord()  and VDUWriteString() send data to the graphics system.
 
 VDUPlotCommand() VDUSetGraphicsColour() are convenient shorthands.
 
-VDUReadPixel() reads a pixel on the display, VDUScrollRect() scrolls a rectangular area of the display, and VDUGetTextCursor() reads the current text cursor position.
+VDUReadPixel() reads a pixel on the display, VDUScrollRect() scrolls a rectangular area of the display, and VDUGetTextCursor()/VDUSetTextCursor() read and write the current text cursor position.
 
 
 ## Revision
