@@ -25,6 +25,12 @@ struct _Window {
 
 
 struct VDUConfig {
+    int xCursor;                                                                    // Posiiton in character cells in the window.
+    int yCursor;
+    struct _Window tw;                                                              // Text window
+    int fgCol;                                                                      // Foreground & Background colour
+    int bgCol;
+    int  textHeight;                                                                // Height of text character
     int xOrigin,yOrigin;                                                            // Origin position, this is in logical coordinates.
     int gColMode,fgrGraphic,bgrGraphic;                                             // Graphic mode, foreground, background graphic colours
     struct _Window gw;                                                              // Graphic window
