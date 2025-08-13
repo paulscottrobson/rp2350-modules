@@ -1,13 +1,7 @@
 # TODO list
 
 ## VDU module
-- Test the various functions.
-    text
-    text with windowing
-    graphics
-    graphics with windowing
-    graphics with windowing & offset.
-
+- Line does not clip left.
 - Add screen read.
 
 ## Update Bully

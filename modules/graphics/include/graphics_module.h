@@ -23,6 +23,7 @@
 
 void VDUInitialise(void);
 void VDUWrite(int c);
+void VDUWriteWord(uint32_t word);
 void VDUWriteString(char *fmt, ...);
 void VDUPlotCommand(int cmd,int x,int y);
 void VDUSetGraphicsColour(int mode,int colour);

@@ -24,7 +24,7 @@ const uint8_t _VDUCommandLengths[32] = {
         1,                                                                          // 1 sends character to the printer
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                                              // 2-16 are all single byte VDU commands
         1,                                                                          // 17 sets text colour (COLOUR)
-        2,                                                                          // 18 sets background colour (GCOL)
+        2,                                                                          // 18 sets graphic colour (GCOL)
         5,                                                                          // 19 redefines colour
         0,0,                                                                        // 20,21 single byte
         1,                                                                          // 22 sets the mode (MODE)
@@ -52,9 +52,9 @@ void VDUInitialise(void) {
     static bool isInitialised = false;
     if (isInitialised) return;
     isInitialised = true;
-    DVIInitialise();
-    VDUFontInitialise();
-    VDUWrite(22);
+    DVIInitialise();                                                                // Initialise DVI
+    VDUFontInitialise();                                                            // Copy default font to UDG
+    VDUWrite(22);                                                                   // Switch mode.    
     VDUWrite(MODE_640_480_8);
 }
 
@@ -257,6 +257,15 @@ void VDUWrite(int c) {
     if (!writeTextToGraphics) VDUShowCursor();
 }
 
+/**
+ * @brief      Write a 16 bit value to the VDU Stream
+ *
+ * @param[in]  word  Word to write
+ */
+void VDUWriteWord(uint32_t word) {
+    VDUWrite(word & 0xFF);
+    VDUWrite((word >> 8) & 0xFF);
+}
 
 /**
  * @brief      Change the display mode
