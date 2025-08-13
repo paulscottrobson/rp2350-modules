@@ -29,7 +29,7 @@ void VDUPlotCommand(int cmd,int x,int y);
 void VDUSetGraphicsColour(int mode,int colour);
 int  VDUReadPixel(int x,int y);
 void VDUScrollRect(int ext, int direction);
-void VDUGetCursor(int *x, int *y);
+void VDUGetTextCursor(int *x, int *y);
 
 /**
  *      Drawing notes (from the BBC Micro user guide and the GXR user guide)

@@ -178,10 +178,16 @@ void VDUSetTextCursor(int x,int y) {
 }
 
 
-void VDUGetCursor(int *x, int *y)
+/**
+ * @brief      Read the text cursor position
+ *
+ * @param      x     pointer to x store or NULL
+ * @param      y     pointer to y store or NULL
+ */
+void VDUGetTextCursor(int *x, int *y)
 {
-  *x = xCursor;
-  *y = yCursor;
+  if (x != NULL) *x = xCursor;
+  if (y != NULL) *y = yCursor;
 }
 
 /**

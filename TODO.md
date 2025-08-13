@@ -1,14 +1,11 @@
 # TODO list
 
-## VDU module
-- Line does not clip left.
-- Add screen read.
-
 ## Update Bully
-- To work with VDU Module.
+- To work with new Graphics Module.
 
 ## ScreenEditor module
 
+- Fix to use the new graphics system.
 - Remove all reads *except* the final extraction.
 - Double height support.
 - Set ink, height options etc.

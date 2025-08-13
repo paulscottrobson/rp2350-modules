@@ -194,7 +194,7 @@ void VDUALeft(void) {
         pl0--;pl1--;pl2--;                                                          // Bump plane pointers
       }
     }
-    if (dataValid) dataValid = (xPixel >= 0);                                       // Still in window
+    if (dataValid) dataValid = (xPixel >= window.xLeft);                            // Still in window
 }
 
 /**
