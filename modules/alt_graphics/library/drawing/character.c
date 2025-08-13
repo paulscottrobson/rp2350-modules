@@ -9,8 +9,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
-#include "graphics_module.h"
-#include "graphics_module_local.h"
+#include "alt_graphics_module.h"
+#include "alt_graphics_module_local.h"
 
 static void _GFXDrawRenderOneRow(uint32_t x,uint32_t y,GFXFONTSOURCE *fs);
 

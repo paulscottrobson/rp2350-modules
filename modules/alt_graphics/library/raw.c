@@ -9,8 +9,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
-#include "graphics_module.h"
-#include "graphics_module_local.h"
+#include "alt_graphics_module.h"
+#include "alt_graphics_module_local.h"
 
 //
 //      Check if the current coordinates are visible - one for each axis.

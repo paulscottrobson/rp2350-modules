@@ -9,8 +9,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
  
-#include "graphics_module.h"
-#include "graphics_module_local.h"
+#include "alt_graphics_module.h"
+#include "alt_graphics_module_local.h"
 
 static void _GFXFramePart(int x,int y);
 static void _GFXLinePart(int x,int y);

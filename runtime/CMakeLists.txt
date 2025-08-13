@@ -22,7 +22,7 @@ include_directories(${MODULEDIR}/usb/include)
 include_directories(${MODULEDIR}/psram/include)
 include_directories(${MODULEDIR}/input/include)
 include_directories(${MODULEDIR}/modes/include)
-include_directories(${MODULEDIR}/graphics/include)
+include_directories(${MODULEDIR}/alt_graphics/include)
 include_directories(${MODULEDIR}/memory/include)
 include_directories(${MODULEDIR}/screen/include)
 #
@@ -49,7 +49,7 @@ include_directories(${APPDIR}/include)
 #       Libraries out of the bottom interface tier than are required.
 #
 file(GLOB_RECURSE INPUT_LIB "${MODULEDIR}/input/library/*.[csS]")
-file(GLOB_RECURSE GRAPHICS_LIB "${MODULEDIR}/graphics/library/*.[csS]")
+file(GLOB_RECURSE ALT_GRAPHICS_LIB "${MODULEDIR}/alt_graphics/library/*.[csS]")
 file(GLOB_RECURSE SCREEN_LIB "${MODULEDIR}/screen/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 
@@ -58,7 +58,7 @@ add_executable(runtime
     ${MODULEDIR}dvi/library/config.c
     ${MODULEDIR}dvi/library/systemfont.c
     ${MODULEDIR}usb/library/fileio/changedir.c
-    ${INPUT_LIB} ${MODES_LIB} ${GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREEN_LIB}
+    ${INPUT_LIB} ${MODES_LIB} ${ALT_GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREEN_LIB}
 )
 
 if(TARGET SDL2::SDL2main)
