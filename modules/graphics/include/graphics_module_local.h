@@ -25,11 +25,9 @@ struct _Window {
 
 
 struct VDUConfig {
-    int xCursor;                                                                    // Posiiton in character cells in the window.
-    int yCursor;
+    int xCursor,yCursor;                                                            // Posiiton in character cells in the window.
     struct _Window tw;                                                              // Text window
-    int fgCol;                                                                      // Foreground & Background colour
-    int bgCol;
+    int fgCol,bgCol;                                                                // Foreground & Background colour
     int  textHeight;                                                                // Height of text character
     int xOrigin,yOrigin;                                                            // Origin position, this is in logical coordinates.
     int gColMode,fgrGraphic,bgrGraphic;                                             // Graphic mode, foreground, background graphic colours
@@ -37,6 +35,7 @@ struct VDUConfig {
     int xCoord[SAVED_COORDS],yCoord[SAVED_COORDS];                                  // Coordinate buffer (PHYSICAL coordinates)
     bool writeTextToGraphics;                                                       // When set, text output is via graphics
     bool vduEnabled;                                                                // Text I/O enabled ?
+    uint8_t udgMemory[128*8];                                                       // Memory for user defined graphics.
 };
 
 extern struct VDUConfig vc;
