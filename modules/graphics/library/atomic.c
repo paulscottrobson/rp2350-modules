@@ -12,7 +12,6 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static inline void _VDUDrawBitmap1(void);
 static inline void _VDUDrawBitmap3(void);
 static inline void _VDUDrawBitmap6(void);
 static inline void _VDUDrawBitmap(void);
@@ -281,9 +280,7 @@ void VDUALine(int x0, int y0, int x1, int y1) {
  */
 static inline void _VDUDrawBitmap(void) {
     if (!dataValid) return;                                                         // Not valid drawing.
-    if (_dmi->bitPlaneCount == 1) {                                                 // Draw the bitmap.
-        _VDUDrawBitmap1();
-    } else if (_dmi->bitPlaneDepth == 2) {
+    if (_dmi->bitPlaneDepth == 2) {
         _VDUDrawBitmap6();
     } else {
         _VDUDrawBitmap3();
@@ -321,31 +318,6 @@ static inline void _VDUDrawBitmap3(void) {
             *pl0 ^= bitMask;
             *pl1 ^= bitMask;
             *pl2 ^= bitMask;
-            break;
-    }
-}
-
-/**
- * @brief      Draw bitmap for a 1 plane monochrome
- */
-static inline void _VDUDrawBitmap1(void) {
-
-    switch(action) {
-
-        case 0:                                                                     // Standard draw
-            *pl0 = ((*pl0) & (~bitMask)) | ((colour & 1) ? bitMask:0);
-            break;
-        case 1:                                                                     // OR Draw
-            *pl0 |= (colour & 1) ? bitMask:0;
-            break;
-        case 2:                                                                     // AND Draw
-            *pl0 &= (colour & 1) ? bitMask:0;
-            break;
-        case 3:                                                                     // XOR Draw
-            *pl0 ^= (colour & 1) ? bitMask:0;
-            break;
-        case 4:                                                                     // Invert Draw
-            *pl0 ^= bitMask;
             break;
     }
 }

@@ -22,7 +22,7 @@ include_directories(${MODULEDIR}/usb/include)
 include_directories(${MODULEDIR}/psram/include)
 include_directories(${MODULEDIR}/input/include)
 include_directories(${MODULEDIR}/modes/include)
-include_directories(${MODULEDIR}/alt_graphics/include)
+include_directories(${MODULEDIR}/graphics/include)
 include_directories(${MODULEDIR}/memory/include)
 include_directories(${MODULEDIR}/screen/include)
 #
@@ -49,7 +49,7 @@ include_directories(${APPDIR}/include)
 #       Libraries out of the bottom interface tier than are required.
 #
 file(GLOB_RECURSE INPUT_LIB "${MODULEDIR}/input/library/*.[csS]")
-file(GLOB_RECURSE ALT_GRAPHICS_LIB "${MODULEDIR}/alt_graphics/library/*.[csS]")
+file(GLOB_RECURSE ALT_GRAPHICS_LIB "${MODULEDIR}/graphics/library/*.[csS]")
 file(GLOB_RECURSE SCREEN_LIB "${MODULEDIR}/screen/library/*.[csS]")
 file(GLOB_RECURSE MEMORY_LIB "${MODULEDIR}/memory/library/*.[csS]")
 

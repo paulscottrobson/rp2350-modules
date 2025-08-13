@@ -13,7 +13,6 @@
 #include "graphics_module_local.h"
 
 static void _VDUSwitchMode(int newMode);
-static void _VDURedefine(uint8_t *params);
 
 /*
         This table is the number of additional bytes needed for each VDU command
@@ -145,14 +144,12 @@ void VDUWrite(int c) {
             VDUSetGraphicsColour(_vduBuffer[0],_vduBuffer[1]);                       
             break;
 
-        case 19:                                                                    // 19 colour redefine (only works in 2 colour mode)            
-            _VDURedefine(_vduBuffer);
+        case 19:                                                                    // 19 colour redefine (not allowed)            
             break;
 
         case 20:                                                                    // 20 set default text, graphics colours (and mapping)
             VDUSetDefaultTextColour();
             VDUSetDefaultGraphicColour();
-            DVISetMonoColour(7,0);                                                  // Also reset the colours selected for the 1 bit palette
             break;
 
         case 21:
@@ -264,23 +261,13 @@ static void _VDUSwitchMode(int newMode) {
 }
 
 /**
- * @brief      Redefine command (VDU19)
- *
- * @param      params  The parameter bytes
- */
-static void _VDURedefine(uint8_t *params) {
-    if (params[0] == 0) DVISetMonoColour(-1,params[1] & 7);                         // Set colour 0
-    if (params[0] == 1) DVISetMonoColour(params[1] & 7,-1);                         // Set colour 1
-}
-
-/**
  * @brief      Support function for VDUWrite which allows printf
  *
  * @param[in]  fmt        format string
  * @param[in]  <unnamed>  Assorted parameters.
  */
 
-void VDUWriteString(const char *fmt, ...) {
+void VDUWriteString(char *fmt, ...) {
     char buf[128];
     va_list args;
     va_start(args, fmt);
@@ -290,18 +277,3 @@ void VDUWriteString(const char *fmt, ...) {
     va_end(args);
 }
 
-/**
- * @brief      Bridge from CONWrite to VDUWrite. 
- * 
- * This is only compiled if ARTURO_PROCESS_CONSOLE is set to 1.
- *
- * @param[in]  c     Character to write
- */
-
-#if ARTURO_PROCESS_CONSOLE==1
-
-void CONWrite(int c) {
-    VDUWrite(c);
-}
-
-#endif
