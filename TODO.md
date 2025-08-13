@@ -1,14 +1,13 @@
 # TODO list
 
+## Graphics
+- Support double height text.
+- Read character from screen.
+
 ## ScreenEditor module
 
-- Remove all reads *except* the final extraction.
+- Fix to use the new graphics system.
 - Double height support.
-- Set ink, height options etc.
-
-## VDU module
-
-
 
 ## Computer module
 - The base computer system

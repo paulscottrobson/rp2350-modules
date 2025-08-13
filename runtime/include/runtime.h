@@ -23,6 +23,7 @@
 #include <unistd.h> 
 #include <sys/stat.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #define AS_SCALEX 	(3)
 #define AS_SCALEY   (2)
