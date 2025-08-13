@@ -13,17 +13,9 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-struct _GraphicWindow window;                                                       // Graphics window (note 0,0 is bottom left) in physical coordinates.
-
-static int xOrigin = 0,yOrigin = 0;                                                 // Origin position, this is in logical coordinates.
 static int xScale = 1,yScale = 1;                                                   // Scale (divide by this for logical -> physical)
 static int xLogicalExtent,yLogicalExtent;                                           // The extent of the logical coordinates.
 static int xLastLogical,yLastLogical;                                               // Last logical
-static int gColMode,fgrGraphic,bgrGraphic;                                          // Graphic mode, foreground, background
-
-#define SAVED_COORDS    (3)
-
-static int xCoord[SAVED_COORDS],yCoord[SAVED_COORDS];                               // Coordinate buffer (PHYSICAL coordinates)
 
 /**
  * @brief      Set the default graphics colours.
@@ -39,7 +31,7 @@ void VDUSetDefaultGraphicColour(void) {
 void VDUResetGraphicsCursor(void) {
     xLastLogical = yLastLogical = 0;
     for (int i = 0;i < SAVED_COORDS;i++) {
-        xCoord[i] = yCoord[i] = 0;
+        vc.xCoord[i] = vc.yCoord[i] = 0;
     }
 }
 
@@ -47,9 +39,9 @@ void VDUResetGraphicsCursor(void) {
  * @brief      Clear the current graphics window (e.g. CLG)
  */
 void VDUClearGraphicsWindow(void) {
-    VDUASetActionColour(0,bgrGraphic);                                              // Background colour,no tweaks.
+    VDUASetActionColour(0,vc.bgrGraphic);                                           // Background colour,no tweaks.
     VDUASetControlBits(0);
-    VDUAFillRect(window.xLeft,window.yBottom,window.xRight,window.yTop);            // Fill the window.
+    VDUAFillRect(vc.gw.xLeft,vc.gw.yBottom,vc.gw.xRight,vc.gw.yTop);                // Fill the window
 }
 
 /**
@@ -58,7 +50,7 @@ void VDUClearGraphicsWindow(void) {
  * @return     Background colour.
  */
 int VDUGetBackgroundColour(void) {
-    return bgrGraphic;
+    return vc.bgrGraphic;
 }
 
 /**
@@ -69,11 +61,11 @@ int VDUGetBackgroundColour(void) {
  */
 
 void VDUSetGraphicsColour(uint8_t mode,uint8_t colour) {
-    gColMode = mode;                                                                // Save mode. According to MOS1.2 this is the same mode for both
+    vc.gColMode = mode;                                                             // Save mode. According to MOS1.2 this is the same mode for both
     if (colour & 0x80) {                                                            // If bit 7 set, background
-        bgrGraphic = colour & 0x7F;
+        vc.bgrGraphic = colour & 0x7F;
     } else {                                                                        // If bit 7 clear, foreground
-        fgrGraphic = colour & 0x7F;
+        vc.fgrGraphic = colour & 0x7F;
     }
 }
 
@@ -91,7 +83,7 @@ void VDUResetGraphicsWindow(void) {
  * @param[in]  y     Logical y position of origin
  */
 void VDUSetGraphicsOrigin(int x,int y) {
-    xOrigin = x;yOrigin = y;
+    vc.xOrigin = x;vc.yOrigin = y;
 }
 
 /**
@@ -103,7 +95,7 @@ void VDUSetGraphicsOrigin(int x,int y) {
  * @param[in]  y2    Top Y Logical
  */
 void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();                       // Get the display information.
+    DVIMODEINFO *dmi = DVIGetModeInformation();                                     // Get the display information.
 
     xScale = (dmi->width == 640) ? 1 : 2;                                           // Currently we only have 640 and 320 across.
     yScale = (dmi->height == 480) ? 1 : 2;                                          // Support 480,240 and 256 down.
@@ -116,10 +108,10 @@ void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
 
     x1 = x1 >> xScale;y1 = y1 >> yScale;x2 = x2 >> xScale;y2 = y2 >> yScale;        // Convert to physical coordinates 
 
-    window.xLeft = x1;window.yBottom = y1;                                          // Set the window
-    window.xRight = x2;window.yTop = y2;                                  
+    vc.gw.xLeft = x1;vc.gw.yBottom = y1;                                            // Set the window
+    vc.gw.xRight = x2;vc.gw.yTop = y2;                                  
 
-    //printf("Window:%d,%d - %d,%d\n",window.xLeft,window.yBottom,window.xRight,window.yTop);
+    //printf("Window:%d,%d - %d,%d\n",vc.gw.xLeft,vc.gw.yBottom,vc.gw.xRight,vc.gw.yTop);
 }
 
 /**
@@ -132,8 +124,8 @@ void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
  */
 int  VDUReadPixel(int32_t x,int32_t y) {
     x = x >> xScale;y = y >> yScale;                                                // Scale to physical coordinates
-    if (x < window.xLeft || y < window.yBottom ||                                   // Check out of window area.
-                x > window.xRight || y > window.yTop) return -1;              
+    if (x < vc.gw.xLeft || y < vc.gw.yBottom ||                                   // Check out of window area.
+                x > vc.gw.xRight || y > vc.gw.yTop) return -1;              
     return VDUAReadPixel(x,y);                                                      // Call the atomic function
 }
 
@@ -156,17 +148,17 @@ void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
     //
     //      Convert to physical, first offset by the origin
     //
-    x += xOrigin; y += yOrigin;                                                     // Adjust for origin.
+    x += vc.xOrigin; y += vc.yOrigin;                                               // Adjust for origin.
     //
     //      Push the old coordinates on the stack for things like triangles
     //
-    xCoord[2] = xCoord[1];yCoord[2] = yCoord[1];                                    // Push x and y cordinates down the 3 level store
-    xCoord[1] = xCoord[0];yCoord[1] = yCoord[0];
+    vc.xCoord[2] = vc.xCoord[1];vc.yCoord[2] = vc.yCoord[1];                              // Push x and y cordinates down the 3 level store
+    vc.xCoord[1] = vc.xCoord[0];vc.yCoord[1] = vc.yCoord[0];
     //
     //      And add the coordinate in physical pixels from (0,0) at bottom left of screen.
     //
-    xCoord[0] = x >> xScale;yCoord[0] = y >> yScale;                                // Add the latest coordinate.
-    //printf("Plot: %d %d,%d\n",cmd,xCoord[0],yCoord[0]);
+    vc.xCoord[0] = x >> xScale;vc.yCoord[0] = y >> yScale;                              // Add the latest coordinate.
+    //printf("Plot: %d %d,%d\n",cmd,vc.xCoord[0],vc.yCoord[0]);
 
     //
     //      Now workout the GCOL data, both the action and colour (the two GCOL parameters)
@@ -182,11 +174,10 @@ void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
     int controlBits = 0;
     if (command == 16 || command == 24) controlBits |= GFXC_DOTTED;                 // $10 $18 are the same as $00 and $08
     if (command == 8 || command == 24) {                                            // Possible inverting ?
-        if (drawMode == 2 || gColMode == 4) controlBits |= GFXC_NOENDPOINT;         // If inverting, do not draw end point.        
+        if (drawMode == 2 || vc.gColMode == 4) controlBits |= GFXC_NOENDPOINT;      // If inverting, do not draw end point.        
     }
     VDUASetControlBits(controlBits);                                                // Set the various control bits.
-
-    VDUPlotDispatch(command,xCoord,yCoord);                                         // Go do it
+    VDUPlotDispatch(command,vc.xCoord,vc.yCoord);                                   // Go do it
 }
 
 /**
@@ -195,8 +186,8 @@ void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
  * @param[in]  drawMode  Draw mode (1,2,3 as in PLOT)
  */
 void VDUSetDrawingData(int drawMode) {
-   VDUASetActionColour(gColMode,                                                   // Tell it the action and the colour
-                        (drawMode == 1) ? fgrGraphic:bgrGraphic);
+   VDUASetActionColour(vc.gColMode,                                                 // Tell it the action and the colour
+                        (drawMode == 1) ? vc.fgrGraphic:vc.bgrGraphic);
     if (drawMode == 2) {                                                            // Invert
         VDUASetActionColour(3,0x7F);                                                // Set EOR $7F on colour.
     }
@@ -212,27 +203,27 @@ void VDUSetDrawingData(int drawMode) {
 void VDUGCursor(int c) {
     switch(c) {
         case 8:                                                                     // Left
-            xCoord[0] -= 8;
-            if (xCoord[0] < window.xLeft) {
-                VDUGCursor(11);xCoord[0] = window.xRight - 8;
+            vc.xCoord[0] -= 8;
+            if (vc.xCoord[0] < vc.gw.xLeft) {
+                VDUGCursor(11);vc.xCoord[0] = vc.gw.xRight - 8;
             }
             break;
         case 9:                                                                     // Right
-            xCoord[0] += 8;
-            if (xCoord[0] > window.xRight) {
+            vc.xCoord[0] += 8;
+            if (vc.xCoord[0] > vc.gw.xRight) {
                 VDUGCursor(10);VDUGCursor(13);
             }
             break;
         case 10:                                                                    // Down
-            yCoord[0] -= 8;
-            if (yCoord[0] < window.yBottom) yCoord[0] = window.yTop;
+            vc.yCoord[0] -= 8;
+            if (vc.yCoord[0] < vc.gw.yBottom) vc.yCoord[0] = vc.gw.yTop;
             break;
         case 11:                                                                    // Up
-            yCoord[0] += 8;
-            if (yCoord[0] > window.yTop) yCoord[0] = window.yBottom + 8;
+            vc.yCoord[0] += 8;
+            if (vc.yCoord[0] > vc.gw.yTop) vc.yCoord[0] = vc.gw.yBottom + 8;
             break;
         case 13:                                                                    // Carriage Return
-            xCoord[0] = window.xLeft;
+            vc.xCoord[0] = vc.gw.xLeft;
             break;
     }
 }
@@ -245,7 +236,7 @@ void VDUGCursor(int c) {
 void VDUGWriteText(int c) {
     VDUSetDrawingData(1);                                                           // Use foreground mode
     for (int y = 0;y < 8;y++) {
-        VDUAOutputByte(xCoord[0],yCoord[0]-y,VDUGetCharacterLineData(c,y));
+        VDUAOutputByte(vc.xCoord[0],vc.yCoord[0]-y,VDUGetCharacterLineData(c,y));
     }
     VDUGCursor(9);                                                                  // Forward one.
 }

@@ -15,6 +15,8 @@
 
 static void _VDUSwitchMode(uint32_t newMode);
 
+struct VDUConfig vc;
+
 /*
         This table is the number of additional bytes needed for each VDU command
 */
@@ -42,8 +44,6 @@ static uint8_t _vduBuffer[16];                                                  
 static uint8_t _vduRequired = 0;                                                    // Amount of data required
 static uint8_t _vduIndex = 0;                                                       // Current index into _vduBuffer
 static uint8_t _vduPendingCommand = 0;                                              // Command to do when all collected.
-static bool writeTextToGraphics = false;                                            // When set, text output is via graphics
-static bool vduEnabled = true;                                                      // Text I/O enabled ?
 
 /**
  * @brief      Initialise the VDU Graphic subsystem
@@ -54,6 +54,7 @@ void VDUInitialise(void) {
     isInitialised = true;
     DVIInitialise();                                                                // Initialise DVI
     VDUFontInitialise();                                                            // Copy default font to UDG
+    vc.vduEnabled = true;                                                           // Force it to be initially enabled.
     VDUWrite(22);                                                                   // Switch mode.    
     VDUWrite(MODE_640_480_8);
 }
@@ -92,7 +93,7 @@ void VDUWrite(uint8_t c) {
 
     if (_vduRequired != 0) return;                                                  // We still want more.
 
-    if (!vduEnabled) {                                                              // If VDU is disabled.
+    if (!vc.vduEnabled) {                                                           // If VDU is disabled.
         if (_vduPendingCommand != 1 && _vduPendingCommand != 6) return;             // Exit for everything except 1 and 6
     }
 
@@ -107,16 +108,16 @@ void VDUWrite(uint8_t c) {
             break;
 
         case 4:                                                                     // 4 sets text mode
-            writeTextToGraphics = false;
+            vc.writeTextToGraphics = false;
             break;
 
         case 5:                                                                     // 5 sets graphic mode
             VDUHideCursor();                                                        // Not visible in this mode.
-            writeTextToGraphics = true;                                             
+            vc.writeTextToGraphics = true;                                             
             break;
 
         case 6:                                                                     // 6 re-enables VDU
-            vduEnabled = true;
+            vc.vduEnabled = true;
             break;  
 
         case 7:                                                                     // 7 is the beep, which is not supported.
@@ -128,7 +129,7 @@ void VDUWrite(uint8_t c) {
         case 11:
         case 13:                                                                    // 13 New line ... out of order.
             VDUHideCursor();
-            if (writeTextToGraphics) {
+            if (vc.writeTextToGraphics) {
                 VDUGCursor(c);
             } else {
                 VDUCursor(c);
@@ -168,7 +169,7 @@ void VDUWrite(uint8_t c) {
 
         case 21:
             VDUHideCursor();
-            vduEnabled = false;                                                     // 21 stops all text and graphic output.
+            vc.vduEnabled = false;                                                  // 21 stops all text and graphic output.
             break;
 
         case 22:                                                                    // 22 n Change mode (MODE)
@@ -246,7 +247,7 @@ void VDUWrite(uint8_t c) {
         default:            
             VDUHideCursor();
             if (c >= ' ') {                                                         // Legit character
-                if (writeTextToGraphics) {                                          // This is VDU 5 mode.
+                if (vc.writeTextToGraphics) {                                          // This is VDU 5 mode.
                     VDUGWriteText(c);
                 } else {
                     VDUWriteText(c);                                                // Output character if legitimate and enabled.
@@ -254,7 +255,7 @@ void VDUWrite(uint8_t c) {
             }
             break;
     }
-    if (!writeTextToGraphics) VDUShowCursor();
+    if (!vc.writeTextToGraphics) VDUShowCursor();
 }
 
 /**

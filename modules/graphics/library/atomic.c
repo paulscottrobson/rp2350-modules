@@ -19,7 +19,8 @@ static inline void _VDUDrawBitmap(void);
 static int _VDUAReadPixelDirect(void);
 static void _VDUAValidate(void);
 
-static DVIMODEINFO *_dmi = NULL;                                      // Current mode information.
+static DVIMODEINFO *_dmi = NULL;                                                    // Current mode information.
+
 static int xPixel,yPixel;                                                           // Pixel position in current window
 static bool dataValid;                                                              // True if data is valid.
 static uint8_t bitMask;                                                             // Bitmask (when data is valid)
@@ -28,8 +29,8 @@ static uint8_t colour = 7;                                                      
 static uint8_t action = 0;                                                          // What to do.
 static int controlBits = 0;                                                         // Controls various aspects of atomic drawing
 
-#define OFFWINDOWH(x)   ((x) < window.xLeft || (x) > window.xRight)
-#define OFFWINDOWV(y)   ((y) < window.yBottom || (y) > window.yTop)
+#define OFFWINDOWH(x)   ((x) < vc.gw.xLeft || (x) > vc.gw.xRight)
+#define OFFWINDOWV(y)   ((y) < vc.gw.yBottom || (y) > vc.gw.yTop)
 #define OFFWINDOW(x,y)  (OFFWINDOWH(x) || OFFWINDOWV(y))
 
 /**
@@ -98,8 +99,8 @@ void VDUAHorizLine(int x1,int x2,int y) {
     int ppb = _dmi->bitPlaneDepth==2 ? 4 : 8;
     if (OFFWINDOWV(y)) return;                                                      // Vertically out of range => no line.
     if (x1 >= x2) { int n = x1;x1 = x2;x2 = n; }                                    // Sort the x coordinates into order.
-    if (x2 < window.xLeft || x1 >= window.xRight) return;                           // On screen area (e.g. lower off right, higher off left)
-    x1 = max(x1,window.xLeft);x2 = min(x2,window.xRight);                           // Trim horizontal line to port.
+    if (x2 < vc.gw.xLeft || x1 >= vc.gw.xRight) return;                           // On screen area (e.g. lower off right, higher off left)
+    x1 = max(x1,vc.gw.xLeft);x2 = min(x2,vc.gw.xRight);                           // Trim horizontal line to port.
     xPixel = x1;yPixel = y;dataValid = false;                                       // First pixel.
     _VDUAValidate();
     int pixelCount = x2-x1+1;                                                       // Pixels to draw
@@ -143,8 +144,8 @@ void VDUAVertLine(int x,int y1,int y2) {
     _dmi = DVIGetModeInformation();                                                 // Get mode information
     if (OFFWINDOWH(x)) return;                                                      // Off screen.
     if (y1 > y2) { int n = y1;y1 = y2;y2 = n; }                                     // Sort y coordinates
-    if (y2 < window.yBottom || y1 >= window.yTop) return;                           // Wholly off top or bottom.
-    y1 = max(y1,window.yBottom);y2 = min(y2,window.yTop);                           // Clip into region.
+    if (y2 < vc.gw.yBottom || y1 >= vc.gw.yTop) return;                             // Wholly off top or bottom.
+    y1 = max(y1,vc.gw.yBottom);y2 = min(y2,vc.gw.yTop);                             // Clip into region.
     xPixel = x;yPixel = y1;dataValid = false;                                       // Set start and validate
     _VDUAValidate();
     int pixelCount = y2-y1+1;                                                       // Pixels to draw
@@ -161,7 +162,7 @@ void VDUAUp(void) {
     pl0 -= _dmi->bytesPerLine;                                                      // Shift pointers to next line up.
     pl1 -= _dmi->bytesPerLine;
     pl2 -= _dmi->bytesPerLine;
-    if (dataValid) dataValid = (yPixel <= window.yTop);                             // Still in window
+    if (dataValid) dataValid = (yPixel <= vc.gw.yTop);                              // Still in window
 }
 
 /**
@@ -172,7 +173,7 @@ void VDUADown(void) {
     pl0 += _dmi->bytesPerLine;                                                      // Shift pointers to next line down
     pl1 += _dmi->bytesPerLine;
     pl2 += _dmi->bytesPerLine;
-    if (dataValid) dataValid = (yPixel >= window.yBottom);                          // Still in window
+    if (dataValid) dataValid = (yPixel >= vc.gw.yBottom);                           // Still in window
 }
 
 /**
@@ -193,7 +194,7 @@ void VDUALeft(void) {
             pl0--;pl1--;pl2--;                                                      // Bump plane pointers
         }
     }
-    if (dataValid) dataValid = (xPixel >= window.xLeft);                            // Still in window
+    if (dataValid) dataValid = (xPixel >= vc.gw.xLeft);                             // Still in window
 }
 
 /**
@@ -214,7 +215,7 @@ void VDUARight(void) {
             pl0++;pl1++;pl2++;                                                      // Bump plane pointers
         }
     }
-    if (dataValid) dataValid = (xPixel < window.xRight);                            // Still in window
+    if (dataValid) dataValid = (xPixel < vc.gw.xRight);                            // Still in window
 }
 
 /**
@@ -396,7 +397,7 @@ static int _VDURPDPlane64(uint8_t *p) {
  */
 static int _VDUAReadPixelDirect(void) {    
     int colour = 0;
-    if (!dataValid) return -1;                                                      // Off window.
+    if (!dataValid) return -1;                                                      // Off window
 
     if (_dmi->bitPlaneDepth == 2) {                                                 // 64 colour mode.
         colour = _VDURPDPlane64(pl0) + (_VDURPDPlane64(pl1) << 1)                   // Extract colour bits from each plane.
