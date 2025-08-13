@@ -27,6 +27,10 @@ Graphics commands work on a sequence of coordinates, as previous commands are tr
 
 Printer commands (1,2,3) Beep (7), Page Mode (14,15) are not implemented and won't be. 19 (Redefine logical colour) is not used because there is at the time of writing no palette.
 
+### Font Scale
+
+VDU 1 now takes 2 parameters, x and y scales. So far, only 1x1 and 1x2 are supported. Note that this resets the text window.
+
 ## Functions
 
 These are fairly straightforward ; VDUInitialise() does the set up, defaulting to 640x480 mode. VDUWrite() VDUWriteWord()  and VDUWriteString() send data to the graphics system.

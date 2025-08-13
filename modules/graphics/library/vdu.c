@@ -23,7 +23,7 @@ struct VDUConfig vc;
 
 const uint8_t _VDUCommandLengths[32] = {
         0,                                                                          // 0 does nothing
-        1,                                                                          // 1 sends character to the printer
+        2,                                                                          // 1 set font scale (xScale,yScale)
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                                              // 2-16 are all single byte VDU commands
         1,                                                                          // 17 sets text colour (COLOUR)
         2,                                                                          // 18 sets graphic colour (GCOL)
@@ -102,7 +102,12 @@ void VDUWrite(uint8_t c) {
         case 0:                                                                     // 0 does nothing.
             break;
 
-        case 1:                                                                     // 1 outputs to printer, which we don't have, so does nothing.
+        case 1:                                                                     // 1 was out to printer, now sets font scale.
+            VDUHideCursor();
+            VDUSetTextSize(_vduBuffer[0],_vduBuffer[1]);                            // only supports 1x1 and 1x2 at present.
+            VDUShowCursor();
+            break;            
+
         case 2:                                                                     // 2 & 3 sets the printer off and on ... same problem.
         case 3:
             break;

@@ -30,6 +30,7 @@ int MAINPROGRAM(int argc,char *argv[]) {
     INPSetFunctionKey(2,"ABCD");
     VDUInitialise();
     VDUWrite(22);VDUWrite(MODE_320_240_8);
+    VDUWrite(1);VDUWrite(1);VDUWrite(2);
     decorate();                                                                     // Draw ellipses.
 
     while (COMAppRunning()) {                                                       // Our "main program"

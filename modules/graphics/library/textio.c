@@ -22,7 +22,8 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom);
 void VDUFontInitialise(void) {
     uint8_t *font = DVIGetSystemFont()+96*8;                                        // Preload font 128-255 into UDG Memory.
     memcpy(vc.udgMemory,font,sizeof(vc.udgMemory));
-    vc.textHeight = 8;
+    VDUSetTextSize(1,1);
+    VDUResetTextWindow();
 }
 
 /**
@@ -198,6 +199,15 @@ void VDUSetTextColour(int colour) {
     }
 }
 
+/**
+ * @brief      Set the text size. Currently only supports double height.
+ *
+ * @param[in]  xSize  x Scale
+ * @param[in]  ySize  y Scale.
+ */
+void VDUSetTextSize(uint8_t xSize,uint8_t ySize) {
+    vc.textHeight = (ySize == 2) ? 16:8;
+}
 /**
  * @brief      VDU Cursor command
  *

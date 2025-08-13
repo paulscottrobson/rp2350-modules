@@ -59,6 +59,7 @@ void VDUSetDefaultGraphicColour(void);
 void VDUResetGraphicsWindow(void);
 void VDUPlotDispatch(int cmd,int *xCoord,int *yCoord);                                           
 void VDUClearGraphicsWindow(void);
+void VDUSetTextSize(uint8_t xSize,uint8_t ySize);
 
 void VDUASetActionColour(int act,int col);
 void VDUASetControlBits(int c);
