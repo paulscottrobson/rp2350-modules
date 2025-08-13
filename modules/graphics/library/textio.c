@@ -184,7 +184,6 @@ void VDUGetCursor(int *x, int *y)
   *y = yCursor;
 }
 
-
 /**
  * @brief      Set the text foreground/background colour
  *
@@ -229,7 +228,7 @@ void VDUCursor(int c) {
         case 11:                                                                    // VDU 11 up.
             yCursor--;                                                              
             if (yCursor < 0) {
-  	        _VDUScroll(yBottom,yBottom+1,yTop-1,yTop,xLeft,xRight);                 // Vertical scroll down.
+  	        _VDUScroll(yBottom-1,yBottom,yTop,yTop,xLeft,xRight);                   // Vertical scroll down.
                 yCursor = 0;
             }
             break;
@@ -255,7 +254,8 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
     int dir = (yFrom > yTarget) ? -1 : 1;                                           // How From and to are adjusted.
     int bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2;                      // Bytes per character. 
     int copySize = (xRight-xLeft+1) * bytesPerCharacter;                            // Amount to copy.
-    while (yFrom != yTarget) {
+    bool isComplete = false;
+    while (!isComplete) {
         for (int i = 0;i < dmi->bitPlaneCount;i++) {                                // For each bitplane
             uint8_t *f = dmi->bitPlane[i] + dmi->bytesPerLine * yFrom;              // Start Line from
             uint8_t *t = dmi->bitPlane[i] + dmi->bytesPerLine * yTo;                // Start Line to.
@@ -263,6 +263,7 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
             t = t + xLeft * bytesPerCharacter;
             memcpy(t,f,copySize);                                                   // Copy it
         }        
+        if (yFrom == yTarget) isComplete = true;                                    // Done the last one ?
         yFrom += dir;yTo += dir;                                                    // Scroll the line down.
     }
     for (int x = xLeft;x <= xRight;x++) {                                           // Blank the new line.

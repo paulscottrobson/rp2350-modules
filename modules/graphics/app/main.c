@@ -29,6 +29,8 @@ static void generalTest(void) {
     VDUPlotCommand(4,0,0);
     VDUPlotCommand(5,640,512);
     for (int i = 32;i < 256;i++) VDUWrite(i);
+    VDUWrite(30);
+    VDUWrite(11);
     while (COMAppRunning()) {                                                                     
         COMUpdate();
     }    

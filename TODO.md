@@ -3,7 +3,6 @@
 ## VDU module
 - Test the various functions.
 - Add screen read.
-- VDUWrite(8) fails at home (e.g. immediately after mode change) on runtime with GPF.
 
 ## Update Bully
 - To work with VDU Module.
