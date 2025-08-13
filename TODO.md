@@ -1,9 +1,14 @@
 # TODO list
 
-## ScreenEditor
-- Becomes 'screen', writeable, multi colour, storage only for reading.
+## ScreenEditor module
+
+- Remove all reads *except* the final extraction.
 - Double height support.
-- Store ink, ink position, height options etc.
+- Set ink, height options etc.
+
+## VDU module
+
+
 
 ## Computer module
 - The base computer system
