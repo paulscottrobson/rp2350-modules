@@ -2,6 +2,12 @@
 
 ## VDU module
 - Test the various functions.
+    text
+    text with windowing
+    graphics
+    graphics with windowing
+    graphics with windowing & offset.
+
 - Add screen read.
 
 ## Update Bully

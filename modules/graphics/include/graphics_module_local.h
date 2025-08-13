@@ -66,7 +66,7 @@ void VDUARight(void);
 
 int  VDUAReadPixel(int x,int y);
 void VDUHorizontallFill(int x,int y,bool rightOnly);
-int VDUGetBackgroundColour(void);
+int  VDUGetBackgroundColour(void);
 void VDUGCursor(int c);
 void VDUGWriteText(int c);  
 void VDUAOutputByte(int x,int y,uint8_t pixelData);

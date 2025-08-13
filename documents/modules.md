@@ -17,6 +17,7 @@ These are the current modules. In the runtime the functionality of the low level
 |  USB   | Yes  | Provides low level HID device interface (e.g. USB packets) and a simple File system. |      |
 | PSRAM  | Yes  | This is the physical hardware interface to the PSRAM Chip    |      |
 | Input  |      | HID Manager. Converts the Keyboard HID data to a keyboard queue/tracking system in ASCII with localisation. The Gamepad HID is converted to an easy interface, with a keyboard option if no Gamepad is available. The mouse HID is converted into position and button tracking |      |
+|  VDU   |      | Provides a graphics & text interface based on the Acorn system. |      |
 | Screen |      | Provides a text i/o layer and full screen editor for text input rather like the Commodore machines. |      |
 | Bully  |      | This is an application which allows me to 'bully' the USB system (and other things) to see if they crash. |      |
 | Memory |      | This manages static RAM in the Pico and PSRAM.               |      |

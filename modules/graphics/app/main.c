@@ -1,8 +1,8 @@
 // *******************************************************************************************
 // *******************************************************************************************
 //
-//      Name :      
-//      Purpose :   
+//      Name :      main.c
+//      Purpose :   VDU test application.
 //      Date :      13th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)
 //                  Lennart Benschop
