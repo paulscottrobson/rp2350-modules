@@ -44,6 +44,8 @@ typedef enum _DVIMode {
     MODE_640_480_8 = 4
 } DVIMODE;
 
+#define DVI_MODE_COUNT      (5)                                                     // Supported DVI modes.
+
 void DVIInitialise(void);
 bool DVISetMode(DVIMODE mode);
 DVIMODEINFO *DVIGetModeInformation(void);
