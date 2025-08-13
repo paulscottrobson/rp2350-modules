@@ -68,7 +68,7 @@ int VDUGetBackgroundColour(void) {
  * @param[in]  colour  The colour
  */
 
-void VDUSetGraphicsColour(int mode,int colour) {
+void VDUSetGraphicsColour(uint8_t mode,uint8_t colour) {
     gColMode = mode;                                                                // Save mode. According to MOS1.2 this is the same mode for both
     if (colour & 0x80) {                                                            // If bit 7 set, background
         bgrGraphic = colour & 0x7F;
@@ -130,7 +130,7 @@ void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
  *
  * @return     colour if +ve, -1 if invalid (out of screen/window)
  */
-int  VDUReadPixel(int x,int y) {
+int  VDUReadPixel(int32_t x,int32_t y) {
     x = x >> xScale;y = y >> yScale;                                                // Scale to physical coordinates
     if (x < window.xLeft || y < window.yBottom ||                                   // Check out of window area.
                 x > window.xRight || y > window.yTop) return -1;              
@@ -144,7 +144,7 @@ int  VDUReadPixel(int x,int y) {
  * @param[in]  x     Logical X coordinate
  * @param[in]  y     Logical Y coordinate
  */
-void VDUPlot(int cmd,int x,int y) {
+void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
 
     //
     //      Handle offset (e.g. command bit 2 is zero)

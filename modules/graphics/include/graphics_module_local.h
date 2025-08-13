@@ -26,7 +26,6 @@ extern struct _GraphicWindow window;
 void VDUCursor(int c);
 void VDUWriteText(uint8_t c);
 void VDUClearScreen(void);
-void VDUSetTextCursor(int x,int y);
 void VDUHomeCursor(void);
 
 void VDUResetGraphicsCursor(void);

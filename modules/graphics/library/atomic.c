@@ -181,18 +181,17 @@ void VDUADown(void) {
 void VDUALeft(void) {
     xPixel--;                                                                       // Pixel left
     if (_dmi->bitPlaneDepth == 2) {
-      bitMask = (bitMask << 2) & 0xFF;                                              // Shift bitmap left
-      if (bitMask == 0) {                                                           // Off the left side.
-        bitMask = 0x03;                                                             // Reset bitmap
-        pl0--;pl1--;pl2--;                                                          // Bump plane pointers
-      }
+        bitMask = (bitMask << 2) & 0xFF;                                            // Shift bitmap left
+        if (bitMask == 0) {                                                         // Off the left side.
+            bitMask = 0x03;                                                         // Reset bitmap
+            pl0--;pl1--;pl2--;                                                      // Bump plane pointers
+        }
     } else {
-
-      bitMask = (bitMask << 1) & 0xFF;                                              // Shift bitmap left
-      if (bitMask == 0) {                                                           // Off the left side.
-        bitMask = 0x01;                                                             // Reset bitmap
-        pl0--;pl1--;pl2--;                                                          // Bump plane pointers
-      }
+        bitMask = (bitMask << 1) & 0xFF;                                            // Shift bitmap left
+        if (bitMask == 0) {                                                         // Off the left side.
+            bitMask = 0x01;                                                         // Reset bitmap
+            pl0--;pl1--;pl2--;                                                      // Bump plane pointers
+        }
     }
     if (dataValid) dataValid = (xPixel >= window.xLeft);                            // Still in window
 }
@@ -203,17 +202,17 @@ void VDUALeft(void) {
 void VDUARight(void) {
     xPixel++;                                                                       // Pixel right
     if (_dmi->bitPlaneDepth == 2) {
-      bitMask >>= 2;                                                                // Shift bitmap right
-      if (bitMask == 0) {                                                           // Off the right side.
-        bitMask = 0xC0;                                                             // Reset bitmap
-        pl0++;pl1++;pl2++;                                                          // Bump plane pointers
-      }
+        bitMask >>= 2;                                                              // Shift bitmap right
+        if (bitMask == 0) {                                                         // Off the right side.
+            bitMask = 0xC0;                                                         // Reset bitmap
+            pl0++;pl1++;pl2++;                                                      // Bump plane pointers
+        }
     } else {
-      bitMask >>= 1;                                                                // Shift bitmap right
-      if (bitMask == 0) {                                                           // Off the right side.
-        bitMask = 0x80;                                                             // Reset bitmap
-        pl0++;pl1++;pl2++;                                                          // Bump plane pointers
-      }
+        bitMask >>= 1;                                                              // Shift bitmap right
+        if (bitMask == 0) {                                                         // Off the right side.
+            bitMask = 0x80;                                                         // Reset bitmap
+            pl0++;pl1++;pl2++;                                                      // Bump plane pointers
+        }
     }
     if (dataValid) dataValid = (xPixel < window.xRight);                            // Still in window
 }

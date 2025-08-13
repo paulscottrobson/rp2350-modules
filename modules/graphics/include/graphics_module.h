@@ -22,14 +22,15 @@
 #include "dvi_module.h"
 
 void VDUInitialise(void);
-void VDUWrite(int c);
+void VDUWrite(uint8_t c);
 void VDUWriteWord(uint32_t word);
 void VDUWriteString(char *fmt, ...);
-void VDUPlot(int cmd,int x,int y);
-void VDUSetGraphicsColour(int mode,int colour);
-int  VDUReadPixel(int x,int y);
+void VDUPlot(uint8_t cmd,int32_t x,int32_t y);
+void VDUSetGraphicsColour(uint8_t mode,uint8_t colour);
+int  VDUReadPixel(int32_t x,int32_t y);
 void VDUScrollRect(int ext, int direction);
-void VDUGetTextCursor(int *x, int *y);
+void VDUGetTextCursor(uint8_t *x, uint8_t *y);
+void VDUSetTextCursor(uint8_t x,uint8_t y);
 
 /**
  *      Drawing notes (from the BBC Micro user guide and the GXR user guide)

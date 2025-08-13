@@ -13,7 +13,7 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static void _VDUSwitchMode(int newMode);
+static void _VDUSwitchMode(uint32_t newMode);
 
 /*
         This table is the number of additional bytes needed for each VDU command
@@ -76,7 +76,7 @@ int _VDUShort(int ofst) {
 * @param[in]  c     Character code
 */
 
-void VDUWrite(int c) {
+void VDUWrite(uint8_t c) {
     int x1,y1,x2,y2;
 
     if (DVIGetModeInformation() == NULL) return;                                    // Check screen is actually on.
@@ -272,7 +272,7 @@ void VDUWriteWord(uint32_t word) {
  *
  * @param[in]  newMode  Mode to change it to ; invalid values are ignored.
  */
-static void _VDUSwitchMode(int newMode) {
+static void _VDUSwitchMode(uint32_t newMode) {
     if (newMode < 0 || newMode >= DVI_MODE_COUNT) return;                           // Validate the mode.
     DVISetMode(newMode);                                                            // Set the physical driver mode.
     VDUWrite(20);                                                                   // Reset colours

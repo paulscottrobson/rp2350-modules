@@ -171,7 +171,7 @@ void VDUHomeCursor(void) {
  * @param[in]  x     Horizontal character position
  * @param[in]  y     Vertical character position
  */
-void VDUSetTextCursor(int x,int y) {
+void VDUSetTextCursor(uint8_t x,uint8_t y) {
     if (x >= 0 && y >= 0 && x <= xRight-xLeft && y <= yBottom-yTop) {
         xCursor = x;yCursor = y;
     }
@@ -184,10 +184,9 @@ void VDUSetTextCursor(int x,int y) {
  * @param      x     pointer to x store or NULL
  * @param      y     pointer to y store or NULL
  */
-void VDUGetTextCursor(int *x, int *y)
-{
-  if (x != NULL) *x = xCursor;
-  if (y != NULL) *y = yCursor;
+void VDUGetTextCursor(uint8_t *x, uint8_t *y) {
+    if (x != NULL) *x = xCursor;
+    if (y != NULL) *y = yCursor;
 }
 
 /**
@@ -292,11 +291,11 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
     int bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2; // Bytes per character.
     int xFrom, xTo;
     if (dir < 0) {
-      xTo = xLeft*bytesPerCharacter;
-      xFrom = xTo + bytesPerCharacter;
+        xTo = xLeft*bytesPerCharacter;
+        xFrom = xTo + bytesPerCharacter;
     } else {
-      xFrom = xLeft*bytesPerCharacter;
-      xTo = xFrom + bytesPerCharacter;
+        xFrom = xLeft*bytesPerCharacter;
+        xTo = xFrom + bytesPerCharacter;
     } // Byte offsets to copy from and to.
     int copySize = (xRight-xLeft)*bytesPerCharacter;     // Amount to copy.
     for (int y=yTop*8; y<(yBottom+1)*8; y++) {
@@ -307,7 +306,7 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
     // Scroll the line left/right.
     }
     for (int y = yTop;y <= yBottom;y++) {                                           // Blank the new column.
-      _VDURenderCharacter(dir<0?xRight:xLeft,y,' ');
+        _VDURenderCharacter(dir<0?xRight:xLeft,y,' ');
     }
 }
 
@@ -316,33 +315,33 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
  */
 void VDUScrollRect(int ext, int direction)
 {
-  DVIMODEINFO *dmi = DVIGetModeInformation();            
-  int Top,Bottom,Left,Right;
-  if (ext) {
-    Top = 0;
-    Bottom = (dmi->height >> 3)-1;
-    Left = 0;
-    Right = (dmi->width >> 3)-1;
-  } else {
-    Top = yTop;
-    Bottom = yBottom;
-    Left = xLeft;
-    Right = xRight;
-  }
-  switch (direction) {
-  case 0: /* right */
-    _VDUScrollH(Left,Right,1,Top,Bottom);
-    break;
-  case 1: /* left */
-    _VDUScrollH(Left,Right,-1,Top,Bottom);
-    break;
-  case 2: /* down */
-    _VDUScroll(Bottom,Bottom+1,Top-1,Top,Left,Right);
-    break;
-  case 3: /* up */
-    _VDUScroll(Top+1,Top,Bottom+1,Bottom,Left,Right);
-    break;
-  }
+    DVIMODEINFO *dmi = DVIGetModeInformation();            
+    int Top,Bottom,Left,Right;
+    if (ext) {
+        Top = 0;
+        Bottom = (dmi->height >> 3)-1;
+        Left = 0;
+        Right = (dmi->width >> 3)-1;
+    } else {
+        Top = yTop;
+        Bottom = yBottom;
+        Left = xLeft;
+        Right = xRight;
+    }
+    switch (direction) {
+        case 0: /* right */
+            _VDUScrollH(Left,Right,1,Top,Bottom);
+            break;
+        case 1: /* left */
+            _VDUScrollH(Left,Right,-1,Top,Bottom);
+            break;
+    case 2: /* down */
+            _VDUScroll(Bottom,Bottom+1,Top-1,Top,Left,Right);
+            break;
+    case 3: /* up */
+            _VDUScroll(Top+1,Top,Bottom+1,Bottom,Left,Right);
+        break;
+    }
 }
 
 /**
@@ -398,7 +397,7 @@ static void _VDUDrawCursor(bool isVisible) {
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     bool is64Bit = (dmi->bitPlaneDepth == 2);
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {        
-      uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * 8 * (yCursor+yTop)) + ((xCursor+xLeft) * (is64Bit ? 2 : 1));
+        uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * 8 * (yCursor+yTop)) + ((xCursor+xLeft) * (is64Bit ? 2 : 1));
         for (int y = 0;y < 8;y++) {
             *p ^= 0xFF;if (is64Bit) *(p+1) ^= 0xFF;
             p += dmi->bytesPerLine;
@@ -411,8 +410,8 @@ static void _VDUDrawCursor(bool isVisible) {
  * @brief      Disable showing of cursor.
  */
 void VDUDisableCursor(void) {
-  VDUHideCursor();
-  cursorIsEnabled = false;
+    VDUHideCursor();
+    cursorIsEnabled = false;
 }
 
 
@@ -420,7 +419,7 @@ void VDUDisableCursor(void) {
  * @brief      Enable showing of cursor.
  */
 void VDUEnableCursor(void) {
-  cursorIsEnabled = true;
+    cursorIsEnabled = true;
 }
 
 
