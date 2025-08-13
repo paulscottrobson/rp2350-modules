@@ -58,27 +58,24 @@ bool SYSYield(void);
 #endif
 
 //
-//      The control codes are here because they are used for input and console, and I don't want a dependency
-//      on either.
+//      BBC Micro compatible key/console codes.
 //
 #define CTL_NONE        (0)
-#define CTL_LEFT        (1)
-#define CTL_RIGHT       (2) 
-#define CTL_DOWN        (3)
-#define CTL_UP          (4)
-#define CTL_PAGEDOWN    (5)
-#define CTL_PAGEUP      (6)
-#define CTL_BACKSPACE   (8)                                                         // e.g. back and erase
-#define CTL_TAB         (9) 
-#define CTL_CRLF        (10)                                                        // This matches the PICO C compiler.
+#define CTL_LEFT        (8)
+#define CTL_RIGHT       (9) 
+#define CTL_DOWN        (10)
+#define CTL_UP          (11)
 #define CTL_CLEAR       (12)
 #define CTL_CR          (13)
-#define CTL_F1          (14)                                                        // 14-25 are the function keyaas.
-#define CTL_F12         (25)
 #define CTL_ESCAPE      (27)
+#define CTL_HOME        (30)
+#define CTL_BACKSPACE   (127)                                                       // e.g. back and erase
 
-#define CTL_HOME        (28)
-#define CTL_END         (29)
-#define CTL_INSERT      (30)
-#define CTL_DELETE      (31)                                                        // e.g. erase at cursor
+#define CTL_PAGEDOWN    (1)                                                         // These are BBC Micro VDU commands that make no sense
+#define CTL_PAGEUP      (2)                                                         // Used for other keys.
+#define CTL_END         (3)
+#define CTL_INSERT      (7)
+#define CTL_DELETE      (14) 
+#define CTL_TAB         (15)
 
+#define CTL_FUNCTION    (0xF000)                                                    // Fkeys are mapped onto Fk00 so 8 bit returns 00

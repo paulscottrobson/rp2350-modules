@@ -69,7 +69,7 @@ static uint16_t _INPTranslateControl(uint8_t keyID,uint8_t modifiers) {
         case KEY_TAB:
             ret = CTL_TAB;break;
         case KEY_ENTER:
-            ret = CTL_CRLF;break;
+            ret = CTL_CR;break;
         case KEY_ESC:
             ret = CTL_ESCAPE;break;
         case KEY_HOME:
@@ -84,7 +84,7 @@ static uint16_t _INPTranslateControl(uint8_t keyID,uint8_t modifiers) {
 
         default:
             if (keyID >= KEY_F1 && keyID <= KEY_F12) {                              // Convert function key codes
-                ret = keyID-KEY_F1+CTL_F1;                                          // from the HID to our internal code.
+                ret = CTL_FUNCTION + ((keyID - KEY_F1) << 8);                       // from the HID to our internal code.
             }
             break;
     }
