@@ -46,7 +46,7 @@ void VDUHomeCursor(void);
 
 void VDUResetGraphicsCursor(void);
 void VDUSetGraphicsOrigin(int x,int y);
-uint8_t VDUGetCharacterLineData(int c,int y);
+uint8_t VDUGetCharacterLineData(int c,int y,bool largeFont);
 void VDUDefineCharacter(int c,uint8_t *gData);
 void VDUSetDrawingData(int drawMode);
 

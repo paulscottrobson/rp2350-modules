@@ -43,7 +43,7 @@ int MAINPROGRAM() {
  */
 static void generalTest(void) {
     VDUWrite(22);VDUWrite(MODE_320_240_8);
-    // VDUWrite(1);VDUWrite(1);VDUWrite(2); Double height
+    VDUWrite(1);VDUWrite(1);VDUWrite(2); // Double height
     for (int i = 0;i < 10;i++) {
         uint8_t c1 = random() & 7,c2 = c1 ^ 7;
         

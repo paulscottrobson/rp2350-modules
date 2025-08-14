@@ -236,7 +236,7 @@ void VDUGCursor(int c) {
 void VDUGWriteText(int c) {
     VDUSetDrawingData(1);                                                           // Use foreground mode
     for (int y = 0;y < 8;y++) {
-        VDUAOutputByte(vc.xCoord[0],vc.yCoord[0]-y,VDUGetCharacterLineData(c,y));
+        VDUAOutputByte(vc.xCoord[0],vc.yCoord[0]-y,VDUGetCharacterLineData(c,y,false));
     }
     VDUGCursor(9);                                                                  // Forward one.
 }

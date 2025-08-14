@@ -37,12 +37,17 @@ void VDUFontInitialise(void) {
  * @return     { description_of_the_return_value }
  */
 
-uint8_t VDUGetCharacterLineData(int c,int y) {
+uint8_t VDUGetCharacterLineData(int c,int y,bool largeFont) {
     c &= 0xFF;
     if (c < ' ' || c == 0x7F) return 0;                                             // Control $00-$1F and $7F
-    if (c >= 0x80) return vc.udgMemory[(c-0x80)*8+y];                               // UDG $80-$FF
-    return DVIGetSystemFont()[(c - ' ') * 8+y];                                     // ASCII $20-$7E ($7F is a control character)
+    if (largeFont) {
+        return DVIGetSystemFont16()[(c - ' ') * 16+y];                              // ASCII $20-$FF, cannot redefine 8x16
+    } else {
+        if (c >= 0x80) return vc.udgMemory[(c-0x80)*8+y];                            // UDG $80-$FF
+        return DVIGetSystemFont()[(c - ' ') * 8+y];                                  // ASCII $20-$7E ($7F is a control character)
+    }
 }
+
 
 /**
  * @brief      Change a UDG definition
@@ -130,8 +135,8 @@ static void _VDURenderCharacter(int x,int y,int c) {
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Do all three planes.
         for (int yChar = 0;yChar < vc.textHeight;yChar++) {                         // Each line in a bit plane.
             uint8_t pixels = (vc.textHeight == 8) ?                                 // Get the character line data.
-                                    VDUGetCharacterLineData(c,yChar):
-                                    VDUGetCharacterLineData(c,yChar/2);   
+                                    VDUGetCharacterLineData(c,yChar,false):
+                                    VDUGetCharacterLineData(c,yChar,true);   
             uint8_t *p = dmi->bitPlane[plane]+                                      // Position in bitmap.
                                 (y*vc.textHeight+yChar)*dmi->bytesPerLine;      
             if (dmi->bitPlaneDepth == 1) {                                          // Handle 8 bits per bitmap (8 colours)
