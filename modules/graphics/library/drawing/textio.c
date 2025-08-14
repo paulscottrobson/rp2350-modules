@@ -85,7 +85,6 @@ void VDURenderCharacter(int x,int y,int c) {
     if (x < vc.tw.xLeft || x > vc.tw.xRight ||                                      // Out of the text window
                             y < vc.tw.yTop || y > vc.tw.yBottom) return;                
 
-    if (x == vc.tw.xRight) VDUSetTextEndMarker(y);                                  // Written to the right hand column, mark extended.
 
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Do all three planes.
@@ -282,7 +281,10 @@ void VDUScrollRect(int ext, int direction)
  */
 void VDUWriteText(uint8_t c) {
     VDURenderCharacter(vc.xCursor+vc.tw.xLeft,vc.yCursor+vc.tw.yTop,c);            // Write character
-    VDUWrite(9);                                                                    // Move forward.
+    if (vc.xCursor == vc.tw.xRight-vc.tw.xLeft) {                                  // Written to the right hand column, mark extended.
+        VDUSetTextEndMarker(vc.yCursor+vc.tw.yTop);                     
+    }
+    VDUWrite(9);                                                                   // Move forward.
 }
 
 /**
