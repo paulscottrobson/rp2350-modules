@@ -22,5 +22,9 @@
  * @return     character code, of 0 if cannot be recognised.
  */
 uint8_t VDURead(uint8_t x,uint8_t y) {
-    return x;
+    DVIMODEINFO *dmi = DVIGetModeInformation();
+    x = x * vc.textWidth;
+    y = y * vc.textHeight;
+    LOG("%d %d",x,y);
+    return 0;
 }

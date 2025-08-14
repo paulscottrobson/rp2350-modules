@@ -18,7 +18,7 @@ int MAINPROGRAM() {
     uint32_t x,y;
     DVIInitialise();
     VDUInitialise();
-    generalTest();
+    //generalTest();
 
     VDUWrite(24);VDUWriteWord(50);VDUWriteWord(50);VDUWriteWord(1230);VDUWriteWord(900);
 
@@ -54,7 +54,7 @@ static void generalTest(void) {
     VDUPlot(12,42,0);VDUPlot(5,42,1020);
 
     for (int i = 0;i < 10;i++) {
-        uint8_t c = VDURead((i >= 6) ? 1 : 0,i);
+        uint8_t c = VDURead(i,(i >= 6) ? 1 : 0);
         LOG("%d : %d %x",i,c,c);
     }
     uint32_t next = 0;
