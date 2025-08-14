@@ -31,6 +31,7 @@ int  VDUReadPixel(int32_t x,int32_t y);
 void VDUScrollRect(int ext, int direction);
 void VDUGetTextCursor(uint8_t *x, uint8_t *y);
 void VDUSetTextCursor(uint8_t x,uint8_t y);
+uint8_t VDURead(uint8_t x,uint8_t y);
 
 /**
  *      Drawing notes (from the BBC Micro user guide and the GXR user guide)

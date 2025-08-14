@@ -206,8 +206,10 @@ void VDUSetTextColour(int colour) {
  * @param[in]  ySize  y Scale.
  */
 void VDUSetTextSize(uint8_t xSize,uint8_t ySize) {
+    vc.textWidth = 8;
     vc.textHeight = (ySize == 2) ? 16:8;
 }
+
 /**
  * @brief      VDU Cursor command
  *

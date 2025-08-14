@@ -1,7 +1,6 @@
 # TODO list
 
 ## Graphics
-- Support double height text.
 - Read character from screen.
 
 ## ScreenEditor module
