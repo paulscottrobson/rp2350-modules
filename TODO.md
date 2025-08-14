@@ -1,10 +1,8 @@
 # TODO list
 
 ## ScreenEditor module
-
-- Fix to use the new graphics system.
-- Double height support.
-- Check works in window.
+- Add EOL tracking to clear, scrolling up/down and last character
+- Export : the window, the eol tracking data.
 
 ## Computer module
 - The base computer system

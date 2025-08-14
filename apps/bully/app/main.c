@@ -30,8 +30,9 @@ int MAINPROGRAM(int argc,char *argv[]) {
     INPSetFunctionKey(2,"ABCD");
     VDUInitialise();
     VDUWrite(22);VDUWrite(MODE_320_240_8);
-    VDUWrite(1);VDUWrite(1);VDUWrite(2);
+    //VDUWrite(1);VDUWrite(1);VDUWrite(2);                                          // Double height
     decorate();                                                                     // Draw ellipses.
+    VDUWrite(28);VDUWrite(2);VDUWrite(18);VDUWrite(30);VDUWrite(5);
 
     while (COMAppRunning()) {                                                       // Our "main program"
         int16_t k = INPGetKey();                                                    // Get key, log to serial and list if F or D pressed
