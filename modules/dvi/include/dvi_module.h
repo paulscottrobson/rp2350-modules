@@ -50,7 +50,8 @@ void DVIInitialise(void);
 bool DVISetMode(DVIMODE mode);
 DVIMODEINFO *DVIGetModeInformation(void);
 uint32_t  DVIGetScreenExtent(uint32_t *pWidth,uint32_t *pHeight);
-uint8_t * DVIGetSystemFont(void);
+uint8_t *DVIGetSystemFont(void);
+uint8_t *DVIGetSystemFont16(void);
 
 #define FRAME_WIDTH 640                                                             // Not the *pixels*, it's the display setting.
 #define FRAME_HEIGHT 480

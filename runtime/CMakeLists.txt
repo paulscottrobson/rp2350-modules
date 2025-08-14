@@ -57,6 +57,7 @@ add_executable(runtime
     ${APP_SOURCES} ${APP_LIBRARY} ${RUNTIME_SOURCES}
     ${MODULEDIR}dvi/library/config.c
     ${MODULEDIR}dvi/library/systemfont.c
+    ${MODULEDIR}dvi/library/systemfont16.c
     ${MODULEDIR}usb/library/fileio/changedir.c
     ${INPUT_LIB} ${MODES_LIB} ${ALT_GRAPHICS_LIB} ${PSRAM_LIB} ${MEMORY_LIB} ${SCREEN_LIB}
 )
