@@ -21,6 +21,8 @@ typedef struct _Window {
     int xLeft,yBottom,xRight,yTop;
 } VDUWINDOW;
 
+#define MAX_HEIGHT      (60)
+
 #define SAVED_COORDS    (3)
 
 struct VDUConfig {
@@ -38,6 +40,7 @@ struct VDUConfig {
     bool writeTextToGraphics;                                                       // When set, text output is via graphics
     bool vduEnabled;                                                                // Text I/O enabled ?
     uint8_t udgMemory[128*8];                                                       // Memory for user defined graphics.
+    bool isExtendedLine[MAX_HEIGHT];                                                // Extended line flag for each line.
 };
 
 extern struct VDUConfig vc;
