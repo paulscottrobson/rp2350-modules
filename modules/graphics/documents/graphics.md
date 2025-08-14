@@ -39,7 +39,9 @@ VDUPlotCommand() VDUSetGraphicsColour() are convenient shorthands.
 
 VDUReadPixel() reads a pixel on the display, VDUScrollRect() scrolls a rectangular area of the display, and VDUGetTextCursor()/VDUSetTextCursor() read and write the current text cursor position.
 
+VDURead() reads a text character from the text display, and returns 0 if it cannot be recognised.
+
 
 ## Revision
 
-Written by Paul Robson, last revised 13 August 2025.
+Written by Paul Robson, last revised 14 August 2025.

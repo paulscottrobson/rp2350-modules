@@ -124,9 +124,9 @@ void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
  */
 int  VDUReadPixel(int32_t x,int32_t y) {
     x = x >> xScale;y = y >> yScale;                                                // Scale to physical coordinates
-    if (x < vc.gw.xLeft || y < vc.gw.yBottom ||                                   // Check out of window area.
+    if (x < vc.gw.xLeft || y < vc.gw.yBottom ||                                     // Check out of window area.
                 x > vc.gw.xRight || y > vc.gw.yTop) return -1;              
-    return VDUAReadPixel(x,y);                                                      // Call the atomic function
+    return VDUAReadPixel(x,y,false);                                                // Call the atomic function
 }
 
 /**

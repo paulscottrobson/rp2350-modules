@@ -17,7 +17,7 @@ static inline void _VDUDrawBitmap3(void);
 static inline void _VDUDrawBitmap6(void);
 static inline void _VDUDrawBitmap(void);
 static int _VDUAReadPixelDirect(void);
-static void _VDUAValidate(void);
+static void _VDUAValidate(bool isValid);
 
 static DVIMODEINFO *_dmi = NULL;                                                    // Current mode information.
 
@@ -54,10 +54,12 @@ void VDUASetControlBits(int c) {
 
 /**
  * @brief      Validate it (e.g. check on screen and in viewport)
+ *
+ * @param[in]  isValid  If true, assume it is valid automatically.
  */
-static void _VDUAValidate(void) {
+static void _VDUAValidate(bool isValid) {
     dataValid = false;
-    if (OFFWINDOW(xPixel,yPixel)) return;                                           // No, we can't do anything.
+    if (!isValid && OFFWINDOW(xPixel,yPixel)) return;                               // No, we can't do anything.
 
     int offset;
     if (_dmi->bitPlaneDepth == 2) {
@@ -83,7 +85,7 @@ static void _VDUAValidate(void) {
 void VDUAPlot(int x,int y) {
     _dmi = DVIGetModeInformation();                                                 // Get mode information
     xPixel = x;yPixel = y;                                                          // Update the pixel positions.
-    _VDUAValidate();                                                                // Validate the position.
+    _VDUAValidate(false);                                                           // Validate the position.
     if (dataValid) _VDUDrawBitmap();                                                // Draw pixel if valid.
 }
 
@@ -99,10 +101,10 @@ void VDUAHorizLine(int x1,int x2,int y) {
     int ppb = _dmi->bitPlaneDepth==2 ? 4 : 8;
     if (OFFWINDOWV(y)) return;                                                      // Vertically out of range => no line.
     if (x1 >= x2) { int n = x1;x1 = x2;x2 = n; }                                    // Sort the x coordinates into order.
-    if (x2 < vc.gw.xLeft || x1 >= vc.gw.xRight) return;                           // On screen area (e.g. lower off right, higher off left)
-    x1 = max(x1,vc.gw.xLeft);x2 = min(x2,vc.gw.xRight);                           // Trim horizontal line to port.
+    if (x2 < vc.gw.xLeft || x1 >= vc.gw.xRight) return;                             // On screen area (e.g. lower off right, higher off left)
+    x1 = max(x1,vc.gw.xLeft);x2 = min(x2,vc.gw.xRight);                             // Trim horizontal line to port.
     xPixel = x1;yPixel = y;dataValid = false;                                       // First pixel.
-    _VDUAValidate();
+    _VDUAValidate(false);
     int pixelCount = x2-x1+1;                                                       // Pixels to draw
 
     //
@@ -147,7 +149,7 @@ void VDUAVertLine(int x,int y1,int y2) {
     if (y2 < vc.gw.yBottom || y1 >= vc.gw.yTop) return;                             // Wholly off top or bottom.
     y1 = max(y1,vc.gw.yBottom);y2 = min(y2,vc.gw.yTop);                             // Clip into region.
     xPixel = x;yPixel = y1;dataValid = false;                                       // Set start and validate
-    _VDUAValidate();
+    _VDUAValidate(false);
     int pixelCount = y2-y1+1;                                                       // Pixels to draw
     while (pixelCount-- > 0) {                                                      // Shift until reached byte boundary
         _VDUDrawBitmap();VDUAUp();
@@ -215,7 +217,7 @@ void VDUARight(void) {
             pl0++;pl1++;pl2++;                                                      // Bump plane pointers
         }
     }
-    if (dataValid) dataValid = (xPixel < vc.gw.xRight);                            // Still in window
+    if (dataValid) dataValid = (xPixel < vc.gw.xRight);                             // Still in window
 }
 
 /**
@@ -251,11 +253,11 @@ void VDUALine(int x0, int y0, int x1, int y1) {
 
     xPixel = x0;yPixel = y0;                                                        // Start at x0,y0
 
-    _VDUAValidate();                                                                // Validate the current
+    _VDUAValidate(false);                                                           // Validate the current
 
     while(xPixel != x1 || yPixel != y1) {
 
-        if (!dataValid) _VDUAValidate();                                            // Try to validate if invaluid
+        if (!dataValid) _VDUAValidate(false);                                       // Try to validate if invalid
         if (dataValid && drawDot) _VDUDrawBitmap();                                 // If valid, then draw line.
 
         if (controlBits & GFXC_DOTTED) drawDot = !drawDot;                          // Toggle draw flag if dotted.
@@ -271,7 +273,7 @@ void VDUALine(int x0, int y0, int x1, int y1) {
         }
     }
     if ((controlBits & GFXC_NOENDPOINT) == 0) {                                     // Draw the last point
-        if (!dataValid) _VDUAValidate();
+        if (!dataValid) _VDUAValidate(false);
         if (dataValid & drawDot) _VDUDrawBitmap();
     }
 }
@@ -366,15 +368,16 @@ static inline void _VDUDrawBitmap6(void) {
 /**
  * @brief      Atomic pixel read
  *
- * @param[in]  x     Physical x position
- * @param[in]  y     Physical y position
+ * @param[in]  x        Physical x position
+ * @param[in]  y        Physical y position
+ * @param[in]  isValid  True if assume validity so can read outside gfx window.
  *
  * @return     pixel colour or -1 if not readable.
  */
-int  VDUAReadPixel(int x,int y) {
+int  VDUAReadPixel(int x,int y,bool isValid) {
     _dmi = DVIGetModeInformation();                                                 // Get mode information
     xPixel = x;yPixel = y;                                                          // Update the pixel positions.
-    _VDUAValidate();                                                                // Validate the position.
+    _VDUAValidate(isValid);                                                         // Validate the position.
     return _VDUAReadPixelDirect();
 }
 

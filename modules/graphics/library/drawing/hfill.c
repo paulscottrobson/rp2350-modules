@@ -42,7 +42,7 @@ void VDUHorizontallFill(int x,int y,bool rightOnly) {
  * @return     true if background
  */
 static bool _VDUHIsBackground(int px,int py) {
-    int c = VDUAReadPixel(px,py);                                                   // Read the pixel at that location
+    int c = VDUAReadPixel(px,py,false);                                             // Read the pixel at that location
     if (c < 0) return false;                                                        // Off the edge.
      return (c == background);
 }

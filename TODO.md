@@ -1,12 +1,10 @@
 # TODO list
 
-## Graphics
-- Read character from screen.
-
 ## ScreenEditor module
 
 - Fix to use the new graphics system.
 - Double height support.
+- Check works in window.
 
 ## Computer module
 - The base computer system

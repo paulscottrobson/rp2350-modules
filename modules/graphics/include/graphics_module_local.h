@@ -80,7 +80,7 @@ void VDUADown(void);
 void VDUALeft(void);
 void VDUARight(void);
 
-int  VDUAReadPixel(int x,int y);
+int  VDUAReadPixel(int x,int y,bool isValid);
 void VDUHorizontallFill(int x,int y,bool rightOnly);
 int  VDUGetBackgroundColour(void);
 void VDUGCursor(int c);

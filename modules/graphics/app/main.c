@@ -18,6 +18,7 @@ int MAINPROGRAM() {
     uint32_t x,y;
     DVIInitialise();
     VDUInitialise();
+
     generalTest();
 
     VDUWrite(24);VDUWriteWord(50);VDUWriteWord(50);VDUWriteWord(1230);VDUWriteWord(900);
@@ -42,20 +43,21 @@ int MAINPROGRAM() {
  */
 static void generalTest(void) {
     VDUWrite(22);VDUWrite(MODE_320_240_8);
+    // VDUWrite(1);VDUWrite(1);VDUWrite(2); Double height
     for (int i = 0;i < 10;i++) {
         uint8_t c1 = random() & 7,c2 = c1 ^ 7;
         
         VDUWrite(17);VDUWrite(c1);
         VDUWrite(17);VDUWrite(c2+128);
-        VDUWrite(i*5+38);
+        VDUWrite(i*15+38);
         if (i == 5) VDUWrite(10);  
     }
     VDUSetGraphicsColour(0,7);
     VDUPlot(12,42,0);VDUPlot(5,42,1020);
 
     for (int i = 0;i < 10;i++) {
-        uint8_t c = VDURead((i >= 6) ? 1 : 0,i);
-        LOG("%d : %d %x",i,c,c);
+        uint8_t c = VDURead(i,(i >= 6) ? 1 : 0);
+        LOG("%d : %d %x %c",i,c,c,c);
     }
     uint32_t next = 0;
     while (COMAppRunning()) {                                                                     
