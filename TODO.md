@@ -1,7 +1,7 @@
 # TODO list
 
 ## ScreenEditor module
-- Add EOL tracking to clear, scrolling up/down and last character
+- Add EOL tracking to clear, scrolling up/down, reset/set text window and last character
 - Export : the window, the eol tracking data.
 
 ## Computer module
@@ -13,6 +13,7 @@
 ## Audio ?
 
 ## Others
+- bully has trailing cursor ?
 - python script with skeleton for runtimes CMakeLists.txt
 - builder to allow libraries that aren't in the dependency list (e.g. input and usb in console, for testing keyboard.)
 

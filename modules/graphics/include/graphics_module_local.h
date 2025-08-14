@@ -17,21 +17,24 @@
 #define min(a,b) ((a) < (b) ? (a) : (b))
 #define max(a,b) ((a) > (b) ? (a) : (b))
 
-struct _Window {
+typedef struct _Window {
     int xLeft,yBottom,xRight,yTop;
-};
+} VDUWINDOW;
 
 #define SAVED_COORDS    (3)
 
 struct VDUConfig {
     int xCursor,yCursor;                                                            // Posiiton in character cells in the window.
-    struct _Window tw;                                                              // Text window
+    VDUWINDOW tw;                                                                   // Text window
     int fgCol,bgCol;                                                                // Foreground & Background colour
     int textWidth,textHeight;                                                       // Width/Height of text character
     int xOrigin,yOrigin;                                                            // Origin position, this is in logical coordinates.
     int gColMode,fgrGraphic,bgrGraphic;                                             // Graphic mode, foreground, background graphic colours
-    struct _Window gw;                                                              // Graphic window
+    VDUWINDOW gw;                                                                   // Graphic window
+    int xLogicalExtent,yLogicalExtent;                                              // The extent of the logical coordinates.
+    int xScale,yScale;                                                              // Scale (divide by this for logical -> physical)
     int xCoord[SAVED_COORDS],yCoord[SAVED_COORDS];                                  // Coordinate buffer (PHYSICAL coordinates)
+    int xLastLogical,yLastLogical;                                                  // Last logical
     bool writeTextToGraphics;                                                       // When set, text output is via graphics
     bool vduEnabled;                                                                // Text I/O enabled ?
     uint8_t udgMemory[128*8];                                                       // Memory for user defined graphics.
@@ -90,6 +93,12 @@ void VDUHideCursor(void);
 void VDUShowCursor(void);
 void VDUEnableCursor(void);
 void VDUDisableCursor(void);
+
+void VDUResetTextEndMarkers(void);                                                      
+void VDUScrollTextEndMarkers(int dir);
+void VDUSetTextEndMarker(int y);
+bool VDUHasLineEndMarker(int y);
+VDUWINDOW *GetTextWindow(void);
 
 #define GFXC_NOENDPOINT     (0x01)
 #define GFXC_DOTTED         (0x02)

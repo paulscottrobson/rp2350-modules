@@ -13,55 +13,9 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static bool cursorIsVisible = false;                                                // Cursor visible
-static bool cursorIsEnabled = true;
 
 static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int xRight);
 static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom);
-
-void VDUFontInitialise(void) {
-    uint8_t *font = DVIGetSystemFont()+96*8;                                        // Preload font 128-255 into UDG Memory.
-    memcpy(vc.udgMemory,font,sizeof(vc.udgMemory));
-    VDUSetTextSize(1,1);
-    VDUResetTextWindow();
-}
-
-/**
- * @brief      Get the line data for line y of character c, in l-r bit format
- *
- *             (e.g. 0x80 is the leftmost bit)
- *
- * @param[in]  c     Character 0-255
- * @param[in]  y     Vertical position within character 0-7
- *
- * @return     { description_of_the_return_value }
- */
-
-uint8_t VDUGetCharacterLineData(int c,int y,bool largeFont) {
-    c &= 0xFF;
-    if (c < ' ' || c == 0x7F) return 0;                                             // Control $00-$1F and $7F
-    if (largeFont) {
-        return DVIGetSystemFont16()[(c - ' ') * 16+y];                              // ASCII $20-$FF, cannot redefine 8x16
-    } else {
-        if (c >= 0x80) return vc.udgMemory[(c-0x80)*8+y];                            // UDG $80-$FF
-        return DVIGetSystemFont()[(c - ' ') * 8+y];                                  // ASCII $20-$7E ($7F is a control character)
-    }
-}
-
-
-/**
- * @brief      Change a UDG definition
- *
- * @param[in]  c      Character ID ($80-$FF)
- * @param      gData  8 bytes of graphic data.
- */
-void VDUDefineCharacter(int c,uint8_t *gData) {
-    if (c >= 0x80 && c <= 0xFF) {                                                   // Legal UDG
-        for (int i = 0;i < 8;i++) {                                                 // Copy into UDG memory
-            vc.udgMemory[(c-0x80)*8+i] = gData[i];
-        }
-    } 
-}
 
 /**
  * @brief      Convert a pixel pattern to the byte to write to the plane
@@ -120,7 +74,7 @@ static uint8_t _VDUMapToBitplaneByte64(uint8_t line,int plane) {
  * @param[in]  y     y Coordinate
  * @param[in]  c     Character to write
  */
-static void _VDURenderCharacter(int x,int y,int c) {
+void VDURenderCharacter(int x,int y,int c) {
 
     static const uint8_t _pixelMap[16] = {                                          // Convert 4 bit pixel to extended 8 bit byte.
         0x00,0x03,0x0C,0x0F,0x30,0x33,0x3C,0x3F,
@@ -130,6 +84,8 @@ static void _VDURenderCharacter(int x,int y,int c) {
     if (c < 32 || c == 127) return;                                                 // Not a displayable character
     if (x < vc.tw.xLeft || x > vc.tw.xRight ||                                      // Out of the text window
                             y < vc.tw.yTop || y > vc.tw.yBottom) return;                
+
+    if (x == vc.tw.xRight) VDUSetTextEndMarker(y);                                  // Written to the right hand column, mark extended.
 
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Do all three planes.
@@ -149,47 +105,6 @@ static void _VDURenderCharacter(int x,int y,int c) {
     }
 }
 
-/**
- * @brief      Clear the screen to the background, inside the text window.
- */
-void VDUClearScreen(void) {    
-    for (int x = vc.tw.xLeft;x <= vc.tw.xRight;x++) {                               // Probably quick enough....
-        for (int y = vc.tw.yTop;y <= vc.tw.yBottom;y++) {
-            _VDURenderCharacter(x,y,' ');
-        }
-    }
-}
-
-/**
- * @brief      Home cursor to top left of current window
- */
-void VDUHomeCursor(void) {
-    VDUSetTextCursor(0,0);
-}
-
-/**
- * @brief      Set the cursor position in the text window
- *
- * @param[in]  x     Horizontal character position
- * @param[in]  y     Vertical character position
- */
-void VDUSetTextCursor(uint8_t x,uint8_t y) {
-    if (x >= 0 && y >= 0 && x <= vc.tw.xRight-vc.tw.xLeft && y <= vc.tw.yBottom-vc.tw.yTop) {
-        vc.xCursor = x;vc.yCursor = y;
-    }
-}
-
-
-/**
- * @brief      Read the text cursor position
- *
- * @param      x     pointer to x store or NULL
- * @param      y     pointer to y store or NULL
- */
-void VDUGetTextCursor(uint8_t *x, uint8_t *y) {
-    if (x != NULL) *x = vc.xCursor;
-    if (y != NULL) *y = vc.yCursor;
-}
 
 /**
  * @brief      Set the text foreground/background colour
@@ -238,17 +153,19 @@ void VDUCursor(int c) {
             break;
         case 10:                                                                    // VDU 10 down
             vc.yCursor++;                                                              
-            if (vc.yCursor > vc.tw.yBottom-vc.tw.yTop) {                             // Vertical scroll up
+            if (vc.yCursor > vc.tw.yBottom-vc.tw.yTop) {                            // Vertical scroll up
    	            _VDUScroll(vc.tw.yTop+1,vc.tw.yTop,vc.tw.yBottom+1,vc.tw.yBottom,vc.tw.xLeft,vc.tw.xRight); 
                 vc.yCursor--;
+                VDUScrollTextEndMarkers(-1);                                        // Scroll text end markers as well.
             }
             break;
         case 11:                                                                    // VDU 11 up.
             vc.yCursor--;                                                              
             if (vc.yCursor < 0) {
-  	        _VDUScroll(vc.tw.yBottom-1,vc.tw.yBottom,vc.tw.yTop,                    // Vertical scroll down.
+      	        _VDUScroll(vc.tw.yBottom-1,vc.tw.yBottom,vc.tw.yTop,                // Vertical scroll down.
                                     vc.tw.yTop,vc.tw.xLeft,vc.tw.xRight);                   
                 vc.yCursor = 0;
+                VDUScrollTextEndMarkers(1);                                         // Scroll text end markers as well.
             }
             break;
         case 13:                                                                    // VDU 13 does not go down a line.
@@ -286,7 +203,7 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
         yFrom += dir;yTo += dir;                                                    // Scroll the line down.
     }
     for (int x = vc.tw.xLeft;x <= vc.tw.xRight;x++) {                               // Blank the new line.
-        _VDURenderCharacter(x,yClear,' ');
+        VDURenderCharacter(x,yClear,' ');
     }
 }
 
@@ -320,7 +237,7 @@ static void _VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
     // Scroll the line left/right.
     }
     for (int y = vc.tw.yTop;y <= vc.tw.yBottom;y++) {                                // Blank the new column.
-        _VDURenderCharacter(dir<0?xRight:xLeft,y,' ');
+        VDURenderCharacter(dir<0?xRight:xLeft,y,' ');
     }
 }
 
@@ -364,7 +281,7 @@ void VDUScrollRect(int ext, int direction)
  * @param[in]  c     Character to output (non control)
  */
 void VDUWriteText(uint8_t c) {
-    _VDURenderCharacter(vc.xCursor+vc.tw.xLeft,vc.yCursor+vc.tw.yTop,c);            // Write character
+    VDURenderCharacter(vc.xCursor+vc.tw.xLeft,vc.yCursor+vc.tw.yTop,c);            // Write character
     VDUWrite(9);                                                                    // Move forward.
 }
 
@@ -376,82 +293,3 @@ void VDUSetDefaultTextColour(void) {
     VDUSetTextColour(0x80);
 }
 
-/**
- * @brief      Reset the text window
- */
-void VDUResetTextWindow(void) {    
-    DVIMODEINFO *dmi = DVIGetModeInformation();            
-    vc.tw.xLeft = vc.tw.yTop = 0;
-    vc.tw.xRight = (dmi->width / 8)-1;
-    vc.tw.yBottom = (dmi->height / vc.textHeight) - 1;
-}
-
-/**
- * @brief      Set the text window (cells are inclusive)
- *
- * @param[in]  x1    x Left
- * @param[in]  y1    y Bottom
- * @param[in]  x2    x Right
- * @param[in]  y2    y Top
- */
-void VDUSetTextWindow(int x1,int y1,int x2,int y2) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();            
-    int w = (dmi->width / 8)-1;
-    int h = (dmi->height / vc.textHeight)-1;
-    vc.tw.xLeft = x1;vc.tw.yTop = y2;
-    vc.tw.xRight = min(w,x2);vc.tw.yBottom = min(h,y1);
-}
-
-/**
- * @brief      Draw or Erase the cursor
- *
- * @param[in]  isVisible  true if cursor to be drawn.
- */
-static void _VDUDrawCursor(bool isVisible) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();            
-    bool is64Bit = (dmi->bitPlaneDepth == 2);
-    for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {        
-        uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * vc.textHeight * (vc.yCursor+vc.tw.yTop)) + ((vc.xCursor+vc.tw.xLeft) * (is64Bit ? 2 : 1));
-        for (int y = 0;y < vc.textHeight;y++) {
-            *p ^= 0xFF;if (is64Bit) *(p+1) ^= 0xFF;
-            p += dmi->bytesPerLine;
-        }
-    }
-}
-
-
-/**
- * @brief      Disable showing of cursor.
- */
-void VDUDisableCursor(void) {
-    VDUHideCursor();
-    cursorIsEnabled = false;
-}
-
-
-/**
- * @brief      Enable showing of cursor.
- */
-void VDUEnableCursor(void) {
-    cursorIsEnabled = true;
-}
-
-
-/**
- * @brief      Hide cursor if displayed.
- */
-void VDUHideCursor(void) {
-    if (cursorIsVisible) {
-        _VDUDrawCursor(false);
-        cursorIsVisible = false;
-    }
-}
-/**
- * @brief      Show cursor if not already visible
- */
-void VDUShowCursor(void) {
-    if (!cursorIsVisible && cursorIsEnabled) {
-        _VDUDrawCursor(true);
-        cursorIsVisible = true;
-    }
-}

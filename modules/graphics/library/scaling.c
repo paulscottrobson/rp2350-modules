@@ -13,10 +13,6 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static int xScale = 1,yScale = 1;                                                   // Scale (divide by this for logical -> physical)
-static int xLogicalExtent,yLogicalExtent;                                           // The extent of the logical coordinates.
-static int xLastLogical,yLastLogical;                                               // Last logical
-
 /**
  * @brief      Set the default graphics colours.
  */
@@ -29,19 +25,10 @@ void VDUSetDefaultGraphicColour(void) {
  * @brief      Reset the graphics cursor information
  */
 void VDUResetGraphicsCursor(void) {
-    xLastLogical = yLastLogical = 0;
+    vc.xLastLogical = vc.yLastLogical = 0;
     for (int i = 0;i < SAVED_COORDS;i++) {
         vc.xCoord[i] = vc.yCoord[i] = 0;
     }
-}
-
-/**
- * @brief      Clear the current graphics window (e.g. CLG)
- */
-void VDUClearGraphicsWindow(void) {
-    VDUASetActionColour(0,vc.bgrGraphic);                                           // Background colour,no tweaks.
-    VDUASetControlBits(0);
-    VDUAFillRect(vc.gw.xLeft,vc.gw.yBottom,vc.gw.xRight,vc.gw.yTop);                // Fill the window
 }
 
 /**
@@ -69,12 +56,6 @@ void VDUSetGraphicsColour(uint8_t mode,uint8_t colour) {
     }
 }
 
-/**
- * @brief      Reset the graphics window
- */
-void VDUResetGraphicsWindow(void) {
-    VDUSetGraphicsWindow(0,0,9999,9999);                                            // This works because VDUSetGraphicsWindow clips.
-}
 
 /**
  * @brief      Set the graphics origin
@@ -86,33 +67,6 @@ void VDUSetGraphicsOrigin(int x,int y) {
     vc.xOrigin = x;vc.yOrigin = y;
 }
 
-/**
- * @brief      Set Graphics Window
- *
- * @param[in]  x1    Left X Logical
- * @param[in]  y1    Bottom Y Logical
- * @param[in]  x2    Right X Logical
- * @param[in]  y2    Top Y Logical
- */
-void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();                                     // Get the display information.
-
-    xScale = (dmi->width == 640) ? 1 : 2;                                           // Currently we only have 640 and 320 across.
-    yScale = (dmi->height == 480) ? 1 : 2;                                          // Support 480,240 and 256 down.
-
-    xLogicalExtent = (dmi->width << xScale)-1;                                      // Work out the logical extent.   
-    yLogicalExtent = (dmi->height << yScale)-1;
-
-    x1 = max(0,x1);y1 = max(0,y1);                                                  // Clip window coordinates to logical extent.
-    x2 = min(x2,xLogicalExtent);y2 = min(y2,yLogicalExtent);
-
-    x1 = x1 >> xScale;y1 = y1 >> yScale;x2 = x2 >> xScale;y2 = y2 >> yScale;        // Convert to physical coordinates 
-
-    vc.gw.xLeft = x1;vc.gw.yBottom = y1;                                            // Set the window
-    vc.gw.xRight = x2;vc.gw.yTop = y2;                                  
-
-    //printf("Window:%d,%d - %d,%d\n",vc.gw.xLeft,vc.gw.yBottom,vc.gw.xRight,vc.gw.yTop);
-}
 
 /**
  * @brief      Return pixel at logical coordinates x,y
@@ -123,7 +77,7 @@ void VDUSetGraphicsWindow(int x1,int y1,int x2,int y2) {
  * @return     colour if +ve, -1 if invalid (out of screen/window)
  */
 int  VDUReadPixel(int32_t x,int32_t y) {
-    x = x >> xScale;y = y >> yScale;                                                // Scale to physical coordinates
+    x = x >> vc.xScale;y = y >> vc.yScale;                                          // Scale to physical coordinates
     if (x < vc.gw.xLeft || y < vc.gw.yBottom ||                                     // Check out of window area.
                 x > vc.gw.xRight || y > vc.gw.yTop) return -1;              
     return VDUAReadPixel(x,y,false);                                                // Call the atomic function
@@ -142,9 +96,9 @@ void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
     //      Handle offset (e.g. command bit 2 is zero)
     //
     if ((cmd & 4) == 0) {                                                           // Is it a relative movement.
-        x += xLastLogical;y += yLastLogical;                                        // If so, offset from the last logical position
+        x += vc.xLastLogical;y += vc.yLastLogical;                                  // If so, offset from the last logical position
     }
-    xLastLogical = x;yLastLogical = y;                                              // Update the last logical position.
+    vc.xLastLogical = x;vc.yLastLogical = y;                                        // Update the last logical position.
     //
     //      Convert to physical, first offset by the origin
     //
@@ -152,12 +106,12 @@ void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
     //
     //      Push the old coordinates on the stack for things like triangles
     //
-    vc.xCoord[2] = vc.xCoord[1];vc.yCoord[2] = vc.yCoord[1];                              // Push x and y cordinates down the 3 level store
+    vc.xCoord[2] = vc.xCoord[1];vc.yCoord[2] = vc.yCoord[1];                        // Push x and y cordinates down the 3 level store
     vc.xCoord[1] = vc.xCoord[0];vc.yCoord[1] = vc.yCoord[0];
     //
     //      And add the coordinate in physical pixels from (0,0) at bottom left of screen.
     //
-    vc.xCoord[0] = x >> xScale;vc.yCoord[0] = y >> yScale;                              // Add the latest coordinate.
+    vc.xCoord[0] = x >> vc.xScale;vc.yCoord[0] = y >> vc.yScale;                    // Add the latest coordinate.
     //printf("Plot: %d %d,%d\n",cmd,vc.xCoord[0],vc.yCoord[0]);
 
     //
