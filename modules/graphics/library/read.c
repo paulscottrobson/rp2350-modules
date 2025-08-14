@@ -25,6 +25,6 @@ uint8_t VDURead(uint8_t x,uint8_t y) {
     DVIMODEINFO *dmi = DVIGetModeInformation();
     x = x * vc.textWidth;
     y = y * vc.textHeight;
-    LOG("%d %d",x,y);
+    LOG(">>> %d %d %d",x,y,VDUAReadPixel(x,dmi->height-1-y-7,true));
     return 0;
 }

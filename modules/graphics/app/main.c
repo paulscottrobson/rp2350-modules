@@ -18,7 +18,8 @@ int MAINPROGRAM() {
     uint32_t x,y;
     DVIInitialise();
     VDUInitialise();
-    //generalTest();
+
+    generalTest();
 
     VDUWrite(24);VDUWriteWord(50);VDUWriteWord(50);VDUWriteWord(1230);VDUWriteWord(900);
 
