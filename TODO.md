@@ -1,5 +1,8 @@
 # TODO list
 
+## Graphics
+- Check scrolling markers
+
 ## ScreenEditor module
 - Add EOL tracking to clear, scrolling up/down, reset/set text window and last character
 - Export : the window, the eol tracking data.
