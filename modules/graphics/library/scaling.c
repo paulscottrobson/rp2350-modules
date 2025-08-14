@@ -92,6 +92,8 @@ int  VDUReadPixel(int32_t x,int32_t y) {
  */
 void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
 
+    VDUHideCursor();
+
     //
     //      Handle offset (e.g. command bit 2 is zero)
     //

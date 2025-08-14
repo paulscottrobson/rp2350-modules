@@ -41,6 +41,8 @@ struct VDUConfig {
     bool vduEnabled;                                                                // Text I/O enabled ?
     uint8_t udgMemory[128*8];                                                       // Memory for user defined graphics.
     bool isExtendedLine[MAX_HEIGHT];                                                // Extended line flag for each line.
+    bool cursorIsVisible;                                                           // Cursor visible
+    bool cursorIsEnabled;                                                           // Cursor is enabled.
 };
 
 extern struct VDUConfig vc;
