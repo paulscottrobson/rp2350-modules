@@ -192,11 +192,13 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
     bool isComplete = false;
     while (!isComplete) {
         for (int i = 0;i < dmi->bitPlaneCount;i++) {                                // For each bitplane
-            uint8_t *f = dmi->bitPlane[i] + dmi->bytesPerLine * yFrom;              // Start Line from
-            uint8_t *t = dmi->bitPlane[i] + dmi->bytesPerLine * yTo;                // Start Line to.
-            f = f + xLeft * bytesPerCharacter;                                      // Start of the copy block
-            t = t + xLeft * bytesPerCharacter;
-            memcpy(t,f,copySize);                                                   // Copy it
+            if (yFrom >= 0 && yTo >= 0 && yFrom < dmi->height && yTo < dmi->height) {
+                uint8_t *f = dmi->bitPlane[i] + dmi->bytesPerLine * yFrom;          // Start Line from
+                uint8_t *t = dmi->bitPlane[i] + dmi->bytesPerLine * yTo;            // Start Line to.
+                f = f + xLeft * bytesPerCharacter;                                  // Start of the copy block
+                t = t + xLeft * bytesPerCharacter;
+                memcpy(t,f,copySize);                                               // Copy it
+            }   
         }        
         if (yFrom == yTarget) isComplete = true;                                    // Done the last one ?
         yFrom += dir;yTo += dir;                                                    // Scroll the line down.

@@ -15,9 +15,7 @@ int MAINPROGRAM(int argc,char *argv[]) {
     char buffer[256];    
     SEDInitialise();
     VDUWrite(22);VDUWrite(MODE_640_480_8);                                          // Video mode
-    VDUSetGraphicsColour(0,4);                                                      // Blue
     VDUWrite(17);VDUWrite(2);
-    VDUPlot(4,0,0);VDUPlot(101,1280,1024);                                          // Full screen rectangle
     VDUWrite(1);VDUWrite(1);VDUWrite(2);                                          // Double height
     //VDUWrite(28);VDUWrite(2);VDUWrite(38);VDUWrite(40);VDUWrite(5);                 // Operating window
     VDUWrite(12);
@@ -25,7 +23,6 @@ int MAINPROGRAM(int argc,char *argv[]) {
     while (COMAppRunning()) {                                                       // Our "main program"
         bool isOk = SEDInputLine(buffer,sizeof(buffer));
         if (isOk) LOG("Entered '%s'",buffer);
-        LOG("Updating");
         COMUpdate();                                                                // Update stuff.
     }
 }

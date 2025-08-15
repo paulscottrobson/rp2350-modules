@@ -1,10 +1,10 @@
 # TODO list
 
 ## ScreenEditor module
-BUG: Scroll up and TOS w/o window errors. Down okay.
 - Add copy to graphics so we can move words about.
 - Implement ins/del.
 - Backspace deletes ?
+- Documents.
 
 ## Computer module
 - The base computer system
