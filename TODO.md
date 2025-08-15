@@ -1,7 +1,7 @@
 # TODO list
 
 ## ScreenEditor module
-- Add extraction code.
+- BUG:Extract after scroll up does blank line ?
 - Add copy to graphics so we can move words about.
 - Implement ins/del.
 - Backspace deletes ?

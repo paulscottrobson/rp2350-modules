@@ -22,3 +22,27 @@ void SEDInitialise(void) {
     VDUInitialise();
     INPInitialise();
 }
+
+/**
+ * @brief      Input a line into the buffer with updates
+ *
+ * @param      buffer      Buffer
+ * @param[in]  bufferSize  Buffer length
+ *
+ * @return     true if ok, false if failed.
+ */
+bool SEDInputLine(uint8_t *buffer,uint16_t bufferSize) {
+    bool bCompleted = false;
+    bool bResult = false;
+    while (!bCompleted && COMAppRunning()) {
+        uint16_t k = INPGetKey();
+        if (k == 13) {
+            bResult = SEDExtract(buffer,bufferSize);
+            bCompleted = true;
+        } else {
+            if (k != 0) SEDProcess(k);
+        }
+        COMUpdate();
+    }
+    return bResult;
+}
