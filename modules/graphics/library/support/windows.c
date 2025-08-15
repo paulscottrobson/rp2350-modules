@@ -29,7 +29,7 @@ void VDUResetTextWindow(void) {
  *
  * @return     Pointer to window structure
  */
-VDUWINDOW *GetTextWindow(void) {
+VDUWINDOW *VDUGetTextWindow(void) {
     return &vc.tw;
 }
 
@@ -47,7 +47,7 @@ void VDUSetTextWindow(int x1,int y1,int x2,int y2) {
     int h = (dmi->height / vc.textHeight)-1;
     vc.tw.xLeft = x1;vc.tw.yTop = y2;
     vc.tw.xRight = min(w,x2);vc.tw.yBottom = min(h,y1);
-    VDUResetTextEndMarkers();                                                       // Reset the text end markers.
+    VDUResetTextEndMarkers();                                                       // Reset the text end markers.    
 }
 
 /**

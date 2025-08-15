@@ -1,11 +1,10 @@
 # TODO list
 
-## Graphics
-- Check scrolling markers
-
 ## ScreenEditor module
-- Add EOL tracking to clear, scrolling up/down, reset/set text window and last character
-- Export : the window, the eol tracking data.
+- Add copy to graphics so we can move words about.
+- Implement ins/del.
+- Backspace deletes ?
+- Documents.
 
 ## Computer module
 - The base computer system

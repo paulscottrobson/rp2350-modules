@@ -13,8 +13,7 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-static bool cursorIsVisible = false;                                                // Cursor visible
-static bool cursorIsEnabled = true;
+
 
 /**
  * @brief      Draw or Erase the cursor
@@ -39,7 +38,7 @@ static void _VDUDrawCursor(bool isVisible) {
  */
 void VDUDisableCursor(void) {
     VDUHideCursor();
-    cursorIsEnabled = false;
+    vc.cursorIsEnabled = false;
 }
 
 
@@ -47,7 +46,7 @@ void VDUDisableCursor(void) {
  * @brief      Enable showing of cursor.
  */
 void VDUEnableCursor(void) {
-    cursorIsEnabled = true;
+    vc.cursorIsEnabled = true;
 }
 
 
@@ -55,18 +54,18 @@ void VDUEnableCursor(void) {
  * @brief      Hide cursor if displayed.
  */
 void VDUHideCursor(void) {
-    if (cursorIsVisible) {
+    if (vc.cursorIsVisible) {
         _VDUDrawCursor(false);
-        cursorIsVisible = false;
+        vc.cursorIsVisible = false;
     }
 }
 /**
  * @brief      Show cursor if not already visible
  */
 void VDUShowCursor(void) {
-    if (!cursorIsVisible && cursorIsEnabled) {
+    if (!vc.cursorIsVisible && vc.cursorIsEnabled) {
         _VDUDrawCursor(true);
-        cursorIsVisible = true;
+        vc.cursorIsVisible = true;
     }
 }
 

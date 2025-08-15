@@ -105,7 +105,7 @@ void VDUWrite(uint8_t c) {
         case 1:                                                                     // 1 was out to printer, now sets font scale.
             VDUHideCursor();
             VDUSetTextSize(_vduBuffer[0],_vduBuffer[1]);                            // only supports 1x1 and 1x2 at present.
-            VDUShowCursor();
+            VDUResetTextWindow();
             break;            
 
         case 2:                                                                     // 2 & 3 sets the printer off and on ... same problem.
@@ -145,6 +145,7 @@ void VDUWrite(uint8_t c) {
             VDUHideCursor();
             VDUClearScreen();     
             VDUHomeCursor();
+            VDUResetTextEndMarkers();                                               // No extend markeres
             break;
 
         case 14:                                                                    // 14,15 control paged mode, not supported
@@ -179,8 +180,8 @@ void VDUWrite(uint8_t c) {
 
         case 22:                                                                    // 22 n Change mode (MODE)
             VDUHideCursor();
-            _VDUSwitchMode(_vduBuffer[0]);                                                  VDUEnableCursor();
-    
+            _VDUSwitchMode(_vduBuffer[0]);                                                  
+            VDUEnableCursor();
             break;
 
         case 23:                                                                    // 23 c <data> Define user defined graphic
@@ -200,14 +201,15 @@ void VDUWrite(uint8_t c) {
                 break;
             }
             break;
+
         case 24:                                                                    // 24 define graphics window
+            VDUHideCursor();
             x1 = _VDUShort(0);y1 = _VDUShort(2);                                    // Get coordinates.
             x2 = _VDUShort(4);y2 = _VDUShort(6);
             VDUSetGraphicsWindow(min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2));      // Set the window.
             break;
 
         case 25:                                                                    // 25 Plot cmd,x,y command PLOT
-            VDUHideCursor();
             VDUPlot(_vduBuffer[0],_VDUShort(1),_VDUShort(3));
             break;
 
@@ -229,6 +231,8 @@ void VDUWrite(uint8_t c) {
                              max(_vduBuffer[1],_vduBuffer[3]),
                              max(_vduBuffer[0],_vduBuffer[2]),
                              min(_vduBuffer[1],_vduBuffer[3]));
+            vc.xCursor = vc.yCursor = 0;                                            // Home cursor here.
+            VDUResetTextEndMarkers();                                               // No extend markeres
             break;
 
         case 29:                                                                    // 29 set graphics origin
@@ -246,7 +250,9 @@ void VDUWrite(uint8_t c) {
             break;
 
         case 127:                                                                   // 127 is destructive backspace
-            VDUWrite(8);VDUWrite(' ');VDUWrite(8);
+            if (vc.xCursor > 0 || vc.yCursor > 0) {
+                VDUWrite(8);VDUWrite(' ');VDUWrite(8);
+            }
             break;
                         
         default:            
@@ -260,7 +266,9 @@ void VDUWrite(uint8_t c) {
             }
             break;
     }
-    if (!vc.writeTextToGraphics) VDUShowCursor();
+    if (!vc.writeTextToGraphics) {
+        VDUShowCursor();
+    }
 }
 
 /**
@@ -281,6 +289,8 @@ void VDUWriteWord(uint32_t word) {
 static void _VDUSwitchMode(uint32_t newMode) {
     if (newMode < 0 || newMode >= DVI_MODE_COUNT) return;                           // Validate the mode.
     DVISetMode(newMode);                                                            // Set the physical driver mode.
+    vc.vduEnabled = true;
+    vc.cursorIsVisible = false;vc.cursorIsEnabled = true;
     VDUWrite(20);                                                                   // Reset colours
     VDUWrite(26);                                                                   // Reset windows and origin
     VDUWrite(12);                                                                   // Clear the screen

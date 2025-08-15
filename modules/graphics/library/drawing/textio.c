@@ -161,7 +161,7 @@ void VDUCursor(int c) {
         case 11:                                                                    // VDU 11 up.
             vc.yCursor--;                                                              
             if (vc.yCursor < 0) {
-      	        _VDUScroll(vc.tw.yBottom-1,vc.tw.yBottom,vc.tw.yTop,                // Vertical scroll down.
+      	        _VDUScroll(vc.tw.yBottom,vc.tw.yBottom+1,vc.tw.yTop,                // Vertical scroll down.
                                     vc.tw.yTop,vc.tw.xLeft,vc.tw.xRight);                   
                 vc.yCursor = 0;
                 VDUScrollTextEndMarkers(1);                                         // Scroll text end markers as well.
@@ -192,11 +192,13 @@ static void _VDUScroll(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int x
     bool isComplete = false;
     while (!isComplete) {
         for (int i = 0;i < dmi->bitPlaneCount;i++) {                                // For each bitplane
-            uint8_t *f = dmi->bitPlane[i] + dmi->bytesPerLine * yFrom;              // Start Line from
-            uint8_t *t = dmi->bitPlane[i] + dmi->bytesPerLine * yTo;                // Start Line to.
-            f = f + xLeft * bytesPerCharacter;                                      // Start of the copy block
-            t = t + xLeft * bytesPerCharacter;
-            memcpy(t,f,copySize);                                                   // Copy it
+            if (yFrom >= 0 && yTo >= 0 && yFrom < dmi->height && yTo < dmi->height) {
+                uint8_t *f = dmi->bitPlane[i] + dmi->bytesPerLine * yFrom;          // Start Line from
+                uint8_t *t = dmi->bitPlane[i] + dmi->bytesPerLine * yTo;            // Start Line to.
+                f = f + xLeft * bytesPerCharacter;                                  // Start of the copy block
+                t = t + xLeft * bytesPerCharacter;
+                memcpy(t,f,copySize);                                               // Copy it
+            }   
         }        
         if (yFrom == yTarget) isComplete = true;                                    // Done the last one ?
         yFrom += dir;yTo += dir;                                                    // Scroll the line down.
@@ -265,10 +267,10 @@ void VDUScrollRect(int ext, int direction)
         case 1: /* left */
             _VDUScrollH(Left,Right,-1,Top,Bottom);
             break;
-    case 2: /* down */
+        case 2: /* down */
             _VDUScroll(Bottom,Bottom+1,Top-1,Top,Left,Right);
             break;
-    case 3: /* up */
+        case 3: /* up */
             _VDUScroll(Top+1,Top,Bottom+1,Bottom,Left,Right);
         break;
     }

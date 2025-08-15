@@ -13,13 +13,13 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-//#define LGM()   { for (int i = vc.tw.yTop;i <= vc.tw.yBottom;i++) LOG("Marker %d : %d",i,vc.isExtendedLine[i]); }
+#define LGM()   { for (int i = vc.tw.yTop;i <= vc.tw.yBottom;i++) LOG("Marker %d : %d",i,vc.isExtendedLine[i]); }
 
 /**
  * @brief      Reset all the end of line overflow markers.
  */
 void VDUResetTextEndMarkers(void) {
-//    LOG("M:Reset");
+    //LOG("M:Reset");
     for (int i = 0;i < MAX_HEIGHT;i++) {
         vc.isExtendedLine[i] = false;
     }
@@ -30,10 +30,10 @@ void VDUResetTextEndMarkers(void) {
  * @param[in]  dir   1 down, -1 up.
  */
 void VDUScrollTextEndMarkers(int dir) {
-    uint8_t y;
+    int8_t y;
     if (dir > 0) {                                                                  // Scroll down, move all down one and top false.
-        y = vc.tw.yBottom;
-        while (y > vc.tw.yTop) {
+        y = vc.tw.yBottom-1;
+        while (y >= vc.tw.yTop) {
             vc.isExtendedLine[y+1] = vc.isExtendedLine[y];
             y--;
         }
@@ -46,7 +46,7 @@ void VDUScrollTextEndMarkers(int dir) {
         }
         vc.isExtendedLine[vc.tw.yBottom] = false;
     }
-//    LOG("M:Scroll %d",dir);
+    //LOG("M:Scroll %d",dir);
 }
 
 /**
@@ -55,7 +55,7 @@ void VDUScrollTextEndMarkers(int dir) {
  * @param[in]  y     line number
  */
 void VDUSetTextEndMarker(int y) {
-//    LOG("M:Mark %d",y);
+    //LOG("M:Mark %d",y);
     if (y >= 0 && y < MAX_HEIGHT) {
         vc.isExtendedLine[y] = true;
     }

@@ -1,0 +1,8 @@
+#
+#	Dependencies
+#
+common
+usb
+dvi
+input
+graphics
