@@ -105,6 +105,7 @@ void VDUWrite(uint8_t c) {
         case 1:                                                                     // 1 was out to printer, now sets font scale.
             VDUHideCursor();
             VDUSetTextSize(_vduBuffer[0],_vduBuffer[1]);                            // only supports 1x1 and 1x2 at present.
+            VDUResetTextWindow();
             break;            
 
         case 2:                                                                     // 2 & 3 sets the printer off and on ... same problem.

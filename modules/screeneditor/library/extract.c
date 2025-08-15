@@ -27,7 +27,7 @@ bool SEDExtract(uint8_t *buffer,uint16_t bufferSize) {
     VDUWINDOW *tw = VDUGetTextWindow();
     uint8_t lastY = SEDGetEndCurrentLine();                                         // Last Y
     VDUGetTextCursor(&x,&y);                                                        // First Y
-    uint8_t firstY = y;
+    int8_t firstY = y;
     while (firstY > 0 && VDUHasLineEndMarker(firstY+tw->yTop-1)) firstY--;          // Work backwards until not preceded by extension
     *buffer = '\0';                                                                 // Empty buffer.
     //LOG("%d %d",firstY,lastY);

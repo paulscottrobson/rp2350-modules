@@ -34,7 +34,7 @@ void VDUSetGraphicsColour(uint8_t mode,uint8_t colour);
 int  VDUReadPixel(int32_t x,int32_t y);
 void VDUScrollRect(int ext, int direction);
 void VDUGetTextCursor(uint8_t *x, uint8_t *y);
-uint8_t VDURead(uint8_t x,uint8_t y);
+uint8_t VDURead(uint16_t x,uint16_t y);
 void VDURenderCharacter(int x,int y,int c);
 VDUWINDOW *VDUGetTextWindow(void);
 bool VDUHasLineEndMarker(int y);
