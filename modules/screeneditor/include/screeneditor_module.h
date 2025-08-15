@@ -23,3 +23,5 @@
 #include "graphics_module.h"
 
 void SEDInitialise(void);
+void SEDProcess(uint8_t key);
+bool SEDExtract(uint8_t *buffer,uint16_t bufferSize);

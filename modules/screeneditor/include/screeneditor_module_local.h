@@ -12,3 +12,7 @@
 #pragma once
 #ifndef RUNTIME
 #endif
+
+void SEDInsert(void);
+void SEDDelete(void);
+uint8_t SEDGetEndCurrentLine(void);

@@ -29,7 +29,7 @@ void VDUResetTextWindow(void) {
  *
  * @return     Pointer to window structure
  */
-VDUWINDOW *GetTextWindow(void) {
+VDUWINDOW *VDUGetTextWindow(void) {
     return &vc.tw;
 }
 

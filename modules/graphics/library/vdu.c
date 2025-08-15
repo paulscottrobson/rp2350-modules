@@ -144,6 +144,7 @@ void VDUWrite(uint8_t c) {
             VDUHideCursor();
             VDUClearScreen();     
             VDUHomeCursor();
+            VDUResetTextEndMarkers();                                               // No extend markeres
             break;
 
         case 14:                                                                    // 14,15 control paged mode, not supported
@@ -229,7 +230,8 @@ void VDUWrite(uint8_t c) {
                              max(_vduBuffer[1],_vduBuffer[3]),
                              max(_vduBuffer[0],_vduBuffer[2]),
                              min(_vduBuffer[1],_vduBuffer[3]));
-            vc.xCursor = vc.yCursor = 0;                  
+            vc.xCursor = vc.yCursor = 0;                                            // Home cursor here.
+            VDUResetTextEndMarkers();                                               // No extend markeres
             break;
 
         case 29:                                                                    // 29 set graphics origin
@@ -247,7 +249,9 @@ void VDUWrite(uint8_t c) {
             break;
 
         case 127:                                                                   // 127 is destructive backspace
-            VDUWrite(8);VDUWrite(' ');VDUWrite(8);
+            if (vc.xCursor > 0 || vc.yCursor > 0) {
+                VDUWrite(8);VDUWrite(' ');VDUWrite(8);
+            }
             break;
                         
         default:            

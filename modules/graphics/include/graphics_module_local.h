@@ -17,9 +17,6 @@
 #define min(a,b) ((a) < (b) ? (a) : (b))
 #define max(a,b) ((a) > (b) ? (a) : (b))
 
-typedef struct _Window {
-    int xLeft,yBottom,xRight,yTop;
-} VDUWINDOW;
 
 #define MAX_HEIGHT      (60)
 
@@ -48,6 +45,7 @@ struct VDUConfig {
 extern struct VDUConfig vc;
 
 void VDUCursor(int c);
+void VDUSetTextCursor(uint8_t x,uint8_t y);
 void VDUWriteText(uint8_t c);
 void VDUClearScreen(void);
 void VDUHomeCursor(void);
@@ -102,8 +100,7 @@ void VDUDisableCursor(void);
 void VDUResetTextEndMarkers(void);                                                      
 void VDUScrollTextEndMarkers(int dir);
 void VDUSetTextEndMarker(int y);
-bool VDUHasLineEndMarker(int y);
-VDUWINDOW *GetTextWindow(void);
+
 
 #define GFXC_NOENDPOINT     (0x01)
 #define GFXC_DOTTED         (0x02)
