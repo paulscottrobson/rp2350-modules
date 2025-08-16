@@ -38,6 +38,9 @@ uint8_t VDURead(uint16_t x,uint16_t y);
 void VDURenderCharacter(int x,int y,int c);
 VDUWINDOW *VDUGetTextWindow(void);
 bool VDUHasLineEndMarker(int y);
+void VDUCopyChar(int xFrom,int yFrom,int xTo,int yTo);
+void VDUHideCursor(void);
+void VDUShowCursor(void);
 
 /**
  *      Drawing notes (from the BBC Micro user guide and the GXR user guide)

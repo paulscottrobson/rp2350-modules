@@ -203,3 +203,26 @@ void VDUScrollRect(int ext, int direction)
         break;
     }
 }
+
+/**
+ * @brief      Copy a character on screen
+ *
+ * @param[in]  xFrom  source x
+ * @param[in]  yFrom  source y
+ * @param[in]  xTo    dest x
+ * @param[in]  yTo    dest y
+ */
+void VDUCopyChar(int xFrom,int yFrom,int xTo,int yTo) {
+    DVIMODEINFO *dmi = DVIGetModeInformation();            
+    uint32_t bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2;                 // 1 or 2 bytes per character line.
+    for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Each plane, calculate from and to.
+        uint8_t *f = dmi->bitPlane[plane]+xFrom*bytesPerCharacter+yFrom*vc.textHeight*dmi->bytesPerLine;
+        uint8_t *t = dmi->bitPlane[plane]+xTo  *bytesPerCharacter+yTo  *vc.textHeight*dmi->bytesPerLine;
+        for (int y = 0;y < vc.textHeight;y++) {                                     // Copy each line, 1 or 2 bytes
+            *t = *f;
+            if (bytesPerCharacter == 2) *(t+1) = *(f+1);
+            t += dmi->bytesPerLine;                                                 // Next line.
+            f += dmi->bytesPerLine;            
+        }
+    }
+}
