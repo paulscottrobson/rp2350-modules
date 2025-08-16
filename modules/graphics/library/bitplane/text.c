@@ -213,7 +213,6 @@ void VDUScrollRect(int ext, int direction)
  * @param[in]  yTo    dest y
  */
 void VDUCopyChar(int xFrom,int yFrom,int xTo,int yTo) {
-    VDUHideCursor();                                                                // Remove any cursor
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     uint32_t bytesPerCharacter = (dmi->bitPlaneDepth == 1) ? 1 : 2;                 // 1 or 2 bytes per character line.
     for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {                        // Each plane, calculate from and to.
@@ -226,5 +225,4 @@ void VDUCopyChar(int xFrom,int yFrom,int xTo,int yTo) {
             f += dmi->bytesPerLine;            
         }
     }
-    VDUShowCursor();                                                                // Put cursor back.
 }

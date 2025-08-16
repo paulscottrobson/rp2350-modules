@@ -1,11 +1,5 @@
 # TODO list
 
-## ScreenEditor module
-- Add copy to graphics so we can move words about.
-- Implement ins/del.
-- Backspace deletes ?
-- Documents.
-
 ## Computer module
 - The base computer system
 

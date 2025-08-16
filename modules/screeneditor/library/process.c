@@ -64,12 +64,19 @@ void SEDProcess(uint8_t key) {
             } while (x % 8 != 0);
             break;
 
+        case CTL_BACKSPACE:                                                         // Backspace does not delete rest of line..
+            VDUGetTextCursor(&x,&y);
+            if (x > 0 || y > 0) {                                                   // Not at top left, delete.
+                VDUWrite(8);
+                SEDDelete();
+            }
+            break;
+            
         case CTL_UP:                                                                // These just do what they do.
         case CTL_DOWN:
         case CTL_LEFT:
         case CTL_RIGHT:
         case CTL_CLEAR:
-        case CTL_BACKSPACE:                                                         // Backspace does not delete rest of line..
             VDUWrite(key);
             break;
         default:                                                                    // Anything else ...

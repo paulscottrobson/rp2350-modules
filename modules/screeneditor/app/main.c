@@ -18,7 +18,7 @@ int MAINPROGRAM(int argc,char *argv[]) {
     VDUWrite(17);VDUWrite(6);
     VDUWrite(17);VDUWrite(132);
     VDUWrite(1);VDUWrite(1);VDUWrite(2);                                          // Double height
-    VDUWrite(28);VDUWrite(2);VDUWrite(38);VDUWrite(20);VDUWrite(5);                 // Operating window
+    //VDUWrite(28);VDUWrite(2);VDUWrite(38);VDUWrite(20);VDUWrite(5);                 // Operating window
     VDUWrite(12);
     
     while (COMAppRunning()) {                                                       // Our "main program"
