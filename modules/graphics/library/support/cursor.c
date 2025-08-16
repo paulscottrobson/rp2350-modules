@@ -13,26 +13,6 @@
 #include "graphics_module.h"
 #include "graphics_module_local.h"
 
-
-
-/**
- * @brief      Draw or Erase the cursor
- *
- * @param[in]  isVisible  true if cursor to be drawn.
- */
-static void _VDUDrawCursor(bool isVisible) {
-    DVIMODEINFO *dmi = DVIGetModeInformation();            
-    bool is64Bit = (dmi->bitPlaneDepth == 2);
-    for (int plane = 0;plane < dmi->bitPlaneCount;plane++) {        
-        uint8_t *p = dmi->bitPlane[plane] + (dmi->bytesPerLine * vc.textHeight * (vc.yCursor+vc.tw.yTop)) + ((vc.xCursor+vc.tw.xLeft) * (is64Bit ? 2 : 1));
-        for (int y = 0;y < vc.textHeight;y++) {
-            *p ^= 0xFF;if (is64Bit) *(p+1) ^= 0xFF;
-            p += dmi->bytesPerLine;
-        }
-    }
-}
-
-
 /**
  * @brief      Disable showing of cursor.
  */
@@ -55,7 +35,7 @@ void VDUEnableCursor(void) {
  */
 void VDUHideCursor(void) {
     if (vc.cursorIsVisible) {
-        _VDUDrawCursor(false);
+        VDUDrawCursor(false);
         vc.cursorIsVisible = false;
     }
 }
@@ -64,7 +44,7 @@ void VDUHideCursor(void) {
  */
 void VDUShowCursor(void) {
     if (!vc.cursorIsVisible && vc.cursorIsEnabled) {
-        _VDUDrawCursor(true);
+        VDUDrawCursor(true);
         vc.cursorIsVisible = true;
     }
 }

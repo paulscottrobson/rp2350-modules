@@ -93,9 +93,12 @@ void VDUGCursor(int c);
 void VDUGWriteText(int c);  
 void VDUAOutputByte(int x,int y,uint8_t pixelData);
 void VDUHideCursor(void);
+void VDUDrawCursor(bool isVisible);
 void VDUShowCursor(void);
 void VDUEnableCursor(void);
 void VDUDisableCursor(void);
+void VDUScrollV(int yFrom,int yTo,int yTarget,int yClear,int xLeft, int xRight);
+void VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom);
 
 void VDUResetTextEndMarkers(void);                                                      
 void VDUScrollTextEndMarkers(int dir);

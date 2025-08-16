@@ -15,7 +15,8 @@ int MAINPROGRAM(int argc,char *argv[]) {
     char buffer[256];    
     SEDInitialise();
     VDUWrite(22);VDUWrite(MODE_640_480_8);                                          // Video mode
-    VDUWrite(17);VDUWrite(2);
+    VDUWrite(17);VDUWrite(6);
+    VDUWrite(17);VDUWrite(132);
     VDUWrite(1);VDUWrite(1);VDUWrite(2);                                          // Double height
     //VDUWrite(28);VDUWrite(2);VDUWrite(38);VDUWrite(40);VDUWrite(5);                 // Operating window
     VDUWrite(12);

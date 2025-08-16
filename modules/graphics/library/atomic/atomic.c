@@ -229,6 +229,7 @@ void VDUARight(void) {
  * @param[in]  y1      The y1 coordinate
  * @param[in]  colour  The colour
  */
+
 void VDUALine(int x0, int y0, int x1, int y1) {
     bool drawDot = true;                                                            // Used for dotted lines. If GFXC_DOTTED clear this never changes.
 
