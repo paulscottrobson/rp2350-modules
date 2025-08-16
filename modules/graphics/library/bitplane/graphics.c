@@ -1,7 +1,7 @@
 // *******************************************************************************************
 // *******************************************************************************************
 //
-//      Name :      atomic.c
+//      Name :      graphics.c
 //      Purpose :   Low level drawing on the bitplanes
 //      Date :      13th August 2025
 //      Author :    Paul Robson (paul@robsons.org.uk)

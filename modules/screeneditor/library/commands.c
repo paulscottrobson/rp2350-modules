@@ -25,7 +25,17 @@ void SEDInsert(void) {
  */
 void SEDDelete(void) {
     uint8_t lastY = SEDGetEndCurrentLine();
-    LOG("Last %d",lastY);
+    uint8_t x,y;
+    VDUGetTextCursor(&x,&y);
+    VDUWINDOW *tw = VDUGetTextWindow();
+    uint8_t width = tw->xRight-tw->xLeft;                                           // From current position, till end of line (inc extensions)
+    while (x != width || y != lastY) {
+        uint8_t xNext = x+1,yNext = y;                                              // Next character
+        if (xNext > width) xNext = 0,yNext++;   
+        VDUCopyChar(xNext+tw->xLeft,yNext+tw->yTop,x+tw->xLeft,y+tw->yTop);         // Copy next character here
+        x = xNext;y = yNext;
+    }
+    VDURenderCharacter(width+tw->xLeft,lastY+tw->yTop,' ');                         // And blank the last character slot.
 }
 
 /**
