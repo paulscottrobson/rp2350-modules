@@ -1,0 +1,11 @@
+#
+#	Dependencies
+#
+common
+usb
+dvi
+psram
+input
+graphics
+memory
+screeneditor
