@@ -10,6 +10,7 @@
 // *******************************************************************************************
 
 #include "machine_module.h"
+#include "machine_module_local.h"           
 
 MACINFO mcInfo;
 
@@ -26,9 +27,14 @@ void MACInitialise(void) {
     VDUInitialise();
     SEDInitialise();
 
+    //
+    //      Initialise machine information structure.
+    //
     mcInfo.inkColour = 6;
     mcInfo.paperColour = 4;
     mcInfo.errorColour = 1;
     mcInfo.mode = MODE_640_480_8;
     mcInfo.doubleHeight = true;
+    mcInfo.buffer = NULL;
+    mcInfo.bufferSize = 256;
 }

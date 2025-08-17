@@ -38,6 +38,10 @@ void MEMInitialise(void) {
     LOG("PSRAM $%x SRAM $%x",psRAMAddress,sRAMAddress);
 }
 
+uint32_t MEMGetSRAMSize(void) {
+    return sRAMSize;
+}
+
 /**
  * @brief      Reset the memory managers to the default ; this is the same as
  *             freeing *everything*. Allows system memory to be allocated, which

@@ -10,22 +10,31 @@
 // *******************************************************************************************
 
 #include "machine_module.h"
-#include "machine_module_local.h"           /* REMOVE LATER */
 
+/**
+ * @brief      The standard machine start.
+ *
+ * @param[in]  argc  arguments used
+ * @param      argv  argument values.
+ *
+ * @return     { description_of_the_return_value }
+ */
 int MAINPROGRAM(int argc,char *argv[]) {
     MACInitialise();
+    //
+    //      Register modules to check the commands here. 
+    //
+    MACStart();
+    return 0;    
+}
 
-    char *buffer = MEMAlloc(MAX_INPUT_SIZE+1,MEM_ANY);
-
-    VDUWrite(22);VDUWrite(mcInfo.mode);                                            // Video mode
-    VDUWrite(17);VDUWrite(6);
-    VDUWrite(17);VDUWrite(132);
-    VDUWrite(1);VDUWrite(1);VDUWrite(2);                                          // Double height
-    VDUWrite(12);
-    
-    while (COMAppRunning()) {                                                       // Our "main program"
-        bool isOk = SEDInputLine(buffer,MAX_INPUT_SIZE+1);
-        if (isOk) LOG("Entered '%s'",buffer);
-        COMUpdate();                                                                // Update stuff.
-    }
+/**
+ * @brief      A user provided boot screen text
+ */
+void MACBootDisplay(void) {
+    VDUWrite(17);VDUWrite(3);
+    VDUWriteString("*** The test computer system ***\r\n\n");
+    MACSetStandardColour();
+    VDUWriteString("Static RAM Available  %dk\r\n",MEMGetSRAMSize()/1024);
+    VDUWriteString("Pseudo SRAM Available %dk\r\n\n",PSRGetMemorySize()/1024);
 }
