@@ -1,9 +1,8 @@
 # TODO list
 
 ## Machine module
-- Split input into argc/argv structure.
 - Modules can register to receive commands with a processing order.
-- * command handler, exists as callable seperately and a handler. 
+- add * command handler, exists as callable seperately and a handler. 
 
 ## Sprite module
 - Complete reimplementation, possibly two, either xor/palette or double buffer/draw ?

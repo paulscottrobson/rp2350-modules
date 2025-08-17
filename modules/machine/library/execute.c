@@ -13,7 +13,9 @@
 #include "machine_module_local.h"           
 
 /**
- * @brief      Start the main read/execute/update loop.
+ * @brief      Start the main read/execute/update loop. I know this whole thing
+ *             would be better done with subclassing but at present I want to
+ *             avoid C++
  */
 void MACStart(void) {
     mcInfo.buffer = MEMAlloc(mcInfo.bufferSize,MEM_ANY);                            // Allocate input buffer in PSRAM.
@@ -28,8 +30,17 @@ void MACStart(void) {
     while (COMAppRunning()) {                                                       // Our "main program" loop.
         MACSetStandardColour();
         bool isOk = SEDInputLine(mcInfo.buffer,mcInfo.bufferSize);
-        if (isOk) LOG("Entered '%s'",mcInfo.buffer);
-        MACError("Command not understood");
+        if (isOk) {
+            LOG("Entered '%s'",mcInfo.buffer);
+            mcInfo.argumentCount = MACParseInput(mcInfo.buffer,                      // Parse into seperate arguments.  
+                                                mcInfo.arguments,MAX_ELEMENTS);   
+            LOG("Total %d",mcInfo.argumentCount);
+            for (int i = 0;i < mcInfo.argumentCount;i++) {
+                LOG("%d [%s]",i,mcInfo.arguments[i]);
+            }            
+        } else {
+            MACError("Command not understood");
+        }
         COMUpdate();                                                                // Update stuff.
     }
 }

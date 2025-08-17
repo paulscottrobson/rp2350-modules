@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #include "common_module.h"
 #include "usb_module.h"
@@ -31,6 +32,8 @@ typedef struct _MachineInfo {
     bool        doubleHeight;                                                       // Double height mode (defaults to true)
     uint8_t     *buffer;                                                            // Input buffer.
     uint32_t    bufferSize;                                                         // Size of input buffer.
+    uint8_t     argumentCount;                                                      // Number of arguments.
+    char        **arguments;                                                        // Array of arguments, like 'main'
 } MACINFO;
 
 extern MACINFO mcInfo;
@@ -40,3 +43,7 @@ void MACBootDisplay(void);
 void MACStart(void);
 void MACSetStandardColour(void);
 void MACError(char *message);
+uint8_t MACParseInput(char *p,char **arguments,int argumentMax);                
+
+int32_t MACOSCommand(uint8_t argc,char **argv);                                     // Execute an OS command (parsed)
+int32_t MACOSCommandString(char *cmd);                                              // Not parsed

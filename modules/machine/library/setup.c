@@ -14,6 +14,8 @@
 
 MACINFO mcInfo;
 
+char *arguments[MAX_ELEMENTS];                                                      // Array of element pointers.
+
 /**
  * @brief      Initialise the machine.
  */
@@ -37,4 +39,6 @@ void MACInitialise(void) {
     mcInfo.doubleHeight = true;
     mcInfo.buffer = NULL;
     mcInfo.bufferSize = 256;
+    mcInfo.argumentCount = 0;
+    mcInfo.arguments = arguments;
 }
