@@ -15,6 +15,7 @@
 MACINFO mcInfo;
 
 char *arguments[MAX_ELEMENTS];                                                      // Array of element pointers.
+MACCOMMANDHANDLER handlers[MAX_COMMAND_LISTENERS];                                  // Array of command listeners.
 
 /**
  * @brief      Initialise the machine.
@@ -41,4 +42,36 @@ void MACInitialise(void) {
     mcInfo.bufferSize = 256;
     mcInfo.argumentCount = 0;
     mcInfo.arguments = arguments;
+    mcInfo.handlerCount = 0;
+    mcInfo.commandHandlers = handlers;
+}
+
+/**
+ * @brief      Add a command handler
+ *
+ * @param      handler  The command handler.
+ */
+void MACAddCommandHandler(MACCOMMANDHANDLER handler) {
+    if (mcInfo.handlerCount < MAX_COMMAND_LISTENERS) {
+        mcInfo.commandHandlers[mcInfo.handlerCount++] = handler;
+    } else {
+        ERROR("Too many command handlers.");
+    }
+}
+
+/**
+ * @brief      Non cancelling command logger
+ *
+ * @param[in]  argc  argument count
+ * @param      argv  arguments
+ *
+ * @return     false as it never consumes the arguments. 0 if argv is NULL.
+ */
+int MACLogCommands(int argc,char **argv) {
+    if (argv == NULL) return 0;                                                     // Required.
+    LOG("Command Line Log : Total %d",argc);
+    for (int i = 0;i < argc;i++) {
+        LOG("%d [%s]",i,argv[i]);
+    }         
+    return 0;
 }

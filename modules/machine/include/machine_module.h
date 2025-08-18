@@ -26,6 +26,8 @@
 #include "memory_module.h"
 #include "screeneditor_module.h"
 
+typedef int (*MACCOMMANDHANDLER)(int argc,char **argv);                             // Command handler
+
 typedef struct _MachineInfo {
     uint32_t    inkColour, paperColour, errorColour;                                // Main elements (defaults to cyan, blue, red)
     uint32_t    mode;                                                               // The run mode. (defaults to 640x480x8)
@@ -34,6 +36,8 @@ typedef struct _MachineInfo {
     uint32_t    bufferSize;                                                         // Size of input buffer.
     uint8_t     argumentCount;                                                      // Number of arguments.
     char        **arguments;                                                        // Array of arguments, like 'main'
+    uint8_t     handlerCount;                                                       // Number of command handlers
+    MACCOMMANDHANDLER *commandHandlers;                                             // Command handlers.
 } MACINFO;
 
 extern MACINFO mcInfo;
@@ -44,6 +48,8 @@ void MACStart(void);
 void MACSetStandardColour(void);
 void MACError(char *message);
 uint8_t MACParseInput(char *p,char **arguments,int argumentMax);                
+void MACAddCommandHandler(MACCOMMANDHANDLER handler);
+int MACLogCommands(int argc,char **argv);
 
-int32_t MACOSCommand(uint8_t argc,char **argv);                                     // Execute an OS command (parsed)
+int32_t MACOSCommand(uint32_t argc,char **argv);                                     // Execute an OS command (parsed)
 int32_t MACOSCommandString(char *cmd);                                              // Not parsed

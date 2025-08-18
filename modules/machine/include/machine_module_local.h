@@ -17,3 +17,4 @@
 #define MAX_ELEMENTS        (16)                                                    // Maximum number of elements in one input line (command & parameters)
 
 #define MAX_COMMAND_LISTENERS (16)                                                  // Max number of command listeners.
+

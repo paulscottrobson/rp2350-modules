@@ -20,11 +20,13 @@
  * @return     { description_of_the_return_value }
  */
 int MAINPROGRAM(int argc,char *argv[]) {
-    MACInitialise();
+    MACInitialise();                                                                // Set up
     //
     //      Register modules to check the commands here. 
     //
-    MACStart();
+    MACAddCommandHandler(MACLogCommands);                                           // Log commands doesn't consume.
+
+    MACStart();                                                                     // And run 
     return 0;    
 }
 

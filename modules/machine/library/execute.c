@@ -31,15 +31,21 @@ void MACStart(void) {
         MACSetStandardColour();
         bool isOk = SEDInputLine(mcInfo.buffer,mcInfo.bufferSize);
         if (isOk) {
-            LOG("Entered '%s'",mcInfo.buffer);
-            mcInfo.argumentCount = MACParseInput(mcInfo.buffer,                      // Parse into seperate arguments.  
+            mcInfo.argumentCount = MACParseInput(mcInfo.buffer,                     // Parse into seperate arguments.  
                                                 mcInfo.arguments,MAX_ELEMENTS);   
-            LOG("Total %d",mcInfo.argumentCount);
-            for (int i = 0;i < mcInfo.argumentCount;i++) {
-                LOG("%d [%s]",i,mcInfo.arguments[i]);
-            }            
-        } else {
-            MACError("Command not understood");
+            if (mcInfo.argumentCount != 0) {                                        // If something entered
+                int processed = 0;                                                  // Offer to each handler in turn.
+                for (int i = 0;i < mcInfo.handlerCount && processed == 0;i++) {
+                    processed = (*mcInfo.commandHandlers[i])(mcInfo.argumentCount,
+                                                             mcInfo.arguments);
+                }
+                if (processed == 0) {                                               // No handler recognises it.
+                    MACError("Unknown command");
+                }
+            }
+
+        } else {                                                                    // Couldn't fathom out text, screen probably corrupted.
+            MACError("Screen line not understood.");
         }
         COMUpdate();                                                                // Update stuff.
     }

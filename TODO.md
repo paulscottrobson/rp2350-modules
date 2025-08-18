@@ -1,7 +1,6 @@
 # TODO list
 
 ## Machine module
-- Modules can register to receive commands with a processing order.
 - add * command handler, exists as callable seperately and a handler. 
 
 ## Sprite module
