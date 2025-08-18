@@ -2,8 +2,6 @@
 
 ## Machine module
 
-- Add Mode test & to display.
-
 - add * commands
     ls / dir
     cd / chdir
@@ -12,6 +10,8 @@
     type / cat
     pwd
     hd / hexdump
+
+- Add Mode test & to display.
 
 ## Sprite module
 - Complete reimplementation, possibly two, either xor/palette or double buffer/draw ?

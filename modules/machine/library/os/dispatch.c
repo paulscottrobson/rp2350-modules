@@ -12,6 +12,32 @@
 #include "machine_module.h"
 #include "machine_module_local.h"           
 
+
+/**
+ * @brief      List of commands, parameters, and function to call
+ */
+static struct _CommandList {
+    char *command;
+    int  paramsRequired;
+    MACCOMMANDHANDLER commandFunc;
+} commandList[] = {
+        { "ls",0,       MACOSListDirectory } ,
+        { "dir",0,      MACOSListDirectory } ,
+        { "cd",1,       MACOSChangeDirectory } ,
+        { "chdir",1,    MACOSChangeDirectory } ,
+        { "rd",1,       MACOSRemoveDirectory } ,
+        { "rmdir",1,    MACOSRemoveDirectory } ,
+        { "md",1,       MACOSCreateDirectory } ,
+        { "mkdir",1,    MACOSCreateDirectory } ,
+        { "pwd",1,      MACOSPrintDirectory } ,
+        { "type",-1,    MACOSTextDump } ,
+        { "cat",-1,     MACOSTextDump } ,
+        { "hd",-1,      MACOSHexDump },
+        { "hexdump",-1, MACOSHexDump },
+        { "help",0,     MACOSListCommands },
+        { NULL,0, NULL },
+};
+
 /**
  * @brief      Execute an OS command string
  *
@@ -39,3 +65,30 @@ int MACOSCommand(int argc,char **argv) {
     return 0;
 }
 
+/**
+ * @brief      List all OS commands that are recognised.
+ *
+ * @param[in]  argc  argument count
+ * @param      argv  argument array
+ *
+ * @return     zero or error code.
+ */
+int MACOSListCommands(int argc,char **argv) {
+    return 0;
+}
+
+/**
+ * @brief      Compare 2 strings case insensitive
+ *
+ * @param      s1    first string
+ * @param      s2    second string
+ *
+ * @return     true if they are the same.
+ */
+bool MACOSCompare(char *s1,char *s2) {
+    while (tolower(*s1) == tolower(*s2)) {
+        if (*s1 == '\0') return true;
+        s1++;s2++;
+    }
+    return false;
+}

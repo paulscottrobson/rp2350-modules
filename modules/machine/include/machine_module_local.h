@@ -18,3 +18,13 @@
 
 #define MAX_COMMAND_LISTENERS (8)                                                   // Max number of command listeners.
 
+int MACOSChangeDirectory(int argc,char **argv);
+int MACOSRemoveDirectory(int argc,char **argv);
+int MACOSCreateDirectory(int argc,char **argv);
+int MACOSPrintDirectory(int argc,char **argv);
+int MACOSTextDump(int argc,char **argv);
+int MACOSHexDump(int argc,char **argv);
+int MACOSListDirectory(int argc,char **argv);
+int MACOSListCommands(int argc,char **argv);
+
+bool MACOSCompare(char *s1,char *s2);
