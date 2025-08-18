@@ -25,7 +25,8 @@ int MAINPROGRAM(int argc,char *argv[]) {
     //      Register modules to check the commands here. 
     //
     MACAddCommandHandler(MACLogCommands);                                           // Log commands doesn't consume.
-
+    //
+    MACAddCommandHandler(MACOSCommand);                                             // Handle the i/o commands etc. Should probably be last !
     MACStart();                                                                     // And run 
     return 0;    
 }

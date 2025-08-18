@@ -1,7 +1,17 @@
 # TODO list
 
 ## Machine module
-- add * command handler, exists as callable seperately and a handler. 
+
+- Add Mode test & to display.
+
+- add * commands
+    ls / dir
+    cd / chdir
+    rd / rmdir
+    md / mkdir
+    type / cat
+    pwd
+    hd / hexdump
 
 ## Sprite module
 - Complete reimplementation, possibly two, either xor/palette or double buffer/draw ?

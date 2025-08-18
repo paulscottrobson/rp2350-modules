@@ -51,5 +51,5 @@ uint8_t MACParseInput(char *p,char **arguments,int argumentMax);
 void MACAddCommandHandler(MACCOMMANDHANDLER handler);
 int MACLogCommands(int argc,char **argv);
 
-int32_t MACOSCommand(uint32_t argc,char **argv);                                     // Execute an OS command (parsed)
-int32_t MACOSCommandString(char *cmd);                                              // Not parsed
+int MACOSCommand(int argc,char **argv);                                             // Execute an OS command (parsed)
+int MACOSCommandString(char *cmd);                                                  // Not parsed

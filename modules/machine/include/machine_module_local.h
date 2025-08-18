@@ -14,7 +14,7 @@
 #endif
 
 #define MAX_INPUT_SIZE      (256)                                                   // Max size of one input line.
-#define MAX_ELEMENTS        (16)                                                    // Maximum number of elements in one input line (command & parameters)
+#define MAX_ELEMENTS        (8)                                                     // Maximum number of elements in one input line (command & parameters)
 
-#define MAX_COMMAND_LISTENERS (16)                                                  // Max number of command listeners.
+#define MAX_COMMAND_LISTENERS (8)                                                   // Max number of command listeners.
 
