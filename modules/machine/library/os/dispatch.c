@@ -34,6 +34,10 @@ static struct _CommandList {
         { "cat",-1,     MACOSTextDump } ,
         { "hd",-1,      MACOSHexDump },
         { "hexdump",-1, MACOSHexDump },
+        { "copy",2,     MACOSCopyFile } ,
+        { "cp",2,       MACOSCopyFile } ,
+        { "rm",1,       MACOSDeleteFile } ,
+        { "del",1,      MACOSDeleteFile } ,
         { "help",0,     MACOSListCommands },
         { NULL,0, NULL },
 };

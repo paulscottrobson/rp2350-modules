@@ -38,6 +38,7 @@ void MACBootDisplay(void) {
     VDUWrite(17);VDUWrite(3);
     VDUWriteString("*** The test computer system ***\r\n\n");
     MACSetStandardColour();
+    VDUWriteString("Platform              %s\r\n",COMPlatformName());
     VDUWriteString("Static RAM Available  %dk\r\n",MEMGetSRAMSize()/1024);
     VDUWriteString("Pseudo SRAM Available %dk\r\n\n",PSRGetMemorySize()/1024);
 }

@@ -38,6 +38,7 @@ void COMWait(uint32_t ms);
 bool COMAppRunning(void);
 void COMAddUpdateFunction(COMUPDATEFUNCTION updateFunc);
 void COMUpdate(void);
+char *COMPlatformName(void);
 
 #ifdef RUNTIME
 bool SYSYield(void);

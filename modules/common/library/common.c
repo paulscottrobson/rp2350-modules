@@ -110,3 +110,17 @@ uint32_t COMGetFreeSystemMemory(void) {
    extern char __StackLimit, __bss_end__;   
    return &__StackLimit  - &__bss_end__;
 }
+
+/**
+ * @brief      Get Platform Name
+ *
+ * @return     Platform Name
+ */
+char *COMPlatformName(void) {
+    #ifdef __arm__
+    return "ARM";
+    #endif
+    #ifdef __riscv    
+    return "RISC-V";
+    #endif
+}

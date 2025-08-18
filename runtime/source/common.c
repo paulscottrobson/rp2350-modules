@@ -98,5 +98,15 @@ void COMError(char *msg,int line,char *fileName) {
  * @return     Free bytes of memory.
  */
 uint32_t COMGetFreeSystemMemory(void) {
-    return 262144;
+    return 360*1024;
 }
+
+/**
+ * @brief      Get Platform Name
+ *
+ * @return     Platform Name
+ */
+char *COMPlatformName(void) {
+    return "Runtime";
+}
+
