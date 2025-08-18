@@ -17,8 +17,9 @@ static USBHANDLERFUNCTION handlers[8];
 /**
  * @brief      Initialise the USB system.
  */
-void USBInitialise(void) {
+void USBInitialise(void) {    
     handlerCount = 0;
+    FSCDInitialise();
 }
 
 

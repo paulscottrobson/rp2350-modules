@@ -29,7 +29,7 @@ static struct _CommandList {
         { "rmdir",1,    MACOSRemoveDirectory } ,
         { "md",1,       MACOSCreateDirectory } ,
         { "mkdir",1,    MACOSCreateDirectory } ,
-        { "pwd",1,      MACOSPrintDirectory } ,
+        { "pwd",0,      MACOSPrintDirectory } ,
         { "type",-1,    MACOSTextDump } ,
         { "cat",-1,     MACOSTextDump } ,
         { "hd",-1,      MACOSHexDump },
@@ -65,7 +65,26 @@ int MACOSCommandString(char *cmd) {
  */
 int MACOSCommand(int argc,char **argv) {
     if (argc == 0 || argv == NULL) return 0;                                        // Nothing to do.
-    LOG(argv[0]);
+    //LOG(argv[0]);
+    VDUWrite(17);VDUWrite(mcInfo.outputColour);
+    int i = 0;
+    while (commandList[i].command != NULL) {                                        // Scan through looking for match.
+        if (MACOSCompare(commandList[i].command,argv[0])) {
+            int pCount = commandList[i].paramsRequired;                             // How many parameters ?
+            if (pCount >= 0 && argc != pCount + 1) {                                // Either variable (-1) or a specific number of parameters.
+                MACError("Wrong number of parameters");
+                return 1;
+            }            
+            int error = (*commandList[i].commandFunc)(argc,argv);                   // Go do it.
+            if (error != 0) {                                                       // Error occurred.
+                char errorMsg[16];
+                sprintf(errorMsg,"Error %d",error);
+                MACError(errorMsg);
+            }
+            return 1;
+        }
+        i++;
+    }
     return 0;
 }
 
@@ -78,6 +97,11 @@ int MACOSCommand(int argc,char **argv) {
  * @return     zero or error code.
  */
 int MACOSListCommands(int argc,char **argv) {
+    int i = 0;
+    while (commandList[i].command != NULL) {
+        VDUWriteString("%s ",commandList[i++].command);
+    }
+    VDUWriteString("\r\n");
     return 0;
 }
 

@@ -45,6 +45,8 @@ uint32_t FSDelete(char *fileName);
 uint32_t FSCreateDirectory(char *dirName);
 uint32_t FSDeleteDirectory(char *dirName);
 uint32_t FSChangeDirectory(char *newDir);
+char *FSGetCurrentDirectory(void);
+void FSCDInitialise(void);
 
 uint32_t FSOpenDirectory(char *dirName);
 uint32_t FSReadDirectory(uint32_t handle,FSOBJECTINFO *fso);

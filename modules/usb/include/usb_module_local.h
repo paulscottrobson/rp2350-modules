@@ -34,7 +34,6 @@ void FSInitialise(void);
 bool FSProcessFileName(char **pFileName);
 uint32_t FSAllocateRecord(bool isDirectory);
 void FSFreeRecord(uint32_t handle);
-void FSCDInitialise(void);
 char *FSCDMapCurrentName(char *name);
 
 #ifndef RUNTIME

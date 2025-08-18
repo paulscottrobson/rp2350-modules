@@ -25,6 +25,16 @@ void FSCDInitialise(void) {
 }
 
 /**
+ * @brief      Access the current directory
+ *
+ * @return     Directory name as string
+ */
+char *FSGetCurrentDirectory(void) {
+    LOG("[%s]",current);
+    return current;    
+}
+
+/**
  * @brief      Given a file or directory name, which may be absolute or
  *             relative, convert to absolute
  *

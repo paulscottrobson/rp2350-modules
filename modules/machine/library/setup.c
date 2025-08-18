@@ -36,6 +36,7 @@ void MACInitialise(void) {
     mcInfo.inkColour = 6;
     mcInfo.paperColour = 4;
     mcInfo.errorColour = 1;
+    mcInfo.outputColour = 7;
     mcInfo.mode = MODE_640_480_8;
     mcInfo.doubleHeight = true;
     mcInfo.buffer = NULL;

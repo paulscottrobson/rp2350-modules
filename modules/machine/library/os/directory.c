@@ -22,7 +22,24 @@
  */
 
 int MACOSListDirectory(int argc,char **argv) {
-    return 0;
+    int32_t error = 0,handle = FSOpenDirectory("");
+    if (handle >= 0) {
+        FSOBJECTINFO fInfo;
+        while (error = FSReadDirectory(handle,&fInfo),error == 0) {
+            if (!fInfo.isDirectory) {
+                VDUWriteString("%-32s %d\r\n",fInfo.name,fInfo.size);
+            } else {
+                VDUWriteString("%-32s (directory)\r\n",fInfo.name,fInfo.size);
+            }
+        }
+        if (error == FSERR_EOF) error = 0;
+        FSCloseDirectory(handle);        
+        LOG("..."); 
+    } else {
+        error = handle;
+    }
+
+    return error;
 }
 
 /**
@@ -74,5 +91,6 @@ int MACOSCreateDirectory(int argc,char **argv) {
  */
 
 int MACOSPrintDirectory(int argc,char **argv) {
+    VDUWriteString("%s\r\n",FSGetCurrentDirectory());
     return 0;
 }

@@ -58,7 +58,7 @@ uint32_t FSReadDirectory(uint32_t handle,FSOBJECTINFO *fso) {
     }
     strcpy(fso->name,next->d_name);
     fso->isDirectory = (next->d_type == DT_DIR);                                    // Directory flag.
-    fso->size = fso->isDirectory ? 0:1;                                             // Size of file (dummy)
+    fso->size = fso->isDirectory ? 0:rand() & 0x3FFF;                               // Size of file (dummy)
     return 0;
 }
 
