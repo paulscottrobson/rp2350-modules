@@ -143,9 +143,9 @@ class ModuleSet(object):
     def renderCMakeLists(self,h,projectName):
         header = "cmake_minimum_required(VERSION 3.12)||include(pico_sdk_import.cmake)||project(filetest)||pico_sdk_init()||option(USE_DEBUG \"Build with debug support\" ON) |if (USE_DEBUG)| add_definitions(-DDEBUG)|endif()||include_directories(include)"
         header = header.replace("filetest",projectName)
-        h.write("\n".join(header.split("|")))
-
+        h.write("\n".join(header.split("|")))        
         h.write("\n")
+        h.write("add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -Werror -Wno-char-subscripts)""\n")
         h.write("\n".join(["include_directories(${{MODULEDIR}}/{0}/include)".format(x) for x in self.sortedModules]))
         h.write("\n\n")
 
