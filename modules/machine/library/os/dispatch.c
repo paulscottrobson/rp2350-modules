@@ -12,7 +12,6 @@
 #include "machine_module.h"
 #include "machine_module_local.h"           
 
-
 /**
  * @brief      List of commands, parameters, and function to call
  */
@@ -38,7 +37,7 @@ static struct _CommandList {
         { "cp",2,       MACOSCopyFile } ,
         { "rm",1,       MACOSDeleteFile } ,
         { "del",1,      MACOSDeleteFile } ,
-        { "help",0,     MACOSListCommands },
+        { "help",0,     MACRequestCommandWords },
         { NULL,0, NULL },
 };
 
@@ -64,6 +63,10 @@ int MACOSCommandString(char *cmd) {
  * @return     zero or error code.
  */
 int MACOSCommand(int argc,char **argv) {
+    if (argc == -1) {
+        MACOSListCommands();
+        return 0;
+    }
     if (argc == 0 || argv == NULL) return 0;                                        // Nothing to do.
     //LOG(argv[0]);
     VDUWrite(17);VDUWrite(mcInfo.outputColour);
@@ -91,18 +94,12 @@ int MACOSCommand(int argc,char **argv) {
 /**
  * @brief      List all OS commands that are recognised.
  *
- * @param[in]  argc  argument count
- * @param      argv  argument array
- *
- * @return     zero or error code.
  */
-int MACOSListCommands(int argc,char **argv) {
+void MACOSListCommands(void) {
     int i = 0;
     while (commandList[i].command != NULL) {
         VDUWriteString("%s ",commandList[i++].command);
     }
-    VDUWriteString("\r\n");
-    return 0;
 }
 
 /**

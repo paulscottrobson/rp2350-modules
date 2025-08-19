@@ -52,7 +52,7 @@ int MACOSListDirectory(int argc,char **argv) {
  */
 
 int MACOSChangeDirectory(int argc,char **argv) {
-    return 0;
+    return FSChangeDirectory(argv[1]);
 }
 
 /**
@@ -65,7 +65,7 @@ int MACOSChangeDirectory(int argc,char **argv) {
  */
 
 int MACOSRemoveDirectory(int argc,char **argv) {
-    return 0;
+    return FSDeleteDirectory(argv[1]);
 }
 
 /**
@@ -78,7 +78,7 @@ int MACOSRemoveDirectory(int argc,char **argv) {
  */
 
 int MACOSCreateDirectory(int argc,char **argv) {
-    return 0;
+    return FSCreateDirectory(argv[1]);
 }
 
 /**

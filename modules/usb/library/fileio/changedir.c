@@ -105,7 +105,7 @@ static uint32_t FSChangeDirectorySingle(char *change) {
     char *remove = current+strlen(current);                                         // So we can delete it if it is bad.
     if (strlen(current) > 1) strcat(current,"/");                                   // Not at root.
     strcat(current,change);
-    uint32_t h = FSOpenDirectory(current);                                          // Try to open it.
+    int32_t h = FSOpenDirectory(current);                                           // Try to open it.
     if (h < 0) {                                                                    // Failed, probably directory not found.
         *remove = '\0';                                                             // Fix current back
         return h;

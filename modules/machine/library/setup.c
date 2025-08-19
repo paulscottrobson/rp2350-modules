@@ -61,6 +61,16 @@ void MACAddCommandHandler(MACCOMMANDHANDLER handler) {
 }
 
 /**
+ * @brief      List all commands by asking the handlers.
+ */
+int MACRequestCommandWords(int argc,char **argv) {
+    VDUWriteString("Commands: ");
+    for (int i = 0;i < mcInfo.handlerCount;i++) {
+        (*mcInfo.commandHandlers[i])(-1,NULL);
+    }
+    VDUWriteString("\r\n");
+}
+/**
  * @brief      Non cancelling command logger
  *
  * @param[in]  argc  argument count
@@ -69,6 +79,7 @@ void MACAddCommandHandler(MACCOMMANDHANDLER handler) {
  * @return     false as it never consumes the arguments. 0 if argv is NULL.
  */
 int MACLogCommands(int argc,char **argv) {
+    MAC_PROVIDES(argc,"(logger)");
     if (argv == NULL) return 0;                                                     // Required.
     LOG("Command Line Log : Total %d",argc);
     for (int i = 0;i < argc;i++) {

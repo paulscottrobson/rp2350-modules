@@ -54,8 +54,13 @@ uint32_t FSDelete(char *fileName) {
 uint32_t FSCreateDirectory(char *dirName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;
-    mkdir(dirName,0777);
-    if (errno == EEXIST) return 0;                                                  // Ignore exist errors.
+    mkdir(dirName,0755);
+
+    #ifdef RUNTIME
+    if (errno == EAGAIN) return 0;                                                  // I have no idea why EAGAIN is returned here and I can't find anything online !
+    #endif                                                                          // This only seems to happen when it's a new directory.
+
+    if (errno == EEXIST || errno == 0) return 0;                                    // Ignore exist errors.
     return FSMapErrorCode();
 }
 

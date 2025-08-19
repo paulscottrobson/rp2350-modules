@@ -3,11 +3,11 @@
 ## Machine module
 
 - Complete the OS commands.
-    cd rd md 
     cat hd
     cp rm
     
 - Decode errors coherently.
+- Sort LS only if PSRAM available.
 
 ## Sprite module
 - Complete reimplementation, possibly two, either xor/palette or double buffer/draw ?
