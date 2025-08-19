@@ -13,7 +13,7 @@
 #include "machine_module_local.h"           
 
 /**
- * @brief      
+ * @brief      Copy File
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array
@@ -48,7 +48,7 @@ int MACOSCopyFile(int argc,char **argv) {
 }
 
 /**
- * @brief      
+ * @brief      Delete a file.
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array

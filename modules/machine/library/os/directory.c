@@ -13,7 +13,7 @@
 #include "machine_module_local.h"           
 
 /**
- * @brief      
+ * @brief      List Directory
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array
@@ -43,7 +43,7 @@ int MACOSListDirectory(int argc,char **argv) {
 }
 
 /**
- * @brief      
+ * @brief      Change current directory
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array
@@ -56,7 +56,7 @@ int MACOSChangeDirectory(int argc,char **argv) {
 }
 
 /**
- * @brief      
+ * @brief      Remove directory
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array
@@ -69,7 +69,7 @@ int MACOSRemoveDirectory(int argc,char **argv) {
 }
 
 /**
- * @brief      
+ * @brief      Create directory
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array
@@ -82,7 +82,7 @@ int MACOSCreateDirectory(int argc,char **argv) {
 }
 
 /**
- * @brief      
+ * @brief      Print the current directory
  *
  * @param[in]  argc  argument count
  * @param      argv  argument array

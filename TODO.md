@@ -2,9 +2,7 @@
 
 ## Machine module
 
-- Complete the OS commands.
-    cat hd
-    function key code, rewrite expander. |X format from BBC Micro.
+- function key code, rewrite expander. |X format from BBC Micro.
     
 - Decode errors coherently.
 - Sort LS only if PSRAM available.
