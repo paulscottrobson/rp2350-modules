@@ -27,9 +27,9 @@ int MACOSListDirectory(int argc,char **argv) {
         FSOBJECTINFO fInfo;
         while (error = FSReadDirectory(handle,&fInfo),error == 0) {
             if (!fInfo.isDirectory) {
-                VDUWriteString("%-32s %d\r\n",fInfo.name,fInfo.size);
+                VDUWriteString("%-30s %d\r\n",fInfo.name,fInfo.size);
             } else {
-                VDUWriteString("%-32s (directory)\r\n",fInfo.name,fInfo.size);
+                VDUWriteString("%-30s (dir)\r\n",fInfo.name,fInfo.size);
             }
         }
         if (error == FSERR_EOF) error = 0;

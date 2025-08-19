@@ -57,12 +57,13 @@ int MACOSHexDump(int argc,char **argv) {
     uint8_t buffer[16];                                                             // The current 8 or 16 bytes
     char temp[3],text[81];
     while (count = FSRead(inFile,buffer,lineSize),count > 0) {
-        sprintf(text,"%06x%70s",offset,"");                                         // Initial line with just address
+        sprintf(text,"%06x%70s",(int)offset,"");                                    // Initial line with just address
         text[(lineSize == 16) ? 74 : 40] = '\0';                                    // Truncate it
         for (int i = 0;i <  count;i++) {
             uint8_t c = buffer[i];
             sprintf(temp,"%02x",c);
-            strncpy(text+8+i*3,temp,2);
+            text[8+i*3] = temp[0];
+            text[9+i*3] = temp[1];
             if (c < ' ' || c == 0x7F) c = '.';
             text[((lineSize == 16) ? 57:32)+i] = c;
         }
