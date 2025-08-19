@@ -22,13 +22,13 @@
  *
  * @return     Error code (-ve) Directory Handle (+ve, 0)
  */
-uint32_t FSOpenDirectory(char *dirName) {
+int32_t FSOpenDirectory(char *dirName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     DIR **ppDir;
     if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;                         // Validate name
-    uint32_t newHandle = FSAllocateRecord(true);                                     // Allocate directory record
+    int32_t newHandle = FSAllocateRecord(true);                                     // Allocate directory record
     if (newHandle < 0) return newHandle;                                            // Failed for some reason (probably too many open)
-    uint32_t err = FSGetValidateHandle(newHandle,true,(void **)&ppDir);              // Validate the handle and get the directory object.
+    int32_t err = FSGetValidateHandle(newHandle,true,(void **)&ppDir);              // Validate the handle and get the directory object.
     if (err != 0) LOG("Failure !!");
     *ppDir = opendir(dirName);                                                      // Open for reading.
     if (*ppDir == NULL) {                                                           // Did it fail ?
@@ -46,10 +46,10 @@ uint32_t FSOpenDirectory(char *dirName) {
  *
  * @return     0 or rerror code.
  */
-uint32_t FSReadDirectory(uint32_t handle,FSOBJECTINFO *fso) {
+int32_t FSReadDirectory(int32_t handle,FSOBJECTINFO *fso) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     DIR **ppDir;
-    uint32_t err = FSGetValidateHandle(handle,true,(void **)&ppDir);                 // Validate the handle and get the directory object.
+    int32_t err = FSGetValidateHandle(handle,true,(void **)&ppDir);                 // Validate the handle and get the directory object.
     if (err != 0) return err;
     struct dirent *next = readdir(*ppDir);                                          // Read next entry.
     if (next == NULL) {                                                             // Read failed.
@@ -69,9 +69,9 @@ uint32_t FSReadDirectory(uint32_t handle,FSOBJECTINFO *fso) {
  *
  * @return     0 or error code.
  */
-uint32_t FSCloseDirectory(uint32_t handle) {
+int32_t FSCloseDirectory(int32_t handle) {
     DIR **ppDir;
-    uint32_t err = FSGetValidateHandle(handle,true,(void **)&ppDir);                     // Validate the handle and get the directory object.
+    int32_t err = FSGetValidateHandle(handle,true,(void **)&ppDir);                     // Validate the handle and get the directory object.
     if (err != 0) return err;
     FSFreeRecord(handle);                                                               // Free up the handle.
     closedir(*ppDir);

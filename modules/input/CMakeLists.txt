@@ -16,6 +16,8 @@ include_directories(${MODULEDIR}/common/include)
 include_directories(${MODULEDIR}/usb/include)
 include_directories(${MODULEDIR}/dvi/include)
 
+add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -Werror -Wno-char-subscripts)
+
 add_subdirectory(${DVIDIR} lib)
 
 file(GLOB_RECURSE APP_SOURCES "app/*.[csS]")

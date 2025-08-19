@@ -21,9 +21,9 @@
  *
  * @return     true if successful, false failed (bad character/too long.)
  */
-bool SEDExtract(uint8_t *buffer,uint16_t bufferSize) {
+bool SEDExtract(char *buffer,uint16_t bufferSize) {
     uint8_t x,y;
-    uint8_t *bufferStart = buffer;
+    char *bufferStart = buffer;
     VDUWINDOW *tw = VDUGetTextWindow();
     uint8_t lastY = SEDGetEndCurrentLine();                                         // Last Y
     VDUGetTextCursor(&x,&y);                                                        // First Y

@@ -18,7 +18,7 @@
  * @param[in]  key   key code.
  */
 void SEDProcess(uint8_t key) {
-    int8_t x,y,h;
+    uint8_t x,y,h;
     VDUWINDOW *tw = VDUGetTextWindow();
 
     switch(key) {
@@ -38,8 +38,8 @@ void SEDProcess(uint8_t key) {
 
         case CTL_PAGEUP:                                                            // Page up (up half a screen, no scrolling)
             VDUGetTextCursor(&x,&y);
-            y = y - (tw->yBottom-tw->yTop)/2+1;if (y < 0) y = 0;
-            VDUWrite(31);VDUWrite(0);VDUWrite(y);
+            int yTarget = ((int)y) - (tw->yBottom-tw->yTop)/2+1;if (y < 0) y = 0;
+            VDUWrite(31);VDUWrite(0);VDUWrite(yTarget);
             break;
 
         case CTL_PAGEDOWN:                                                          // Page down (down half a screen, no scrolling)

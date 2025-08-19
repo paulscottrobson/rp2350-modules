@@ -27,17 +27,17 @@
 
 void USBHIDAppTask(void);
 void USBDispatchReport(uint8_t type,uint16_t vid, uint16_t pid, uint8_t *report, uint16_t len);
-uint32_t FSGetValidateHandle(uint32_t handle, bool isDirectory,void **fsObjectPtr);
+int32_t FSGetValidateHandle(int32_t handle, bool isDirectory,void **fsObjectPtr);
 void USBUpdate(void);
 
 void FSInitialise(void);
 bool FSProcessFileName(char **pFileName);
-uint32_t FSAllocateRecord(bool isDirectory);
-void FSFreeRecord(uint32_t handle);
+int32_t FSAllocateRecord(bool isDirectory);
+void FSFreeRecord(int32_t handle);
 char *FSCDMapCurrentName(char *name);
 
 #ifndef RUNTIME
-uint32_t FSMapErrorCode(FRESULT res);
+int32_t FSMapErrorCode(FRESULT res);
 #endif
 
 #define USE_BLINK_FEEDBACK

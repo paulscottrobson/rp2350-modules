@@ -15,7 +15,7 @@
 #define MAXFILESIZE     (32)                                                        // Max size of file name / directory name.
 
 static char current[MAXDIRSIZE+1];                                                  // The current directory.
-static uint32_t FSChangeDirectorySingle(char *change);
+static int32_t FSChangeDirectorySingle(char *change);
 
 /**
  * @brief      Initialise the CWD system
@@ -57,7 +57,7 @@ char *FSCDMapCurrentName(char *name) {
  *
  * @return     Error codes.
  */
-uint32_t FSChangeDirectory(char *newDir) {
+int32_t FSChangeDirectory(char *newDir) {
     char changeDir[MAXFILESIZE+1];
     uint32_t cd = 0;
     if (*newDir == '/') {                                                           // Absolute path, so back to the root
@@ -72,7 +72,7 @@ uint32_t FSChangeDirectory(char *newDir) {
             changeDir[cd++] = *newDir++;                                            // Copy it in.
         }
         changeDir[cd] = '\0';                                                       // Make ASCIIZ
-        uint32_t err = FSChangeDirectorySingle(changeDir);                          // Do that single change.
+        int32_t err = FSChangeDirectorySingle(changeDir);                           // Do that single change.
         if (err != 0) return err;
         while (*newDir == '/') newDir++;                                            // Skip any leading slashes.
     }
@@ -86,7 +86,7 @@ uint32_t FSChangeDirectory(char *newDir) {
  *
  * @return     Error code.
  */
-static uint32_t FSChangeDirectorySingle(char *change) {
+static int32_t FSChangeDirectorySingle(char *change) {
     if (strcmp(change,".") == 0) {                                                  // . doesn't change anything at all.
         return 0;
     }
@@ -113,3 +113,4 @@ static uint32_t FSChangeDirectorySingle(char *change) {
     FSCloseDirectory(h);
     return 0;
 }
+

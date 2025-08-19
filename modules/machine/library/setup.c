@@ -69,6 +69,7 @@ int MACRequestCommandWords(int argc,char **argv) {
         (*mcInfo.commandHandlers[i])(-1,NULL);
     }
     VDUWriteString("\r\n");
+    return 0;
 }
 /**
  * @brief      Non cancelling command logger

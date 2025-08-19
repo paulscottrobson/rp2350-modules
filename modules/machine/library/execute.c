@@ -18,7 +18,7 @@
  *             avoid C++
  */
 void MACStart(void) {
-    mcInfo.buffer = MEMAlloc(mcInfo.bufferSize,MEM_ANY);                            // Allocate input buffer in PSRAM.
+    mcInfo.buffer = (char *)MEMAlloc(mcInfo.bufferSize,MEM_ANY);                    // Allocate input buffer in PSRAM.
     VDUWrite(22);VDUWrite(mcInfo.mode);                                             // Set Video mode to whatever ....
     MACSetStandardColour();                                                         // Standard colours
     if (mcInfo.doubleHeight) {                                                      // If wanted, set Double height

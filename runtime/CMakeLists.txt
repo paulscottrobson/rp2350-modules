@@ -13,6 +13,10 @@ option(SDL_LOCATION "Use a specific location" OFF)
 add_compile_definitions(RUNTIME)
 add_compile_definitions(DEBUG)
 #
+#       Compile options
+#
+add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -Werror -Wno-char-subscripts)
+#
 #       Include directory, one for each module.
 #
 include_directories(include)

@@ -32,7 +32,7 @@ typedef struct _MachineInfo {
     uint32_t    inkColour, paperColour, errorColour,outputColour;                   // Main elements (defaults to cyan, blue, red)
     uint32_t    mode;                                                               // The run mode. (defaults to 640x480x8)
     bool        doubleHeight;                                                       // Double height mode (defaults to true)
-    uint8_t     *buffer;                                                            // Input buffer.
+    char       *buffer;                                                            // Input buffer.
     uint32_t    bufferSize;                                                         // Size of input buffer.
     uint8_t     argumentCount;                                                      // Number of arguments.
     char        **arguments;                                                        // Array of arguments, like 'main'

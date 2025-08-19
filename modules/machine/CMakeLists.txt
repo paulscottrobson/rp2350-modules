@@ -11,6 +11,8 @@ if (USE_DEBUG)
  add_definitions(-DDEBUG)
 endif()
 
+add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -Werror -Wno-char-subscripts)
+
 include_directories(include)
 include_directories(${MODULEDIR}/common/include)
 include_directories(${MODULEDIR}/usb/include)

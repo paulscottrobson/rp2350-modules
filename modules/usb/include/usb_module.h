@@ -1,3 +1,4 @@
+
 // *******************************************************************************************
 // *******************************************************************************************
 //
@@ -40,24 +41,24 @@ typedef struct _fsobjectInfo {                                                  
     char name[FS_MAXFILENAMESIZE+1];
 } FSOBJECTINFO;
 
-uint32_t FSCreate(char *fileName);                                                   // File & Directory prototypes.
-uint32_t FSDelete(char *fileName);
-uint32_t FSCreateDirectory(char *dirName);
-uint32_t FSDeleteDirectory(char *dirName);
-uint32_t FSChangeDirectory(char *newDir);
+int32_t FSCreate(char *fileName);                                                    // File & Directory prototypes.
+int32_t FSDelete(char *fileName);
+int32_t FSCreateDirectory(char *dirName);
+int32_t FSDeleteDirectory(char *dirName);
+int32_t FSChangeDirectory(char *newDir);
 char *FSGetCurrentDirectory(void);
 void FSCDInitialise(void);
 
-uint32_t FSOpenDirectory(char *dirName);
-uint32_t FSReadDirectory(uint32_t handle,FSOBJECTINFO *fso);
-uint32_t FSCloseDirectory(uint32_t handle);
+int32_t FSOpenDirectory(char *dirName);
+int32_t FSReadDirectory(int32_t handle,FSOBJECTINFO *fso);
+int32_t FSCloseDirectory(int32_t handle);
 
-uint32_t FSOpen(char *fileName);
-uint32_t FSRead(uint32_t handle,void *data,uint32_t size);
-uint32_t FSWrite(uint32_t handle,void *data,uint32_t size);
-uint32_t FSSeek(uint32_t handle,uint32_t position);
-uint32_t FSTell(uint32_t handle);
-uint32_t FSClose(uint32_t handle);
+int32_t FSOpen(char *fileName);
+int32_t FSRead(int32_t handle,void *data,uint32_t size);
+int32_t FSWrite(int32_t handle,void *data,uint32_t size);
+int32_t FSSeek(int32_t handle,uint32_t position);
+int32_t FSTell(int32_t handle);
+int32_t FSClose(int32_t handle);
 
 
 #define FSERR_BADNAME       (-1)                                                    // Bad file name.

@@ -20,13 +20,13 @@
  *
  * @return     Error code (-ve) Handle (+ve or zero)
  */
-uint32_t FSOpen(char *fileName) {
+int32_t FSOpen(char *fileName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
     if (!FSProcessFileName(&fileName)) return FSERR_BADNAME;                        // Validate name
-    uint32_t newHandle = FSAllocateRecord(false);                                    // Allocate file record
+    int32_t newHandle = FSAllocateRecord(false);                                    // Allocate file record
     if (newHandle < 0) return newHandle;                                            // Failed for some reason (probably too many open)
-    uint32_t err = FSGetValidateHandle(newHandle,false,(void **)&ppFile);            // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(newHandle,false,(void **)&ppFile);            // Validate the handle and get the file object.
     if (err != 0) LOG("Failure !!");
     *ppFile = fopen(fileName,"rb+");                                                // Open for reading and writing.
     if (*ppFile == NULL) {                                                          // Did it fail ?
@@ -45,15 +45,15 @@ uint32_t FSOpen(char *fileName) {
  *
  * @return     -ve error code, +ve amount of data actually read in.
  */
-uint32_t FSRead(uint32_t handle,void *data,uint32_t size) {
+int32_t FSRead(int32_t handle,void *data,uint32_t size) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
     int readBytes;
-    uint32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
     if (err != 0) return err;
     readBytes = fread(data,1,size,*ppFile);                                         // Do the read.
     if (readBytes < 0) return FSMapErrorCode();                                     // Failed somehow.
-    return (uint32_t)readBytes;                                                      // Return the number of bytes read.
+    return (int32_t)readBytes;                                                      // Return the number of bytes read.
 }
 
 /**
@@ -65,15 +65,15 @@ uint32_t FSRead(uint32_t handle,void *data,uint32_t size) {
  *
  * @return     -ve error code, +ve amount of data actually written out.
  */
-uint32_t FSWrite(uint32_t handle,void *data,uint32_t size) {
+int32_t FSWrite(int32_t handle,void *data,uint32_t size) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
     int writeBytes;
-    uint32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
     if (err != 0) return err;
     writeBytes = fwrite(data,1,size,*ppFile);                                       // Do the read.
     if (writeBytes < 0) return FSMapErrorCode();                                    // Failed somehow.
-    return (uint32_t)writeBytes;                                                     // Return the number of bytes written.
+    return (int32_t)writeBytes;                                                     // Return the number of bytes written.
 }
 
 /**
@@ -84,10 +84,10 @@ uint32_t FSWrite(uint32_t handle,void *data,uint32_t size) {
  *
  * @return     0 or error if -ve
  */
-uint32_t FSSeek(uint32_t handle,uint32_t position) {
+int32_t FSSeek(int32_t handle,uint32_t position) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
-    uint32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
     if (err != 0) return err;
     fseek(*ppFile,position,SEEK_SET);
     return FSMapErrorCode();                                                        // Try to do the move.
@@ -100,12 +100,12 @@ uint32_t FSSeek(uint32_t handle,uint32_t position) {
  *
  * @return     Position in the file, error if -ve.
  */
-uint32_t FSTell(uint32_t handle) {
+int32_t FSTell(int32_t handle) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
-    uint32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
     if (err != 0) return err;
-    uint32_t pos = ftell(*ppFile);                                                   // Return the position or error
+    int32_t pos = ftell(*ppFile);                                                   // Return the position or error
     return (pos < 0) ? FSMapErrorCode() : pos;
 }
 
@@ -116,10 +116,10 @@ uint32_t FSTell(uint32_t handle) {
  *
  * @return     0 or error if -ve
  */
-uint32_t FSClose(uint32_t handle) {
+int32_t FSClose(int32_t handle) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE **ppFile;
-    uint32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
+    int32_t err = FSGetValidateHandle(handle,false,(void **)&ppFile);               // Validate the handle and get the file object.
     if (err != 0) return err;
     FSFreeRecord(handle);                                                           // Free up the handle.
     fclose(*ppFile);

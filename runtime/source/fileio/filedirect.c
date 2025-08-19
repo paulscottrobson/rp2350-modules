@@ -19,7 +19,7 @@
  *
  * @return     error code or 0
  */
-uint32_t FSCreate(char *fileName) {
+int32_t FSCreate(char *fileName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FILE *fil;
     if (!FSProcessFileName(&fileName)) return FSERR_BADNAME;
@@ -37,7 +37,7 @@ uint32_t FSCreate(char *fileName) {
  *
  * @return     0 
  */
-uint32_t FSDelete(char *fileName) {
+int32_t FSDelete(char *fileName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     if (!FSProcessFileName(&fileName)) return FSERR_BADNAME;
     unlink(fileName);
@@ -51,7 +51,7 @@ uint32_t FSDelete(char *fileName) {
  *
  * @return     error code or 0.
  */
-uint32_t FSCreateDirectory(char *dirName) {
+int32_t FSCreateDirectory(char *dirName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;
     mkdir(dirName,0755);
@@ -71,7 +71,7 @@ uint32_t FSCreateDirectory(char *dirName) {
  *
  * @return     error code or 0.
  */
-uint32_t FSDeleteDirectory(char *dirName) {
+int32_t FSDeleteDirectory(char *dirName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     if (!FSProcessFileName(&dirName)) return FSERR_BADNAME;
     rmdir(dirName);

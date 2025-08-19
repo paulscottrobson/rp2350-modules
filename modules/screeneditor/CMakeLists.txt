@@ -18,6 +18,8 @@ include_directories(${MODULEDIR}/dvi/include)
 include_directories(${MODULEDIR}/input/include)
 include_directories(${MODULEDIR}/graphics/include)
 
+add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -Werror -Wno-char-subscripts)
+
 add_subdirectory(${DVIDIR} lib)
 file(GLOB_RECURSE APP_SOURCES "app/*.[csS]")
 file(GLOB_RECURSE C_SOURCES "library/*.[csS]")

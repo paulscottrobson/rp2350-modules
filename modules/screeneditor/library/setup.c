@@ -31,7 +31,7 @@ void SEDInitialise(void) {
  *
  * @return     true if ok, false if failed.
  */
-bool SEDInputLine(uint8_t *buffer,uint16_t bufferSize) {
+bool SEDInputLine(char *buffer,uint16_t bufferSize) {
     bool bCompleted = false;
     bool bResult = false;
     while (!bCompleted && COMAppRunning()) {

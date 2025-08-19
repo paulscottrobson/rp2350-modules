@@ -49,7 +49,7 @@ void INPHandleKeyEvent(uint8_t keyID,uint8_t modifiers) {
  * @return     Control code or 0 if not translatable.
  */
 static uint16_t _INPTranslateControl(uint8_t keyID,uint8_t modifiers) {
-    uint16_t ret;
+    uint16_t ret = 0;
 
     switch(keyID) {                                                                 // Map USB codes onto the internal equivalent.
         case KEY_LEFT:
