@@ -2,7 +2,7 @@
 
 ## Machine module
 
-- function key code, rewrite expander. |X format from BBC Micro.
+- function key code
     
 - Decode errors coherently.
 - Sort LS only if PSRAM available.

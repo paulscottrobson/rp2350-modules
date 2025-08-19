@@ -25,7 +25,7 @@ Key presses end up in a FIFO queue. This queue can be interrogated by INPIsKeyAv
 
 INPSetLocale() takes a two character country code which is the locale to select, the default being "us". Currently supported are uk,de,dk,fr,it,pl,no,us,se and fi .
 
-INPSetFunctionKey() takes a function key number and text to be pushed into the keyboard queue when a function key is pressed. This functionality can be disabled by passing NULL, which returns the default, the values CTL_F1 through CTL_F12. The module does not copy the function key text, this is the responsibility of the caller.
+INPSetFunctionKey() takes a function key number and text to be pushed into the keyboard queue when a function key is pressed. This functionality can be disabled by passing NULL, which returns the default, the values CTL_F1 through CTL_F12. The module does not copy the function key text, this is the responsibility of the caller. The key format is similar to the BBC Micro, in that |[character] is the same as ASCII code [character] & $1F, so |M is Carriage Return (13)
 
 Finally, this enables the use of Ctrl-Alt-Alt Gr as a reboot (and yes, I did own an Amiga many years ago)
 
@@ -46,7 +46,7 @@ Support only exists for the Olimex sold gamepad at present (this is a Super Nint
 
 ## Revision
 
-Written by Paul Robson, last revised 26 July 2025.
+Written by Paul Robson, last revised 19th August 2025.
 
 
 

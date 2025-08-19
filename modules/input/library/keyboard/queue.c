@@ -48,7 +48,14 @@ void INPInsertIntoQueue(int16_t key) {
     if ((key & 0xF0FF) == CTL_FUNCTION) {                                           // Function key to be inserted.
         char *text = functionKeyText[(key & 0x0F00) >> 8];                          // What if anything is assigned to it ?
         if (text != NULL) {                                                         // If something, push it into the queue.
-            while (*text != '\0') INPInsertIntoQueue(*text++);                      // Queue limits stop infinite recursion.
+            while (*text != '\0') {
+                if (*text == '|' && *(text+1) != '\0') {                            // Is it |<something>
+                    INPInsertIntoQueue(text[1] & 0x1F);                             // Insert control character
+                    text += 2;
+                } else {
+                    INPInsertIntoQueue(*text++);                                    // Ordinary character.
+                }
+            }
             return;
         }
     }
