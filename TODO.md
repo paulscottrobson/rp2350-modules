@@ -4,7 +4,7 @@
 
 - Complete the OS commands.
     cat hd
-    cp rm
+    function key code, rewrite expander. |X format from BBC Micro.
     
 - Decode errors coherently.
 - Sort LS only if PSRAM available.

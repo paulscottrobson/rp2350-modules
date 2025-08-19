@@ -22,6 +22,28 @@
  */
 
 int MACOSCopyFile(int argc,char **argv) {
+    int32_t err = FSCreate(argv[2]);                                                // Create second file
+    if (err < 0) return err;
+
+    int32_t inFile = FSOpen(argv[1]);                                               // Open first file
+    if (inFile < 0) return inFile;
+
+    int32_t outFile = FSOpen(argv[2]);                                              // Open second file.
+    if (outFile < 0) {
+        FSClose(inFile); 
+        return outFile;
+    }
+    uint8_t buffer[128];                                                            // Buffered copy.
+    int32_t count;
+    while (count = FSRead(inFile,buffer,sizeof(buffer)), count > 0) {               // While more to write
+        int32_t written = FSWrite(outFile,buffer,count);
+        if (written < 0 || written != count) {                                      // Write failed for some reason.
+            FSClose(inFile);FSClose(outFile);
+            return FSERR_SYSTEM;
+        }
+    }
+    FSClose(inFile);                                                                // Close files and exit.
+    FSClose(outFile);
     return 0;
 }
 
@@ -35,6 +57,6 @@ int MACOSCopyFile(int argc,char **argv) {
  */
 
 int MACOSDeleteFile(int argc,char **argv) {
-    return 0;
+    return FSDelete(argv[1]);
 }
 

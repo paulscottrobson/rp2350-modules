@@ -23,7 +23,7 @@ int32_t FSCreate(char *fileName) {
     CHECKFSAVAILABLE();                                                             // Storage available ?
     FIL fil;
     if (!FSProcessFileName(&fileName)) return FSERR_BADNAME;
-    FSDelete(fileName);                                                             // Delete any existing file.
+    f_unlink(fileName);                                                             // Delete any existing file.
     FRESULT res = f_open(&fil,fileName,FA_CREATE_ALWAYS);                           // Try to create it.
     if (res != FR_OK) return FSMapErrorCode(res);                                   // We couldn't for some reason.
     f_close(&fil);                                                                  // Close it straight away.
