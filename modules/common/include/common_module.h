@@ -28,6 +28,7 @@
 typedef void (*COMUPDATEFUNCTION)(void);
 
 void COMInitialise(void);
+void COMWrite(char *s);
 void COMPrint(char *format,...);
 void COMError(char *msg,int line,char *fileName);
 

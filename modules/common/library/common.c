@@ -45,10 +45,18 @@ void COMPrint(char *format,...) {
     va_list args;
     va_start(args, format);
     vsnprintf(buf, 128, format, args);
-    printf(buf);printf("\n");
+    COMWrite(buf);COMWrite("\n");
     va_end(args);
 }
 
+/**
+ * @brief      Write a string to the log.
+ *
+ * @param      s     string to write.
+ */
+void COMWrite(char *s) {
+    printf(s);
+}
 /**
  * @brief      Report an error
  *
