@@ -47,7 +47,7 @@ int VDUGetBackgroundColour(void) {
  * @param[in]  colour  The colour
  */
 
-void VDUSetGraphicsColour(uint8_t mode,uint8_t colour) {
+void VDUSetGraphicsColour(uint32_t mode,uint32_t colour) {
     vc.gColMode = mode;                                                             // Save mode. According to MOS1.2 this is the same mode for both
     if (colour & 0x80) {                                                            // If bit 7 set, background
         vc.bgrGraphic = colour & 0x7F;
@@ -90,7 +90,7 @@ int  VDUReadPixel(int32_t x,int32_t y) {
  * @param[in]  x     Logical X coordinate
  * @param[in]  y     Logical Y coordinate
  */
-void VDUPlot(uint8_t cmd,int32_t x,int32_t y) {
+void VDUPlot(uint32_t cmd,int32_t x,int32_t y) {
 
     VDUHideCursor();
 

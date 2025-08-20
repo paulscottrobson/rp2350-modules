@@ -77,7 +77,7 @@ int _VDUShort(int ofst) {
 * @param[in]  c     Character code
 */
 
-void VDUWrite(uint8_t c) {
+void VDUWrite(uint32_t c) {
     int x1,y1,x2,y2;
 
     if (DVIGetModeInformation() == NULL) return;                                    // Check screen is actually on.

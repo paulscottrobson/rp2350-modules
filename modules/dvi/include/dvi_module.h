@@ -47,9 +47,8 @@ typedef enum _DVIMode {
 #define DVI_MODE_COUNT      (5)                                                     // Supported DVI modes.
 
 void DVIInitialise(void);
-bool DVISetMode(DVIMODE mode);
+APIX bool DVISetMode(DVIMODE mode);
 DVIMODEINFO *DVIGetModeInformation(void);
-uint32_t  DVIGetScreenExtent(uint32_t *pWidth,uint32_t *pHeight);
 uint8_t *DVIGetSystemFont(void);
 uint8_t *DVIGetSystemFont16(void);
 

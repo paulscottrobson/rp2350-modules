@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define APIX
+
 #ifdef DEBUG
 #define LOG   COMPrint
 #define ASSERT(x) if (!(x)) ERROR("Assert")
@@ -28,18 +30,18 @@
 typedef void (*COMUPDATEFUNCTION)(void);
 
 void COMInitialise(void);
-void COMWrite(char *s);
+APIX void COMWrite(char *s);
 void COMPrint(char *format,...);
 void COMError(char *msg,int line,char *fileName);
 
-uint32_t COMClock(void);
-uint32_t COMGetFreeSystemMemory(void);
-void COMWait(uint32_t ms);
+APIX uint32_t COMClock(void);
+APIX uint32_t COMGetFreeSystemMemory(void);
+APIX void COMWait(uint32_t ms);
 
 bool COMAppRunning(void);
 void COMAddUpdateFunction(COMUPDATEFUNCTION updateFunc);
 void COMUpdate(void);
-char *COMPlatformName(void);
+APIX char *COMPlatformName(void);
 
 #ifdef RUNTIME
 bool SYSYield(void);

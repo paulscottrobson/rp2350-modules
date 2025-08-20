@@ -18,7 +18,7 @@
  * @param[in]  key   key code.
  */
 void SEDProcess(uint8_t key) {
-    uint8_t x,y,h;
+    uint32_t x,y,h;
     VDUWINDOW *tw = VDUGetTextWindow();
 
     switch(key) {

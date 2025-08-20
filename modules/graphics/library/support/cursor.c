@@ -75,7 +75,7 @@ void VDUSetTextCursor(uint8_t x,uint8_t y) {
  * @param      x     pointer to x store or NULL
  * @param      y     pointer to y store or NULL
  */
-void VDUGetTextCursor(uint8_t *x, uint8_t *y) {
+void VDUGetTextCursor(uint32_t *x, uint32_t *y) {
     if (x != NULL) *x = vc.xCursor;
     if (y != NULL) *y = vc.yCursor;
 }

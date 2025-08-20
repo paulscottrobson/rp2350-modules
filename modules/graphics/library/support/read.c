@@ -22,7 +22,7 @@ static uint8_t _VDUReadCompare(uint8_t *charDef,bool bDouble);
  *
  * @return     character code, of 0 if cannot be recognised.
  */
-uint8_t VDURead(uint16_t x,uint16_t y) {
+uint8_t VDURead(uint32_t x,uint32_t y) {
     int16_t c1,c2;                                                                  // The two colours found while scanning,c1 is background,c2 is foreground.
     DVIMODEINFO *dmi = DVIGetModeInformation();
     bool bDouble = (vc.textHeight == 16);

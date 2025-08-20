@@ -26,21 +26,21 @@ typedef struct _Window {
 } VDUWINDOW;
 
 void VDUInitialise(void);
-void VDUWrite(uint8_t c);
-void VDUWriteWord(uint32_t word);
-void VDUWriteString(char *fmt, ...);
-void VDUPlot(uint8_t cmd,int32_t x,int32_t y);
-void VDUSetGraphicsColour(uint8_t mode,uint8_t colour);
-int  VDUReadPixel(int32_t x,int32_t y);
-void VDUScrollRect(int ext, int direction);
-void VDUGetTextCursor(uint8_t *x, uint8_t *y);
-uint8_t VDURead(uint16_t x,uint16_t y);
+APIX void VDUWrite(uint32_t c);
+APIX void VDUWriteWord(uint32_t word);
+APIX void VDUWriteString(char *fmt, ...);
+APIX void VDUPlot(uint32_t cmd,int32_t x,int32_t y);
+APIX void VDUSetGraphicsColour(uint32_t mode,uint32_t colour);
+APIX int  VDUReadPixel(int32_t x,int32_t y);
+APIX void VDUScrollRect(int32_t ext, int32_t direction);
+APIX void VDUGetTextCursor(uint32_t *x, uint32_t *y);
+APIX uint8_t VDURead(uint32_t x,uint32_t y);
 void VDURenderCharacter(int x,int y,int c);
 VDUWINDOW *VDUGetTextWindow(void);
 bool VDUHasLineEndMarker(int y);
 void VDUCopyChar(int xFrom,int yFrom,int xTo,int yTo);
-void VDUHideCursor(void);
-void VDUShowCursor(void);
+APIX void VDUHideCursor(void);
+APIX void VDUShowCursor(void);
 
 /**
  *      Drawing notes (from the BBC Micro user guide and the GXR user guide)

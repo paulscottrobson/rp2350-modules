@@ -61,7 +61,7 @@ void INPProcessMouseReport(USBREPORT *r) {
  * @param      py        store y pos here
  * @param      pButtons  store buttons here
  */
-void INPGetMouseStatus(int16_t *px,int16_t *py,int16_t *pButtons) {
+void INPGetMouseStatus(int32_t *px,int32_t *py,int32_t *pButtons) {
     if (px != NULL) *px = xMouse;
     if (py != NULL) *py = yMouse;    
     if (pButtons != NULL) *pButtons = buttons;

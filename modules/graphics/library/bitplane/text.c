@@ -173,7 +173,7 @@ void VDUScrollH(int xLeft,int xRight,int dir,int yTop, int yBottom)
 /**
  * @brief     Scroll a rectangle in any direction.
  */
-void VDUScrollRect(int ext, int direction)
+void VDUScrollRect(int32_t ext, int32_t direction)
 {
     DVIMODEINFO *dmi = DVIGetModeInformation();            
     int Top,Bottom,Left,Right;
