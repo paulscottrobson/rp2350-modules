@@ -37,7 +37,7 @@ int MAINPROGRAM(int argc,char *argv[]) {
     }
     INPInitialise();                                                                // Initialise input module.
     while (COMAppRunning()) {                                                       // This is for the run time library.
-        int16_t x,y,s,b;
+        int32_t x,y,s,b;
         INPGetMouseStatus(&x,&y,&b);                                                // Read the mouse
         x = x >> 1;y = y >> 1;s = b * 2 + 2;                                        // Mouse coordinate to pixels, buttons define the size.
         for (int16_t xi = x-s;xi < x+s;xi++) {                                      // Draw the 'blob'

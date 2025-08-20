@@ -18,7 +18,7 @@
 void SEDInsert(void) {
     VDUHideCursor();
     uint8_t lastY = SEDGetEndCurrentLine();
-    uint8_t x,y,xc,yc;
+    uint32_t x,y,xc,yc;
     VDUGetTextCursor(&xc,&yc);
     VDUWINDOW *tw = VDUGetTextWindow();
     uint8_t width = tw->xRight-tw->xLeft; 
@@ -39,7 +39,7 @@ void SEDInsert(void) {
 void SEDDelete(void) {
     VDUHideCursor();
     uint8_t lastY = SEDGetEndCurrentLine();
-    uint8_t x,y;
+    uint32_t x,y;
     VDUGetTextCursor(&x,&y);
     VDUWINDOW *tw = VDUGetTextWindow();
     uint8_t width = tw->xRight-tw->xLeft;                                           // From current position, till end of line (inc extensions)
@@ -60,7 +60,7 @@ void SEDDelete(void) {
  */
 uint8_t SEDGetEndCurrentLine(void) {
     VDUWINDOW *tw = VDUGetTextWindow();
-    uint8_t x,y;
+    uint32_t x,y;
     VDUGetTextCursor(&x,&y);
     while (y+tw->yTop < tw->yBottom &&                                              // While more screen and ext line marker, go down.
            VDUHasLineEndMarker(y+tw->yTop)) y++;

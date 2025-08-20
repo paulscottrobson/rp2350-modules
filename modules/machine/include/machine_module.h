@@ -52,6 +52,6 @@ void MACAddCommandHandler(MACCOMMANDHANDLER handler);
 int MACLogCommands(int argc,char **argv);
 
 int MACOSCommand(int argc,char **argv);                                             // Execute an OS command (parsed)
-int MACOSCommandString(char *cmd);                                                  // Not parsed
+APIX int MACOSCommandString(char *cmd);                                             // Not parsed
 
 #define MAC_PROVIDES(argc,cmds) { if (argc == -1) { VDUWriteString(cmds);VDUWrite(32); return 0; } }

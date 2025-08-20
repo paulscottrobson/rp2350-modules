@@ -1,4 +1,3 @@
-
 // *******************************************************************************************
 // *******************************************************************************************
 //
@@ -30,7 +29,7 @@ typedef struct _usbReport {                                                     
 typedef bool (*USBHANDLERFUNCTION)(USBREPORT *report);                              // Handler pointer type.
 
 void USBInitialise(void);                                                           // USB prototypes
-bool USBIsFileSystemAvailable(void);
+APIX bool USBIsFileSystemAvailable(void);
 bool USBInstallHandler(USBHANDLERFUNCTION handler);
 
 #define FS_MAXFILENAMESIZE (128)                                                    // Max size of a filename
@@ -41,25 +40,24 @@ typedef struct _fsobjectInfo {                                                  
     char name[FS_MAXFILENAMESIZE+1];
 } FSOBJECTINFO;
 
-int32_t FSCreate(char *fileName);                                                    // File & Directory prototypes.
-int32_t FSDelete(char *fileName);
-int32_t FSCreateDirectory(char *dirName);
-int32_t FSDeleteDirectory(char *dirName);
-int32_t FSChangeDirectory(char *newDir);
-char *FSGetCurrentDirectory(void);
+APIX int32_t FSCreate(char *fileName);                                               // File & Directory prototypes.
+APIX int32_t FSDelete(char *fileName);
+APIX int32_t FSCreateDirectory(char *dirName);
+APIX int32_t FSDeleteDirectory(char *dirName);
+APIX int32_t FSChangeDirectory(char *newDir);
+APIX char *FSGetCurrentDirectory(void);
 void FSCDInitialise(void);
 
-int32_t FSOpenDirectory(char *dirName);
-int32_t FSReadDirectory(int32_t handle,FSOBJECTINFO *fso);
-int32_t FSCloseDirectory(int32_t handle);
+APIX int32_t FSOpenDirectory(char *dirName);
+APIX int32_t FSReadDirectory(int32_t handle,FSOBJECTINFO *fso);
+APIX int32_t FSCloseDirectory(int32_t handle);
 
-int32_t FSOpen(char *fileName);
-int32_t FSRead(int32_t handle,void *data,uint32_t size);
-int32_t FSWrite(int32_t handle,void *data,uint32_t size);
-int32_t FSSeek(int32_t handle,uint32_t position);
-int32_t FSTell(int32_t handle);
-int32_t FSClose(int32_t handle);
-
+APIX int32_t FSOpen(char *fileName);
+APIX int32_t FSRead(int32_t handle,void *data,uint32_t size);
+APIX int32_t FSWrite(int32_t handle,void *data,uint32_t size);
+APIX int32_t FSSeek(int32_t handle,uint32_t position);
+APIX int32_t FSTell(int32_t handle);
+APIX int32_t FSClose(int32_t handle);
 
 #define FSERR_BADNAME       (-1)                                                    // Bad file name.
 #define FSERR_SYSTEM        (-2)                                                    // System error.
@@ -69,4 +67,3 @@ int32_t FSClose(int32_t handle);
 #define FSERR_TYPE          (-6)                                                    // File handle on Directory func or vice versa.
 #define FSERR_EOF           (-7)                                                    // End of Read Directory/File
 #define FSERR_STORAGE       (-8)                                                    // No storage available.
-

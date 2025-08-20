@@ -27,11 +27,11 @@ typedef struct _GamePad {
 } INPGAMEPAD;
 
 void INPInitialise(void);
-bool *INPGetKeyboardState(void);
-bool INPSetLocale(char *locale);
-uint32_t INPGetKey(void);
-bool INPIsKeyAvailable(void);
-void INPSetFunctionKey(uint8_t keyNumber,char *text);
-void INPGetMouseStatus(int16_t *px,int16_t *py,int16_t *pButtons);
-INPGAMEPAD *INPReadGamepad(uint32_t player);
+APIX bool *INPGetKeyboardState(void);
+APIX bool INPSetLocale(char *locale);
+APIX uint32_t INPGetKey(void);
+APIX bool INPIsKeyAvailable(void);
+APIX void INPSetFunctionKey(uint32_t keyNumber,char *text);
+APIX void INPGetMouseStatus(int32_t *px,int32_t *py,int32_t *pButtons);
+APIX INPGAMEPAD *INPReadGamepad(uint32_t player);
 

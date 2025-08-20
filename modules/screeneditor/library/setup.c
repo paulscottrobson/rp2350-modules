@@ -31,11 +31,11 @@ void SEDInitialise(void) {
  *
  * @return     true if ok, false if failed.
  */
-bool SEDInputLine(char *buffer,uint16_t bufferSize) {
+bool SEDInputLine(char *buffer,uint32_t bufferSize) {
     bool bCompleted = false;
     bool bResult = false;
     while (!bCompleted && COMAppRunning()) {
-        uint16_t k = INPGetKey();
+        uint32_t k = INPGetKey();
         if (k == 13) {
             bResult = SEDExtract(buffer,bufferSize);
             bCompleted = true;

@@ -32,7 +32,7 @@ void INPResetQueue(void) {
  * @param[in]  keyNumber  Function key number (1-12)
  * @param      text       Text to be associated with it, or NULL to disable.
  */
-void INPSetFunctionKey(uint8_t keyNumber,char *text) {
+void INPSetFunctionKey(uint32_t keyNumber,char *text) {
     if (keyNumber >= 1 && keyNumber <= 12) {
         functionKeyText[keyNumber-1] = text;
     }

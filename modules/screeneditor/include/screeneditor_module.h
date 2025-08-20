@@ -24,5 +24,5 @@
 
 void SEDInitialise(void);
 void SEDProcess(uint8_t key);
-bool SEDExtract(char *buffer,uint16_t bufferSize);
-bool SEDInputLine(char *buffer,uint16_t bufferSize);
+bool SEDExtract(char *buffer,uint32_t bufferSize);
+APIX bool SEDInputLine(char *buffer,uint32_t bufferSize);

@@ -3,14 +3,17 @@
 ## Machine module
 
 - function key code
-    
 - Decode errors coherently.
-- Sort LS only if PSRAM available.
+- Documentation
 
 ## Sprite module
 - Complete reimplementation, possibly two, either xor/palette or double buffer/draw ?
 
 ## Audio ?
+
+## APIX
+
+- Implement API interface for non builtins
 
 ## Others
 - python script with skeleton for runtimes CMakeLists.txt
