@@ -28,11 +28,15 @@
 
 typedef int (*MACCOMMANDHANDLER)(int argc,char **argv);                             // Command handler
 
+#define MAC_FUNCKEYCOUNT    (12)                                                    // Function key count
+#define MAC_FUNCKEYTEXTSIZE (64)
+
 typedef struct _MachineInfo {
     uint32_t    inkColour, paperColour, errorColour,outputColour;                   // Main elements (defaults to cyan, blue, red)
     uint32_t    mode;                                                               // The run mode. (defaults to 640x480x8)
     bool        doubleHeight;                                                       // Double height mode (defaults to true)
-    char       *buffer;                                                            // Input buffer.
+    char        *buffer;                                                            // Input buffer.
+    char        *keyDefs[MAC_FUNCKEYCOUNT];                                         // Function key definition stores (0-11 = 1-12)
     uint32_t    bufferSize;                                                         // Size of input buffer.
     uint8_t     argumentCount;                                                      // Number of arguments.
     char        **arguments;                                                        // Array of arguments, like 'main'

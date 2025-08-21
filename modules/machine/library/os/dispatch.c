@@ -37,6 +37,7 @@ static struct _CommandList {
         { "cp",2,       MACOSCopyFile } ,
         { "rm",1,       MACOSDeleteFile } ,
         { "del",1,      MACOSDeleteFile } ,
+        { "fkey",2,     MACOSDefineFunctionKey },
         { "help",0,     MACRequestCommandWords },
         { NULL,0, NULL },
 };

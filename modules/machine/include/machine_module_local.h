@@ -27,6 +27,7 @@ int MACOSHexDump(int argc,char **argv);
 int MACOSListDirectory(int argc,char **argv);
 int MACOSCopyFile(int argc,char **argv);
 int MACOSDeleteFile(int argc,char **argv);
+int MACOSDefineFunctionKey(int argc,char **argv);
 int MACRequestCommandWords(int argc,char **argv);
 
 bool MACOSCompare(char *s1,char *s2);

@@ -18,7 +18,14 @@
  *             avoid C++
  */
 void MACStart(void) {
-    mcInfo.buffer = (char *)MEMAlloc(mcInfo.bufferSize,MEM_ANY);                    // Allocate input buffer in PSRAM.
+    uint8_t *memory = MEMAlloc(mcInfo.bufferSize +                                  // Allocate memory for usage. 
+                               MAC_FUNCKEYCOUNT * (MAC_FUNCKEYTEXTSIZE+1),
+                               MEM_ANY);         
+    mcInfo.buffer = (char *)memory;                                                 // Allocate input buffer in PSRAM.
+    for (int k = 0;k < MAC_FUNCKEYCOUNT;k++) {                                      // Initialise the function key definition stores.
+        mcInfo.keyDefs[k] = (char *)(memory+mcInfo.bufferSize+k*(MAC_FUNCKEYTEXTSIZE+1));
+        *mcInfo.keyDefs[k] = '\0';
+    }
     VDUWrite(22);VDUWrite(mcInfo.mode);                                             // Set Video mode to whatever ....
     MACSetStandardColour();                                                         // Standard colours
     if (mcInfo.doubleHeight) {                                                      // If wanted, set Double height
