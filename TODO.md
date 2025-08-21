@@ -2,8 +2,6 @@
 
 ## Machine module
 
-- function key code
-- Decode errors coherently.
 - Documentation
 
 ## Sprite module

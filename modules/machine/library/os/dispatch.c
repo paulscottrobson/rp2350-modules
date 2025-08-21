@@ -12,6 +12,8 @@
 #include "machine_module.h"
 #include "machine_module_local.h"           
 
+static char *MACGetErrorName(int32_t errorCode);
+
 /**
  * @brief      List of commands, parameters, and function to call
  */
@@ -81,8 +83,8 @@ int MACOSCommand(int argc,char **argv) {
             }            
             int error = (*commandList[i].commandFunc)(argc,argv);                   // Go do it.
             if (error != 0) {                                                       // Error occurred.
-                char errorMsg[16];
-                sprintf(errorMsg,"Error %d",error);
+                char errorMsg[40];
+                sprintf(errorMsg,"Error %d (%s)",error,MACGetErrorName(error));
                 MACError(errorMsg);
             }
             return 1;
@@ -103,6 +105,36 @@ void MACOSListCommands(void) {
     }
 }
 
+
+/**
+ * @brief      Convert an error name to text
+ *
+ * @param[in]  errorCode  error code
+ *
+ * @return     text version
+ */
+static char *MACGetErrorName(int32_t errorCode) {
+    char *msg = "";
+    switch(errorCode) {
+        case FSERR_BADNAME:                                                    
+            msg = "Bad name or parameter";break;
+        case FSERR_SYSTEM:                                                    
+            msg = "Internal error";break;
+        case FSERR_EXIST:                                                    
+            msg = "File or Directory not found";break;
+        case FSERR_PROTECTED:                                                    
+            msg = "Storage protected";break;
+        case FSERR_BADHANDLE:                                                    
+            msg = "Bad Handle";break;
+        case FSERR_TYPE:                                                    
+            msg = "Bad Type";break;
+        case FSERR_EOF:                                                    
+            msg = "End of file";break;
+        case FSERR_STORAGE:    
+            msg = "Storage or size error";break;
+    }                                                
+    return msg;
+}
 /**
  * @brief      Compare 2 strings case insensitive
  *
