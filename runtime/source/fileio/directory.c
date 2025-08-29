@@ -51,6 +51,7 @@ int32_t FSReadDirectory(int32_t handle,FSOBJECTINFO *fso) {
     DIR **ppDir;
     int32_t err = FSGetValidateHandle(handle,true,(void **)&ppDir);                 // Validate the handle and get the directory object.
     if (err != 0) return err;
+    errno = 0;                                                                      // reset errno before readdir
     struct dirent *next = readdir(*ppDir);                                          // Read next entry.
     if (next == NULL) {                                                             // Read failed.
         if (errno == 0 || errno == EAGAIN) return FSERR_EOF;                        // End of directory

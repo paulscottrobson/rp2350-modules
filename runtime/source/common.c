@@ -85,7 +85,7 @@ void COMPrint(char *format,...) {
  * @param      s     string to write.
  */
 void COMWrite(char *s) {
-    printf(s);
+    printf("%s",s);
 }
 
 /**
