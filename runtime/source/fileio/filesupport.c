@@ -87,9 +87,10 @@ bool FSProcessFileName(char **pFileName) {
     char *p;
     strcpy(buffer,"storage/");                                                      // Append full file name to storage
     strcat(buffer,FSCDMapCurrentName(*pFileName));
-    while (p = strstr(buffer,"//"),p != NULL) {                                     // Remove any double slashes. Don't think Linux minds
-        strcpy(p,p+1);                                                              // but Windows uses it as a server marker ?
+    while ((p = strstr(buffer, "//")) != NULL) {                                    // Remove any double slashes. Don't think Linux minds
+        memmove(p, p + 1, strlen(p));                                               // but Windows uses it as a server marker ? memmove is more safety then strcpy on overlap. Max OSx
     }
+
     #if BACKSLASH==1                                                                // Make windows slashes correct. 
     p = buffer;
     while (*p != '\0') {
